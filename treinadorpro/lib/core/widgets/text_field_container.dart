@@ -3,7 +3,8 @@ import 'package:treinadorpro/core/constants/constants.dart';
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
-  const TextFieldContainer({super.key, required this.child});
+  final Color color;
+  const TextFieldContainer({super.key, required this.child, this.color = kPrimaryLightColor});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class TextFieldContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-        color: kPrimaryLightColor,
+        color: color,
         borderRadius: BorderRadius.circular(29)
       ),
       child: child,

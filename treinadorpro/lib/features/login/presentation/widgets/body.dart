@@ -4,6 +4,7 @@ import 'package:treinadorpro/core/widgets/rounded_button.dart';
 import 'package:treinadorpro/core/widgets/text_field_container.dart';
 import 'package:treinadorpro/features/login/presentation/widgets/rounded_input_field.dart';
 import 'package:treinadorpro/features/login/presentation/widgets/rounded_password_field.dart';
+import 'package:treinadorpro/features/login/presentation/widgets/social_button_row.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -25,6 +26,7 @@ class Body extends StatelessWidget {
           RoundedInputField(hintText: "Your Email", onChanged: (value) {}),
           RoundedPasswordField(onChanged: (value){}),
           RoundedButton(text: "LOGIN", onPressed: (){}, color: kPrimaryColor,),
+          SocialButtonRow(),
         ],
       ),
     );

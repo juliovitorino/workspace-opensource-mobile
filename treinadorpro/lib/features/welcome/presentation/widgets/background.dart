@@ -12,6 +12,7 @@ class Background extends StatelessWidget {
     return Container(
       height: size.height,
       width: double.infinity,
+      alignment: Alignment.center,
       child: Stack(
         children: [
           // Positioned( aqui vai entrar a forma que vai colada no canto superior esquerdo
