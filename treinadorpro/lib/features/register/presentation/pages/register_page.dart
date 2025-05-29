@@ -9,6 +9,7 @@ class RegisterPage extends StatelessWidget {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _birthdayController = TextEditingController();
 
   RegisterPage({super.key});
 
@@ -39,7 +40,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _buildInputFormFieldBirthday() {
     return TextFormField(
-      controller: _passwordController,
+      controller: _birthdayController,
       decoration: InputDecoration(labelText: 'Data de nascimento'),
     );
   }
