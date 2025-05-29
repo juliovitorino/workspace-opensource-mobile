@@ -35,7 +35,7 @@ class Body extends StatelessWidget {
               );
             },
           ),
-          RoundedButton(text: "SIGN UP", onPressed: () {}),
+          RoundedButton(text: AppLocalizations.of(context)!.signup, onPressed: () {}),
           SizedBox(height: size.height * 0.03),
           Text(AppLocalizations.of(context)!.languages),
           LanguageDropdownButton(),

@@ -25,4 +25,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get esLanguage => 'Espanhol';
+
+  @override
+  String get signup => 'Registrar-se';
 }

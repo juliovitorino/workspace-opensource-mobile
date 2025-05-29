@@ -135,6 +135,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spanish'**
   String get esLanguage;
+
+  /// No description provided for @signup.
+  ///
+  /// In en, this message translates to:
+  /// **'SIGN UP'**
+  String get signup;
 }
 
 class _AppLocalizationsDelegate

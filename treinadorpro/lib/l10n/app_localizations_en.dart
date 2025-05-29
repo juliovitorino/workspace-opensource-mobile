@@ -25,4 +25,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get esLanguage => 'Spanish';
+
+  @override
+  String get signup => 'SIGN UP';
 }
