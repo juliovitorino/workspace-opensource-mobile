@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
+import 'package:treinadorpro/features/register/presentation/pages/register_page.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/background.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/language_dropdown_button.dart';
@@ -35,7 +36,19 @@ class Body extends StatelessWidget {
               );
             },
           ),
-          RoundedButton(text: AppLocalizations.of(context)!.signup, onPressed: () {}),
+          RoundedButton(
+            text: AppLocalizations.of(context)!.signup,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return RegisterPage();
+                  },
+                ),
+              );
+            },
+          ),
           SizedBox(height: size.height * 0.03),
           Text(AppLocalizations.of(context)!.languages),
           LanguageDropdownButton(),
