@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:treinadorpro/l10n/app_localizations.dart';
-import '../../../../main.dart';
+import 'package:treinadorpro/main.dart';
 
 class LanguageDropdownButton extends StatelessWidget {
   const LanguageDropdownButton({super.key});
