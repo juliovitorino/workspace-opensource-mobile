@@ -1,0 +1,9 @@
+{
+  "@@locale": "es",
+  "welcome": "Bienvenido a ",
+  "login": "INICIAR SESÍON",
+  "languages": "Idiomas",
+  "ptLanguage": "Portugués",
+  "enLanguage": "Inglés",
+  "esLanguage": "Español"
+}

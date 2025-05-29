@@ -1,0 +1,9 @@
+{
+  "@@locale": "en",
+  "welcome": "Welcome to ",
+  "login": "LOGIN",
+  "languages": "Languages",
+  "ptLanguage": "Portuguese",
+  "enLanguage": "English",
+  "esLanguage": "Spanish"
+}
