@@ -6,8 +6,12 @@ import 'package:treinadorpro/core/widgets/rounded_button.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/language_dropdown_button.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
+import '../../../../config/app_config.dart';
+
 class Body extends StatelessWidget {
-  const Body({super.key});
+  final AppConfig config;
+
+  const Body({super.key, required this.config});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            AppLocalizations.of(context)!.welcome + " TREINADOR PRO",
+            AppLocalizations.of(context)!.welcome + config.appName,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: size.height * 0.03),
@@ -52,6 +56,7 @@ class Body extends StatelessWidget {
           SizedBox(height: size.height * 0.03),
           Text(AppLocalizations.of(context)!.languages),
           LanguageDropdownButton(),
+          Text('Versão ${config.appMinorVersion}')
         ],
       ),
     );

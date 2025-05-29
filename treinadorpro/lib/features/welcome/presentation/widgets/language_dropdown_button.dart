@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:treinadorpro/l10n/app_localizations.dart';
-import 'package:treinadorpro/main.dart';
+import 'package:treinadorpro/treinador_pro_app.dart';
 
 class LanguageDropdownButton extends StatelessWidget {
   const LanguageDropdownButton({super.key});
@@ -12,7 +12,7 @@ class LanguageDropdownButton extends StatelessWidget {
       value: Localizations.localeOf(context),
       onChanged: (Locale? newLocale) {
         if (newLocale != null) {
-          MyApp.setLocale(context, newLocale);
+          TreinadorProApp.setLocale(context, newLocale);
         }
       },
       items: [
