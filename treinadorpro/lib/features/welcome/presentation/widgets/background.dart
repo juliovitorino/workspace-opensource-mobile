@@ -11,20 +11,22 @@ class Background extends StatelessWidget {
 
     return Container(
       height: size.height,
-      width: double.infinity,
+      width: size.width,
       alignment: Alignment.center,
       child: Stack(
         children: [
-          // Positioned( aqui vai entrar a forma que vai colada no canto superior esquerdo
-          //   top: 0,
-          //   left: 0,
-          //   child: Image.asset("assets/images/exercises.png", ),
-          // ),
-          // Positioned( aqui vai entrar a forma que vai colada no canto inferior esquerdo
-          //   bottom: 0,
-          //   left: 0,
-          //   child: Image.asset("assets/images/exercises.png", ),
-          // ),
+          Positioned(
+            top: -20,
+            left: -40,
+            width: size.width * 0.5,
+            child: Image.asset("assets/icons/form01.png", ),
+          ),
+          Positioned(
+            bottom: -50,
+            right: -45,
+            width: size.width * 0.6,
+            child: Image.asset("assets/icons/form01.png", ),
+          ),
           child,
         ],
       ),
