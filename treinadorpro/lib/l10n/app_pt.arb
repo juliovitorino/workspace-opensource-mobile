@@ -1,0 +1,11 @@
+{
+  "@@locale": "pt",
+  "welcome": "Bem-vindo ao ",
+  "login": "ENTRAR",
+  "languages": "Idiomas",
+  "ptLanguage": "Português",
+  "enLanguage": "Inglês",
+  "esLanguage": "Espanhol",
+  "signup": "Registrar-se"
+
+}
