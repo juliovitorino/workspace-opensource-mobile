@@ -17,7 +17,7 @@ class RegisterState {
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterState());
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> register(String name, String email, String password, String apiKey) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     // se tiver mais alguma regra de negócio de camada de visão pode colocar aqui

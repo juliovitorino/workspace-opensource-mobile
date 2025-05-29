@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
 
 import '../blocs/register_state.dart';
 
 class RegisterPage extends StatelessWidget {
+
+  final AppConfig config;
+
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _birthdayController = TextEditingController();
 
-  RegisterPage({super.key});
+  RegisterPage({super.key, required this.config});
 
   Widget _buildInputFormFieldName() {
     return TextFormField(
@@ -54,6 +58,7 @@ class RegisterPage extends StatelessWidget {
             _nameController.text,
             _emailController.text,
             _passwordController.text,
+            config.apiKey
           );
         }
       },
