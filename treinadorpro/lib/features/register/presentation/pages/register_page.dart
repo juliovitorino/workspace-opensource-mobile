@@ -13,9 +13,21 @@ class RegisterPage extends StatelessWidget {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
 
   RegisterPage({super.key, required this.config});
+
+  String? passwordChecker(String pwd1, String pwd2) {
+    if( pwd1 != pwd2) {
+      return "As senhas são diferentes";
+    }
+    if(pwd2.length < 6 || pwd1.length < 6) {
+      return "Senhas precisam pelo menos ter 6 caracteres";
+    }
+    return null;
+
+  }
 
   Widget _buildInputFormFieldName() {
     return TextFormField(
@@ -35,17 +47,27 @@ class RegisterPage extends StatelessWidget {
 
   Widget _buildInputFormFieldPassword() {
     return TextFormField(
+      obscureText: true,
       controller: _passwordController,
-      decoration: InputDecoration(labelText: 'Senha'),
+      decoration: InputDecoration(labelText: 'Senha', suffixIcon: Icon(Icons.visibility)),
       validator: (v) =>
           v!.length < 6 ? 'A senha deve ter pelo menos 6 caracteres' : null,
+    );
+  }
+
+  Widget _buildInputFormFieldPasswordCheck() {
+    return TextFormField(
+      obscureText: true,
+      controller: _passwordCheckController,
+      decoration: InputDecoration(labelText: 'Contra-Senha', suffixIcon: Icon(Icons.visibility)),
+      validator: (v) => passwordChecker(v!, _passwordController.text)
     );
   }
 
   Widget _buildInputFormFieldBirthday() {
     return TextFormField(
       controller: _birthdayController,
-      decoration: InputDecoration(labelText: 'Data de nascimento'),
+      decoration: InputDecoration(labelText: 'Data de nascimento (YYYY-MM-DD)'),
     );
   }
 
@@ -75,6 +97,7 @@ class RegisterPage extends StatelessWidget {
             _buildInputFormFieldName(),
             _buildInputFormFieldEmail(),
             _buildInputFormFieldPassword(),
+            _buildInputFormFieldPasswordCheck(),
             _buildInputFormFieldBirthday(),
 
             const SizedBox(height: 20),
