@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/constants.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
@@ -6,14 +7,14 @@ import 'config/app_config.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
 
 class TreinadorProApp extends StatefulWidget {
-  final AppConfig config;
+  final config = getIt<AppConfig>();
 
   static void setLocale(BuildContext context, Locale newLocale) {
     final _TreinadorProAppState? state = context.findAncestorStateOfType<_TreinadorProAppState>();
     state?.setLocale(newLocale);
   }
 
-  const TreinadorProApp({super.key, required this.config});
+  TreinadorProApp({super.key});
 
   @override
   State<TreinadorProApp> createState() => _TreinadorProAppState();
@@ -38,7 +39,7 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
       theme: ThemeData(primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white
       ),
-      home: WelcomeScreen(config: widget.config,),
+      home: WelcomeScreen(),
     );  }
 }
 

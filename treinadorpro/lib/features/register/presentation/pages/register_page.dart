@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treinadorpro/config/app_config.dart';
+import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
 
 import '../blocs/register_state.dart';
 
 class RegisterPage extends StatelessWidget {
 
-  final AppConfig config;
+  final config = getIt<AppConfig>();
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -16,7 +17,7 @@ class RegisterPage extends StatelessWidget {
   final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
 
-  RegisterPage({super.key, required this.config});
+  RegisterPage({super.key});
 
   String? passwordChecker(String pwd1, String pwd2) {
     if( pwd1 != pwd2) {
