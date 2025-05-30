@@ -125,6 +125,19 @@ class RegisterPage extends StatelessWidget {
     }
   }
 
+  Widget _buildForm(BuildContext context, RegisterState state){
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height,
+        ),
+        child: IntrinsicHeight(
+          child: _buildFormArea(state, context),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -133,7 +146,7 @@ class RegisterPage extends StatelessWidget {
         appBar: AppBar(title: const Text('Registrar Novo Usuário')),
         body: BlocConsumer<RegisterCubit, RegisterState>(
           listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildFormArea(state, context)
+          builder: (context, state) => _buildForm(context, state)
         ),
       ),
     );
