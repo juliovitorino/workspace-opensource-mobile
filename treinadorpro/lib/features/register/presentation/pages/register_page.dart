@@ -93,23 +93,20 @@ class RegisterPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildInputFormFieldName(),
-              _buildInputFormFieldEmail(),
-              _buildInputFormFieldPassword(),
-              _buildInputFormFieldPasswordCheck(),
-              _buildInputFormFieldBirthday(),
+        child: Column(
+          children: [
+            _buildInputFormFieldName(),
+            _buildInputFormFieldEmail(),
+            _buildInputFormFieldPassword(),
+            _buildInputFormFieldPasswordCheck(),
+            _buildInputFormFieldBirthday(),
 
-              const SizedBox(height: 20),
-              state.isLoading
-                  ? const CircularProgressIndicator()
-                  : _buildRegisterButton(context)
-            ],
-          ),
-        )
+            const SizedBox(height: 20),
+            state.isLoading
+                ? const CircularProgressIndicator()
+                : _buildRegisterButton(context)
+          ],
+        ),
       ),
     );
   }
@@ -128,6 +125,19 @@ class RegisterPage extends StatelessWidget {
     }
   }
 
+  Widget _buildForm(BuildContext context, RegisterState state){
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height,
+        ),
+        child: IntrinsicHeight(
+          child: _buildFormArea(state, context),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -136,7 +146,7 @@ class RegisterPage extends StatelessWidget {
         appBar: AppBar(title: const Text('Registrar Novo Usuário')),
         body: BlocConsumer<RegisterCubit, RegisterState>(
           listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildFormArea(state, context)
+          builder: (context, state) => _buildForm(context, state)
         ),
       ),
     );
