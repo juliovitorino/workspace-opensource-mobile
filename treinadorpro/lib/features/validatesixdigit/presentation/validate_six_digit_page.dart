@@ -28,7 +28,7 @@ class ValidateSixDigitPage extends StatelessWidget {
         context: context,
         builder: (_) =>
             AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
-              content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
+              content: Text('Código foi validado com sucesso'),),
       );
 
       Navigator.popAndPushNamed(context, AppRoutes.login);
