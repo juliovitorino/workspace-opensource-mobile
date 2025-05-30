@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/constants.dart';
+import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import 'config/app_config.dart';
+import 'core/constants/app_routes.dart';
+import 'features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
 
 class TreinadorProApp extends StatefulWidget {
@@ -40,6 +43,10 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
           scaffoldBackgroundColor: Colors.white
       ),
       home: WelcomeScreen(),
+      routes: {
+        AppRoutes.validateCode: (context) => ValidateSixDigitPage(),
+        AppRoutes.login: (context) => LoginPage(),
+      },
     );  }
 }
 
