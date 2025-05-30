@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
+import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../blocs/register_state.dart';
 
@@ -19,62 +20,62 @@ class RegisterPage extends StatelessWidget {
 
   RegisterPage({super.key});
 
-  String? passwordChecker(String pwd1, String pwd2) {
+  String? passwordChecker(BuildContext context, String pwd1, String pwd2) {
     if( pwd1 != pwd2) {
       return "As senhas são diferentes";
     }
     if(pwd2.length < 6 || pwd1.length < 6) {
-      return "Senhas precisam pelo menos ter 6 caracteres";
+      return AppLocalizations.of(context)?.formRegisterPasswordBlank;
     }
     return null;
 
   }
 
-  Widget _buildInputFormFieldName() {
+  Widget _buildInputFormFieldName(BuildContext context) {
     return TextFormField(
       controller: _nameController,
-      decoration: InputDecoration(labelText: 'Nome'),
-      validator: (v) => v!.isEmpty ? 'Informe seu nome' : null,
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterName),
+      validator: (v) => v!.isEmpty ? AppLocalizations.of(context)?.formRegisterNameBlank : null,
     );
   }
 
-  Widget _buildInputFormFieldEmail() {
+  Widget _buildInputFormFieldEmail(BuildContext context) {
     return TextFormField(
       controller: _emailController,
-      decoration: InputDecoration(labelText: 'Email'),
-      validator: (v) => v!.isEmpty ? 'Email um email válido' : null,
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterEmail),
+      validator: (v) => v!.isEmpty ? AppLocalizations.of(context)?.formRegisterEmailBlank : null,
     );
   }
 
-  Widget _buildInputFormFieldPassword() {
+  Widget _buildInputFormFieldPassword(BuildContext context) {
     return TextFormField(
       obscureText: true,
       controller: _passwordController,
-      decoration: InputDecoration(labelText: 'Senha', suffixIcon: Icon(Icons.visibility)),
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterPassword, suffixIcon: Icon(Icons.visibility)),
       validator: (v) =>
-          v!.length < 6 ? 'A senha deve ter pelo menos 6 caracteres' : null,
+          v!.length < 6 ? AppLocalizations.of(context)?.formRegisterPasswordBlank : null,
     );
   }
 
-  Widget _buildInputFormFieldPasswordCheck() {
+  Widget _buildInputFormFieldPasswordCheck(BuildContext context) {
     return TextFormField(
       obscureText: true,
       controller: _passwordCheckController,
-      decoration: InputDecoration(labelText: 'Contra-Senha', suffixIcon: Icon(Icons.visibility)),
-      validator: (v) => passwordChecker(v!, _passwordController.text)
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterPasswordChecker, suffixIcon: Icon(Icons.visibility)),
+      validator: (v) => passwordChecker(context, v!, _passwordController.text)
     );
   }
 
-  Widget _buildInputFormFieldBirthday() {
+  Widget _buildInputFormFieldBirthday(BuildContext context) {
     return TextFormField(
       controller: _birthdayController,
-      decoration: InputDecoration(labelText: 'Data de nascimento (YYYY-MM-DD)'),
+      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterBirthday),
     );
   }
 
   Widget _buildRegisterButton(BuildContext context) {
     return RoundedButton(
-      text: 'REGISTRAR',
+      text: AppLocalizations.of(context)!.formRegisterButton,
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           context.read<RegisterCubit>().register(
@@ -95,11 +96,11 @@ class RegisterPage extends StatelessWidget {
         key: _formKey,
         child: Column(
           children: [
-            _buildInputFormFieldName(),
-            _buildInputFormFieldEmail(),
-            _buildInputFormFieldPassword(),
-            _buildInputFormFieldPasswordCheck(),
-            _buildInputFormFieldBirthday(),
+            _buildInputFormFieldName(context),
+            _buildInputFormFieldEmail(context),
+            _buildInputFormFieldPassword(context),
+            _buildInputFormFieldPasswordCheck(context),
+            _buildInputFormFieldBirthday(context),
 
             const SizedBox(height: 20),
             state.isLoading
@@ -120,7 +121,8 @@ class RegisterPage extends StatelessWidget {
       showDialog(
         context: context,
         builder: (_) =>
-        const AlertDialog(title: Text("Registrado com sucesso")),
+        AlertDialog(title: Text(AppLocalizations.of(context)!.formRegisterButton),
+        content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
       );
     }
   }
@@ -143,7 +145,7 @@ class RegisterPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => RegisterCubit(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Registrar Novo Usuário')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle)),
         body: BlocConsumer<RegisterCubit, RegisterState>(
           listener: (context, state) => _processFormListener(context, state),
           builder: (context, state) => _buildForm(context, state)

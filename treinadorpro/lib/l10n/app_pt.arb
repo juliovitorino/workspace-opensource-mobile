@@ -6,6 +6,20 @@
   "ptLanguage": "Português",
   "enLanguage": "Inglês",
   "esLanguage": "Espanhol",
-  "signup": "Registrar-se"
+  "signup": "Registrar-se",
+  "sucessTitle": "Sucesso",
+  "formRegisterTitle" : "Registrar Novo Usuário",
+  "formRegisterName" : "Nome",
+  "formRegisterNameBlank" : "Nome é obrigatório",
+  "formRegisterEmail" : "Email",
+  "formRegisterEmailBlank" : "Email é obrigatório",
+  "formRegisterPassword" : "Senha",
+  "formRegisterPasswordBlank" : "A senha deve ter pelo menos 6 caracteres",
+  "formRegisterPasswordChecker" : "Contra-senha",
+  "formRegisterPasswordCheckerBlank" : "A senha deve ter pelo menos 6 caracteres",
+  "formRegisterBirthday" : "Data de Nascimento (YYYY-MM-DD)",
+  "formRegisterBirthdayBlank" : "Data inválida",
+  "formRegisterButton" : "REGISTRAR",
+  "formRegisterSuccessMessage" : "Registrado com sucesso"
 
 }

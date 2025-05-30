@@ -6,5 +6,22 @@
   "ptLanguage": "Portugués",
   "enLanguage": "Inglés",
   "esLanguage": "Español",
-  "signup": "Registrarse"
+  "signup": "Registrarse",
+  "sucessTitle": "Sucesso",
+  "formRegisterTitle" : "Registrar Nuevo Usuario",
+  "formRegisterName" : "Nombre",
+  "formRegisterNameBlank" : "El nombre es obligatorio",
+  "formRegisterEmail" : "Correo electrónico",
+  "formRegisterEmailBlank" : "El correo electrónico es obligatorio",
+  "formRegisterPassword" : "Contraseña",
+  "formRegisterPasswordBlank" : "La contraseña debe tener al menos 6 caracteres",
+  "formRegisterPasswordChecker" : "Confirmar contraseña",
+  "formRegisterPasswordCheckerBlank" : "La contraseña debe tener al menos 6 caracteres",
+  "formRegisterBirthday" : "Fecha de Nacimiento (YYYY-MM-DD)",
+  "formRegisterBirthdayBlank" : "Fecha inválida",
+  "formRegisterButton" : "REGISTRAR",
+  "formRegisterSuccessMessage" : "Registrado exitosamente"
+
+
+
 }

@@ -1,0 +1,3 @@
+After you've changed the *.arb files run command below to generate app_localizations files.
+
+$ flutter gen-l10n
