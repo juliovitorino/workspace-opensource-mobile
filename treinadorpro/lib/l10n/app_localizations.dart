@@ -141,6 +141,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SIGN UP'**
   String get signup;
+
+  /// No description provided for @sucessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sucesso'**
+  String get sucessTitle;
+
+  /// No description provided for @formRegisterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Register New User'**
+  String get formRegisterTitle;
+
+  /// No description provided for @formRegisterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get formRegisterName;
+
+  /// No description provided for @formRegisterNameBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get formRegisterNameBlank;
+
+  /// No description provided for @formRegisterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get formRegisterEmail;
+
+  /// No description provided for @formRegisterEmailBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get formRegisterEmailBlank;
+
+  /// No description provided for @formRegisterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get formRegisterPassword;
+
+  /// No description provided for @formRegisterPasswordBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'The password should be 6 character at least'**
+  String get formRegisterPasswordBlank;
+
+  /// No description provided for @formRegisterPasswordChecker.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Re-type'**
+  String get formRegisterPasswordChecker;
+
+  /// No description provided for @formRegisterPasswordCheckerBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'The password should be 6 character at least'**
+  String get formRegisterPasswordCheckerBlank;
+
+  /// No description provided for @formRegisterBirthday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday (YYYY-MM-DD)'**
+  String get formRegisterBirthday;
+
+  /// No description provided for @formRegisterBirthdayBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date'**
+  String get formRegisterBirthdayBlank;
+
+  /// No description provided for @formRegisterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'REGISTER'**
+  String get formRegisterButton;
+
+  /// No description provided for @formRegisterSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Register successfully'**
+  String get formRegisterSuccessMessage;
 }
 
 class _AppLocalizationsDelegate

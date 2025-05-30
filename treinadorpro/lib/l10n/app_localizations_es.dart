@@ -28,4 +28,48 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get signup => 'Registrarse';
+
+  @override
+  String get sucessTitle => 'Sucesso';
+
+  @override
+  String get formRegisterTitle => 'Registrar Nuevo Usuario';
+
+  @override
+  String get formRegisterName => 'Nombre';
+
+  @override
+  String get formRegisterNameBlank => 'El nombre es obligatorio';
+
+  @override
+  String get formRegisterEmail => 'Correo electrónico';
+
+  @override
+  String get formRegisterEmailBlank => 'El correo electrónico es obligatorio';
+
+  @override
+  String get formRegisterPassword => 'Contraseña';
+
+  @override
+  String get formRegisterPasswordBlank =>
+      'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get formRegisterPasswordChecker => 'Confirmar contraseña';
+
+  @override
+  String get formRegisterPasswordCheckerBlank =>
+      'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get formRegisterBirthday => 'Fecha de Nacimiento (YYYY-MM-DD)';
+
+  @override
+  String get formRegisterBirthdayBlank => 'Fecha inválida';
+
+  @override
+  String get formRegisterButton => 'REGISTRAR';
+
+  @override
+  String get formRegisterSuccessMessage => 'Registrado exitosamente';
 }
