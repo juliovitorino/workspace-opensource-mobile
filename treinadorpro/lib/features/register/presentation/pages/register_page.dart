@@ -121,7 +121,7 @@ class RegisterPage extends StatelessWidget {
       showDialog(
         context: context,
         builder: (_) =>
-        AlertDialog(title: Text(AppLocalizations.of(context)!.formRegisterButton),
+        AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
         content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
       );
     }
