@@ -1,21 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterState {
-  final bool isLoading;
-  final String? errorMessage;
+import '../../../../core/states/handler_state.dart';
 
-  RegisterState({this.isLoading = false, this.errorMessage});
-
-  RegisterState copyWith({bool? isLoading, String? errorMessage}) {
-    return RegisterState(
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage,
-    );
-  }
-}
-
-class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit() : super(RegisterState());
+class RegisterCubit extends Cubit<HandlerState> {
+  RegisterCubit() : super(HandlerState());
 
   Future<void> register(String name, String email, String password, String apiKey) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));

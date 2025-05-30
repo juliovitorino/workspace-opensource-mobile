@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/config/service_locator.dart';
+import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
+import 'package:treinadorpro/features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
+import '../../../../core/states/handler_state.dart';
 import '../blocs/register_state.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -89,7 +92,7 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFormArea(RegisterState state, BuildContext context){
+  Widget _buildFormArea(HandlerState state, BuildContext context){
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -112,22 +115,25 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  void _processFormListener(BuildContext context, RegisterState state) {
+  Future<void> _processFormListener(BuildContext context, HandlerState state) async {
     if (state.errorMessage != null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
     } else if (!state.isLoading && state.errorMessage == null) {
-      showDialog(
+      await showDialog(
         context: context,
         builder: (_) =>
         AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
         content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
       );
+
+      Navigator.popAndPushNamed(context, AppRoutes.validateCode);
+
     }
   }
 
-  Widget _buildForm(BuildContext context, RegisterState state){
+  Widget _buildForm(BuildContext context, HandlerState state){
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -146,7 +152,7 @@ class RegisterPage extends StatelessWidget {
       create: (_) => RegisterCubit(),
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle)),
-        body: BlocConsumer<RegisterCubit, RegisterState>(
+        body: BlocConsumer<RegisterCubit, HandlerState>(
           listener: (context, state) => _processFormListener(context, state),
           builder: (context, state) => _buildForm(context, state)
         ),
