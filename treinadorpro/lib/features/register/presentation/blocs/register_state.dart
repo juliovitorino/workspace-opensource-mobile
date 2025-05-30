@@ -26,7 +26,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     if (email.contains('@')) {
       emit(state.copyWith(isLoading: false)); // Sucesso
     } else {
-      emit(state.copyWith(isLoading: false, errorMessage: 'Email inválido j'));
+      emit(state.copyWith(isLoading: false, errorMessage: 'Email inválido'));
     }
   }
 }

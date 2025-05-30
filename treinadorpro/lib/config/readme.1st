@@ -1,0 +1,3 @@
+After create service_locator dart file, run the command below to create service_locator.config.dart automatically
+
+# flutter pub run build_runner build

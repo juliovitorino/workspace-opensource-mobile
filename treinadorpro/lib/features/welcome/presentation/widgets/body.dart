@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/register/presentation/pages/register_page.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/background.dart';
@@ -9,9 +10,9 @@ import 'package:treinadorpro/l10n/app_localizations.dart';
 import '../../../../config/app_config.dart';
 
 class Body extends StatelessWidget {
-  final AppConfig config;
+  final config = getIt<AppConfig>();
 
-  const Body({super.key, required this.config});
+  Body({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class Body extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return RegisterPage(config: config,);
+                    return RegisterPage();
                   },
                 ),
               );
@@ -56,7 +57,7 @@ class Body extends StatelessWidget {
           SizedBox(height: size.height * 0.03),
           Text(AppLocalizations.of(context)!.languages),
           LanguageDropdownButton(),
-          Text('Versão ${config.appMinorVersion}')
+          Text('Versão ${config.appMinorVersion} - ${config.enviroment}')
         ],
       ),
     );

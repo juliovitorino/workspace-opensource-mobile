@@ -1,5 +1,7 @@
 import 'app_config.dart';
+import 'package:injectable/injectable.dart';
 
+@Singleton()
 class DevConfig implements AppConfig {
   @override
   String get apiBackendUrl => 'https://dev.api.exemplo.com';
@@ -15,4 +17,7 @@ class DevConfig implements AppConfig {
 
   @override
   String get appMinorVersion => '1.0.0';
+
+  @override
+  String get enviroment => 'Development';
 }
