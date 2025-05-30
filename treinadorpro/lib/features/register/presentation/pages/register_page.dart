@@ -93,20 +93,23 @@ class RegisterPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            _buildInputFormFieldName(),
-            _buildInputFormFieldEmail(),
-            _buildInputFormFieldPassword(),
-            _buildInputFormFieldPasswordCheck(),
-            _buildInputFormFieldBirthday(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildInputFormFieldName(),
+              _buildInputFormFieldEmail(),
+              _buildInputFormFieldPassword(),
+              _buildInputFormFieldPasswordCheck(),
+              _buildInputFormFieldBirthday(),
 
-            const SizedBox(height: 20),
-            state.isLoading
-                ? const CircularProgressIndicator()
-                : _buildRegisterButton(context)
-          ],
-        ),
+              const SizedBox(height: 20),
+              state.isLoading
+                  ? const CircularProgressIndicator()
+                  : _buildRegisterButton(context)
+            ],
+          ),
+        )
       ),
     );
   }
