@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/constants.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
+import 'package:treinadorpro/features/splash/presentation/pages/splash_page.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import 'config/app_config.dart';
@@ -42,10 +43,11 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
       theme: ThemeData(primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white
       ),
-      home: WelcomeScreen(),
+      home: SplashPage(),
       routes: {
         AppRoutes.validateCode: (context) => ValidateSixDigitPage(),
         AppRoutes.login: (context) => LoginPage(),
+        AppRoutes.welcome: (context) => WelcomeScreen()
       },
     );  }
 }

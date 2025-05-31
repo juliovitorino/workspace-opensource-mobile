@@ -4,7 +4,6 @@ import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/widgets/rounded_button.dart';
-import 'package:treinadorpro/features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../core/states/handler_state.dart';
