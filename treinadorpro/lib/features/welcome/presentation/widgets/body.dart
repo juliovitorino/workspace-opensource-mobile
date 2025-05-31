@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/config/service_locator.dart';
+import 'package:treinadorpro/core/widgets/brand_image.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/register/presentation/pages/register_page.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/background.dart';
@@ -26,7 +27,7 @@ class Body extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: size.height * 0.03),
-          Image.asset("assets/images/exercises.png", height: size.height * 0.4),
+          BrandImage(imagePath: "assets/logos/logo.jpg", height: 246, width: 256),
           SizedBox(height: size.height * 0.03),
           RoundedButton(
             text: AppLocalizations.of(context)!.login,

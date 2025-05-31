@@ -15,18 +15,18 @@ class Background extends StatelessWidget {
       alignment: Alignment.center,
       child: Stack(
         children: [
-          Positioned(
-            top: -20,
-            left: -40,
-            width: size.width * 0.5,
-            child: Image.asset("assets/icons/form01.png", ),
-          ),
-          Positioned(
-            bottom: -50,
-            right: -45,
-            width: size.width * 0.6,
-            child: Image.asset("assets/icons/form01.png", ),
-          ),
+          // Positioned(
+          //   top: -20,
+          //   left: -40,
+          //   width: size.width * 0.5,
+          //   child: Image.asset("assets/icons/form01.png", ),
+          // ),
+          // Positioned(
+          //   bottom: -50,
+          //   right: -45,
+          //   width: size.width * 0.6,
+          //   child: Image.asset("assets/icons/form01.png", ),
+          // ),
           child,
         ],
       ),

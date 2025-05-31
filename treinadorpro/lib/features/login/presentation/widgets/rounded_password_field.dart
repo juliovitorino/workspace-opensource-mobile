@@ -7,13 +7,15 @@ import '../../../../core/widgets/text_field_container.dart';
 class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final Color color;
-  const RoundedPasswordField({super.key, required this.onChanged, this.color = kPrimaryLightColor});
+  final TextEditingController? controller;
+  const RoundedPasswordField({super.key, required this.onChanged, this.color = kPrimaryLightColor, this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       color: color,
       child: TextField(
+        controller: controller,
         obscureText: true,
         onChanged: onChanged,
         decoration: InputDecoration(

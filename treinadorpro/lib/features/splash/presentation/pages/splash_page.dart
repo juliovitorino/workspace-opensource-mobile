@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/widgets/brand_image.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../config/service_locator.dart';
@@ -36,29 +37,50 @@ class _SplashPageState extends State<SplashPage> {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/splash/splash-05.jpg',
+            'assets/images/splash/splash-08.jpg',
             width: size.width,
             height: size.height,
             fit: BoxFit.cover,
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                Container(
-                  width: size.width,
-                  color: Colors.black38,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextSplash(text: widget.config.appName,),
-                      TextSplash(text: 'Carregando configurações'),
-                      TextSplash(text: 'Versão ${widget.config.appMinorVersion}'),
-                    ],
+          Positioned(
+            bottom: 0,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  Container(
+                    width: size.width,
+                    color: Colors.black38,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextSplash(text: widget.config.appName),
+                        TextSplash(text: 'Carregando configurações'),
+                        TextSplash(
+                          text: 'Versão ${widget.config.appMinorVersion}',
+                        ),
+                      ],
+                    ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.only(top: 5.0),
+                width: size.width,
+                // color: Colors.black38,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BrandImage(imagePath: 'assets/logos/logo.jpg')
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],
