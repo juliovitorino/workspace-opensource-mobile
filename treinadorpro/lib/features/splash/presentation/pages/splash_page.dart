@@ -3,6 +3,7 @@ import 'package:treinadorpro/core/constants/app_routes.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../config/service_locator.dart';
+import '../widgets/text_splash.dart';
 
 class SplashPage extends StatefulWidget {
   final config = getIt<AppConfig>();
@@ -51,27 +52,9 @@ class _SplashPageState extends State<SplashPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.config.appName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Carregando configurações',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Versão ${widget.config.appMinorVersion}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      TextSplash(text: widget.config.appName,),
+                      TextSplash(text: 'Carregando configurações'),
+                      TextSplash(text: 'Versão ${widget.config.appMinorVersion}'),
                     ],
                   ),
                 ),
