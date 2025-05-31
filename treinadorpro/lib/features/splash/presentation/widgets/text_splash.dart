@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TextSplashPage extends StatelessWidget {
+class TextSplash extends StatelessWidget {
   final String text;
 
-  const TextSplashPage({super.key, required this.text});
+  const TextSplash({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
