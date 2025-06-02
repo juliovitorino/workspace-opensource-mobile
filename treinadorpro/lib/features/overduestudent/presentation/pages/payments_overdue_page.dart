@@ -69,7 +69,7 @@ class PaymentsOverduePage extends StatelessWidget {
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   SizedBox(height: 12),
-                  Row(
+                  Wrap(
                     children: [
                       ElevatedButton.icon(
                         onPressed: () {},
@@ -79,7 +79,7 @@ class PaymentsOverduePage extends StatelessWidget {
                           backgroundColor: Colors.green,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8, height: 40,),
                       OutlinedButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.check_circle_outline),
