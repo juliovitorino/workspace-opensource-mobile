@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
+import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
 
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
@@ -63,6 +64,12 @@ class DashboardPage extends StatelessWidget {
               icon: Icons.bar_chart,
               title: 'Faturamento Maio',
               trailing: 'R\$ 4.200,00',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
+                );
+              },
             ),
             SizedBox(height: 24),
             Wrap(
