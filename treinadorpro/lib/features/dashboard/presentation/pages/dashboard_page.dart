@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
 
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +52,12 @@ class DashboardPage extends StatelessWidget {
               icon: Icons.group,
               title: 'Alunos ativos',
               trailing: '18',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ActiveStudentsPage()),
+                );
+              },
             ),
             StatusDashboardItem(
               icon: Icons.bar_chart,
@@ -81,7 +87,6 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
             FreeAvailableTime(),
-
           ],
         ),
       ),
