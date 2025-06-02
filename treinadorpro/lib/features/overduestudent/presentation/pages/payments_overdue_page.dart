@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/features/registerpayment/presentation/pages/register_payment_page.dart';
 
 class PaymentsOverduePage extends StatelessWidget {
   final List<OverdueStudent> overdueStudents = [
@@ -79,9 +80,16 @@ class PaymentsOverduePage extends StatelessWidget {
                           backgroundColor: Colors.green,
                         ),
                       ),
-                      SizedBox(width: 8, height: 40,),
+                      SizedBox(width: 8, height: 40),
                       OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => RegisterPaymentPage(),
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.check_circle_outline),
                         label: Text('Registrar Pagamento'),
                       ),

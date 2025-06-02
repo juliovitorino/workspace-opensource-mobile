@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../registerpayment/presentation/pages/register_payment_page.dart';
+
 class ActiveStudentsPage extends StatelessWidget {
   final List<ActiveStudent> students = [
     ActiveStudent(
@@ -68,7 +70,7 @@ class ActiveStudentsPage extends StatelessWidget {
                   Text('Vencimento: ${student.expiration}'),
                   Text('Frequência: ${student.frequency}'),
                   SizedBox(height: 12),
-                  Row(
+                  Wrap(
                     children: [
                       ElevatedButton.icon(
                         onPressed: () {},
@@ -78,11 +80,24 @@ class ActiveStudentsPage extends StatelessWidget {
                           backgroundColor: Colors.green,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8, height: 40),
                       OutlinedButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.person),
                         label: Text('Ver Perfil'),
+                      ),
+                      SizedBox(width: 8, height: 40),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => RegisterPaymentPage(),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.check_circle_outline),
+                        label: Text('Registrar Pagamento'),
                       ),
                     ],
                   ),
