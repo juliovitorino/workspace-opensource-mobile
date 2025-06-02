@@ -3,6 +3,7 @@ import 'package:treinadorpro/features/activestudents/presentation/pages/active_s
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
+import 'package:treinadorpro/features/todayworkout/presentation/pages/today_workouts_page.dart';
 
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
@@ -31,6 +32,12 @@ class DashboardPage extends StatelessWidget {
               icon: Icons.fitness_center,
               title: 'Treinos de hoje',
               trailing: '3 alunos',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => TodayWorkoutsPage()),
+                );
+              },
             ),
             StatusDashboardItem(
               icon: Icons.attach_money,
@@ -85,12 +92,7 @@ class DashboardPage extends StatelessWidget {
                   onPressed: () {},
                   icon: Icon(Icons.person_add),
                   label: Text('Novo Aluno'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.payment),
-                  label: Text('Registrar Pagamento'),
-                ),
+                )
               ],
             ),
             FreeAvailableTime(),
