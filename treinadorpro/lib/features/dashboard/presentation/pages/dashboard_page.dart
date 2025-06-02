@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/features/dashboard/presentation/widgets/card_list_tile.dart';
+import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
+import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
 
 class DashboardPage extends StatelessWidget {
 
@@ -23,27 +24,28 @@ class DashboardPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('📅 Hoje: Sexta-feira, 31 de Maio'),
             SizedBox(height: 16),
-            CardListTile(
+            StatusDashboardItem(
               icon: Icons.fitness_center,
               title: 'Treinos de hoje',
               trailing: '3 alunos',
             ),
-            CardListTile(
+            StatusDashboardItem(
               icon: Icons.attach_money,
               title: 'Pagamentos em atraso',
               trailing: '2 alunos',
+              color: Colors.redAccent,
             ),
-            CardListTile(
+            StatusDashboardItem(
               icon: Icons.access_time,
               title: 'Último treino de João',
               trailing: '7 dias atrás',
             ),
-            CardListTile(
+            StatusDashboardItem(
               icon: Icons.group,
               title: 'Alunos ativos',
               trailing: '18',
             ),
-            CardListTile(
+            StatusDashboardItem(
               icon: Icons.bar_chart,
               title: 'Faturamento Maio',
               trailing: 'R\$ 4.200,00',
@@ -70,6 +72,7 @@ class DashboardPage extends StatelessWidget {
                 ),
               ],
             ),
+            FreeAvailableTime(),
 
           ],
         ),
