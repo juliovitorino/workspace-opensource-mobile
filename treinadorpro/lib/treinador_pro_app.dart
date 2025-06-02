@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/config/service_locator.dart';
-import 'package:treinadorpro/core/constants/constants.dart';
+import 'package:treinadorpro/core/constants/styles.dart';
 import 'package:treinadorpro/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/splash/presentation/pages/splash_page.dart';
