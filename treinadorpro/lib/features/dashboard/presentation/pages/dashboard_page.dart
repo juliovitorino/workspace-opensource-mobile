@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
 
+import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
+
 class DashboardPage extends StatelessWidget {
 
   @override
@@ -34,6 +36,12 @@ class DashboardPage extends StatelessWidget {
               title: 'Pagamentos em atraso',
               trailing: '2 alunos',
               color: Colors.redAccent,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PaymentsOverduePage()),
+                );
+              },
             ),
             StatusDashboardItem(
               icon: Icons.access_time,

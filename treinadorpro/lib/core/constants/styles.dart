@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Color(0xFF6F35A5);
-const kPrimaryLightColor = Color(0xFFF1E6FF);
+const kPrimaryColor = Color(0xFF357cbd);
+const kPrimaryLightColor = Color(0xFF89f7ff);
 
 const kLabelStyle = TextStyle(
   color: Colors.white,
