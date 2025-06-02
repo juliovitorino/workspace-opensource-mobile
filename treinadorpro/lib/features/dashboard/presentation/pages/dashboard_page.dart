@@ -3,8 +3,11 @@ import 'package:treinadorpro/features/activestudents/presentation/pages/active_s
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
 import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
+import 'package:treinadorpro/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
 import 'package:treinadorpro/features/todayworkout/presentation/pages/today_workouts_page.dart';
+import 'package:treinadorpro/features/trainerprofile/presentation/pages/trainer_profile_page_detail.dart';
+import 'package:treinadorpro/features/trainingpackage/presentation/training_packages_page.dart';
 
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
@@ -15,8 +18,24 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('AppName'),
         actions: [
-          IconButton(icon: Icon(Icons.person), onPressed: () {}),
-          IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => TrainerProfilePageDetail()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => NotificationsPage()),
+              );
+            },
+          ),
         ],
       ),
       body: Padding(
@@ -96,7 +115,12 @@ class DashboardPage extends StatelessWidget {
                   label: Text('Novo Aluno'),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => TrainingPackagesPage()),
+                    );
+                  },
                   icon: Icon(Icons.fitness_center),
                   label: Text('Pacotes de Treino'),
                 ),
