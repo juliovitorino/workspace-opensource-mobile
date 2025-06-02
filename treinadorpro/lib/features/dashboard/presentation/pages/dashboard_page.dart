@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
+import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
 import 'package:treinadorpro/features/todayworkout/presentation/pages/today_workouts_page.dart';
 
@@ -14,6 +15,7 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('AppName'),
         actions: [
+          IconButton(icon: Icon(Icons.person), onPressed: () {}),
           IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
         ],
       ),
@@ -84,15 +86,20 @@ class DashboardPage extends StatelessWidget {
               runSpacing: 10,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.add),
-                  label: Text('Novo Treino'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => NewStudentPage()),
+                    );
+                  },
+                  icon: Icon(Icons.person_add),
+                  label: Text('Novo Aluno'),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.person_add),
-                  label: Text('Novo Aluno'),
-                )
+                  icon: Icon(Icons.fitness_center),
+                  label: Text('Pacotes de Treino'),
+                ),
               ],
             ),
             FreeAvailableTime(),

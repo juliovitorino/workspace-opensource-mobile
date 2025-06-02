@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/features/studentprofile/presentation/pages/student_profile_page.dart';
 
 import '../../../registerpayment/presentation/pages/register_payment_page.dart';
 
@@ -82,7 +83,14 @@ class ActiveStudentsPage extends StatelessWidget {
                       ),
                       SizedBox(width: 8, height: 40),
                       OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => StudentProfilePage(),
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.person),
                         label: Text('Ver Perfil'),
                       ),
