@@ -17,7 +17,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _objectiveController = TextEditingController();
 
   String _gender = 'Masculino';
-  String _planType = 'Mensal';
+  String _planType = 'Plano Mensal Intermediário';
 
   @override
   void initState() {
@@ -52,10 +52,17 @@ class _NewStudentPageState extends State<NewStudentPage> {
               ),
 
               SizedBox(height: 16),
-              _buildSectionTitle('Plano Contratado'),
+              _buildSectionTitle('Pacote Contratado'),
               DropdownButtonFormField<String>(
                 value: _planType,
-                items: ['Mensal', 'Trimestral', 'Online', 'Avulso']
+                items: [
+                  'Plano Mensal Intermediário',
+                  'Emagrecimento Master',
+                  'Plano Trimestral Avançado',
+                  'Plano Light',
+                  'HIIT',
+                  'Jump'
+                ]
                     .map((p) => DropdownMenuItem(value: p, child: Text(p)))
                     .toList(),
                 onChanged: (val) => setState(() => _planType = val!),
