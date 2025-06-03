@@ -1,5 +1,5 @@
 class TrainingPackage {
-  final String description;
+  late final String description;
   final int durationDays;
   final int weeklyFrequency;
   final double price;
@@ -14,6 +14,13 @@ class TrainingPackage {
   });
 
   static List<TrainingPackage> packages = [
+    TrainingPackage(
+      description: 'Plano Hulk',
+      durationDays: 120,
+      weeklyFrequency: 5,
+      price: 399.00,
+      notes: 'Acesso total à academia, suporte online',
+    ),
     TrainingPackage(
       description: 'Plano Mensal Intermediário',
       durationDays: 30,
