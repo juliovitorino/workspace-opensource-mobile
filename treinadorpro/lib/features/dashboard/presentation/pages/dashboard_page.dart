@@ -64,7 +64,7 @@ class DashboardPage extends StatelessWidget {
               icon: Icons.edit_note,
               title: 'Pacotes de Treino',
               trailing: '3 opções',
-              onTap:  () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => TrainingPackagesPage()),
@@ -119,6 +119,11 @@ class DashboardPage extends StatelessWidget {
                   },
                   icon: Icon(Icons.person_add),
                   label: Text('Novo Aluno'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.fitness_center),
+                  label: Text('Montar Treino'),
                 ),
               ],
             ),
