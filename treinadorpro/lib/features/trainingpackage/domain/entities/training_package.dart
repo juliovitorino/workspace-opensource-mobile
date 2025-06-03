@@ -15,11 +15,18 @@ class TrainingPackage {
 
   static List<TrainingPackage> packages = [
     TrainingPackage(
-      description: 'Plano Hulk',
+      description: 'Pilates',
       durationDays: 120,
       weeklyFrequency: 5,
       price: 399.00,
       notes: 'Acesso total à academia, suporte online',
+    ),
+    TrainingPackage(
+      description: 'Yoga',
+      durationDays: 120,
+      weeklyFrequency: 5,
+      price: 129.00,
+      notes: 'Direito a 1 sessão de massoterapia',
     ),
     TrainingPackage(
       description: 'Plano Mensal Intermediário',
