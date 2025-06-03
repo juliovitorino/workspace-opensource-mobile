@@ -61,6 +61,17 @@ class DashboardPage extends StatelessWidget {
               },
             ),
             StatusDashboardItem(
+              icon: Icons.edit_note,
+              title: 'Pacotes de Treino',
+              trailing: '3 opções',
+              onTap:  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => TrainingPackagesPage()),
+                );
+              },
+            ),
+            StatusDashboardItem(
               icon: Icons.attach_money,
               title: 'Pagamentos em atraso',
               trailing: '2 alunos',
@@ -71,11 +82,6 @@ class DashboardPage extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => PaymentsOverduePage()),
                 );
               },
-            ),
-            StatusDashboardItem(
-              icon: Icons.access_time,
-              title: 'Último treino de João',
-              trailing: '7 dias atrás',
             ),
             StatusDashboardItem(
               icon: Icons.group,
@@ -113,16 +119,6 @@ class DashboardPage extends StatelessWidget {
                   },
                   icon: Icon(Icons.person_add),
                   label: Text('Novo Aluno'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => TrainingPackagesPage()),
-                    );
-                  },
-                  icon: Icon(Icons.fitness_center),
-                  label: Text('Pacotes de Treino'),
                 ),
               ],
             ),
