@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/available_time.dart';
+
 class FreeAvailableTime extends StatefulWidget {
   @override
   State<FreeAvailableTime> createState() => _FreeAvailableTimeState();
@@ -7,23 +9,28 @@ class FreeAvailableTime extends StatefulWidget {
 
 class _FreeAvailableTimeState extends State<FreeAvailableTime> {
   final List<String> days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  final List<String> hours = [
-    '06:00', '07:00', '08:00', '09:00', '10:00',
-    '11:00', '12:00', '13:00', '14:00', '15:00',
-    '16:00', '17:00', '18:00', '19:00', '20:00'
-  ];
 
   int selectedDay = 0;
 
+  List<AvailableTime> _getFilteredTimes(int day) {
+    return AvailableTime.times
+        .where((t) => t.daysOfWeek == day && (t.available ?? false))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final filteredTimes = _getFilteredTimes(selectedDay);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 16),
-        Text('Selecione um dia da semana:',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          'Selecione um dia da semana para ver agenda livre:',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         SizedBox(height: 8),
         SizedBox(
           height: 50,
@@ -56,21 +63,23 @@ class _FreeAvailableTimeState extends State<FreeAvailableTime> {
           ),
         ),
         SizedBox(height: 16),
-        Text('Horários disponíveis:',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          'Horários disponíveis:',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         SizedBox(height: 8),
+
+        // available times
         Column(
-          children: List.generate(hours.length, (index) {
+          children: List.generate(filteredTimes.length, (index) {
             return ListTile(
               leading: Icon(Icons.access_time),
-              title: Text(hours[index]),
+              title: Text(filteredTimes[index].dayTime),
               trailing: Icon(Icons.check_circle, color: Colors.green),
-              onTap: () {
-                // lógica de ação no clique do horário
-              },
             );
           }),
-        )
+        ),
+
       ],
     );
   }
