@@ -8,7 +8,7 @@ class FreeAvailableTime extends StatefulWidget {
 }
 
 class _FreeAvailableTimeState extends State<FreeAvailableTime> {
-  final List<String> days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  final List<String> days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
   int selectedDay = 0;
 
@@ -64,7 +64,7 @@ class _FreeAvailableTimeState extends State<FreeAvailableTime> {
         ),
         SizedBox(height: 16),
         Text(
-          'Horários disponíveis:',
+          filteredTimes.length == 0 ? 'Não há horário disponível' : 'Encontrei ${filteredTimes.length} horários disponíveis:',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),

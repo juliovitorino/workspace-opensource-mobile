@@ -31,7 +31,6 @@ class AvailableTime {
     AvailableTime(personalUserId: 1,daysOfWeek: TUEDAY, dayTime: "15:00", available: true),
     AvailableTime(personalUserId: 1,daysOfWeek: TUEDAY, dayTime: "16:00", available: true),
     AvailableTime(personalUserId: 1,daysOfWeek: TUEDAY, dayTime: "19:00", available: true),
-    AvailableTime(personalUserId: 1,daysOfWeek: WEDNESDAY, dayTime: "10:00", available: true),
     AvailableTime(personalUserId: 1,daysOfWeek: THURSDAY, dayTime: "10:00", available: true),
     AvailableTime(personalUserId: 1,daysOfWeek: THURSDAY, dayTime: "11:00", available: true),
     AvailableTime(personalUserId: 1,daysOfWeek: FRIDAY, dayTime: "09:00", available: true),
