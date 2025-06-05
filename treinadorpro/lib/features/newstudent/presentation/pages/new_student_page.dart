@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/features/trainingpackage/domain/entities/training_package.dart';
+import 'package:treinadorpro/core/domain/entities/pack_training_entity.dart';
+import 'package:treinadorpro/core/domain/entities/user_entity.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 class NewStudentPage extends StatefulWidget {
@@ -15,23 +16,21 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _planStartController = TextEditingController();
-  final TextEditingController _frequencyController = TextEditingController();
   final TextEditingController _objectiveController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
-  final TextEditingController _qtyInstalmentController =
-      TextEditingController();
 
   String _gender = 'Masculino';
   String _planType = 'Plano Mensal Intermediário';
 
-  TrainingPackage? _selectedPackage;
+  PackTrainingEntity? _selectedPackage;
 
   final List<String> _days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   final List<String> _selectedDays = [];
 
   int _paymentCount = 1;
   String _paymentCountController = '1';
+  String _endTimeController = '1 hora';
+
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
 
@@ -80,7 +79,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
               _buildSectionTitle('Pacote Contratado'),
               DropdownButtonFormField<String>(
                 value: _planType,
-                items: TrainingPackage.packages
+                items: PackTrainingEntity.packTrainings
                     .map(
                       (p) => DropdownMenuItem(
                         value: p.description,
@@ -91,14 +90,14 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 onChanged: (String? value) {
                   setState(() {
                     _planType = value!;
-                    _selectedPackage = TrainingPackage.packages.firstWhere(
+                    _selectedPackage = PackTrainingEntity.packTrainings.firstWhere(
                       (pkg) => pkg.description == value,
-                      orElse: () => TrainingPackage(
+                      orElse: () => PackTrainingEntity(
                         description: '',
                         durationDays: 0,
                         weeklyFrequency: 0,
                         price: 0,
-                        notes: '',
+                        notes: '', externalId: '', personalUser: UserEntity.users[0], status: '',
                       ),
                     );
                   });
@@ -140,10 +139,26 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 'Hora de Início do Treino (HH:MI)',
                 keyboardType: TextInputType.datetime,
               ),
-              _buildTextField(
-                _endTimeController,
-                'Hora final do Treino (HH:MI)',
-                keyboardType: TextInputType.datetime,
+              // _buildTextField(
+              //   _endTimeController,
+              //   'Duração do treino', julio
+              //   keyboardType: TextInputType.datetime,
+              // ),
+
+              DropdownButtonFormField<String>(
+                value: _endTimeController,
+                items:
+                [
+                  '30 minutos',
+                  '45 minutos',
+                  '1 hora',
+                  '2 horas',
+                ]
+                    .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() => _endTimeController = value!);
+                },
               ),
 
               Text('Dias da semana para treinar'),

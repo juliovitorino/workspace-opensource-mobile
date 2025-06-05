@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/domain/entities/trainer_user_entity.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/Exercise.dart';
@@ -39,6 +40,7 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
   Program _program = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
   Exercise _exercise = Exercise.exercises.first;
+  TrainerUserEntity _trainerUser = TrainerUserEntity.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   WeightUnit _weightUnit = WeightUnit.kg;
@@ -191,6 +193,23 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+
+              Text('Aluno'),
+              DropdownButtonFormField<TrainerUserEntity>(
+                items: TrainerUserEntity.trainerUsers
+                .where((e) => e.studentUser.userProfile.contains('STUDENT'))
+                    .map(
+                      (item) => DropdownMenuItem(
+                        value: item,
+                        child: Text(item.studentUser.name),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) => setState(() => _trainerUser = value!),
+              ),
+
+
               Text('Modalidade'),
               DropdownButtonFormField<Modality>(
                 items: Modality.modalities
@@ -314,34 +333,6 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
                       'Descanso (min)',
                       keyboardType: TextInputType.number,
                       required: true,
-                    ),
-                  ),
-                ],
-              ),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildTextField(
-                      _weightController,
-                      'Peso',
-                      keyboardType: TextInputType.number,
-                      required: true,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: DropdownButtonFormField<WeightUnit>(
-                      items: WeightUnit.values
-                          .map(
-                            (item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(item.unit),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) =>
-                          setState(() => _weightUnit = value!),
                     ),
                   ),
                 ],
