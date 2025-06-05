@@ -8,6 +8,7 @@ import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_
 import 'package:treinadorpro/features/todayworkout/presentation/pages/today_workouts_page.dart';
 import 'package:treinadorpro/features/trainerprofile/presentation/pages/trainer_profile_page_detail.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/training_packages_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
@@ -121,7 +122,14 @@ class DashboardPage extends StatelessWidget {
                   label: Text('Novo Aluno'),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BuildWorkoutSheetPage(),
+                      ),
+                    );
+                  },
                   icon: Icon(Icons.fitness_center),
                   label: Text('Montar Treino'),
                 ),
