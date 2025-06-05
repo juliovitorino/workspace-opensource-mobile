@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/trainingpackage/domain/entities/training_package.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 class NewStudentPage extends StatefulWidget {
   @override
@@ -18,7 +19,8 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _objectiveController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  final TextEditingController _qtyInstalmentController = TextEditingController();
+  final TextEditingController _qtyInstalmentController =
+      TextEditingController();
 
   String _gender = 'Masculino';
   String _planType = 'Plano Mensal Intermediário';
@@ -32,7 +34,6 @@ class _NewStudentPageState extends State<NewStudentPage> {
   String _paymentCountController = '1';
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
-
 
   @override
   void initState() {
@@ -184,15 +185,32 @@ class _NewStudentPageState extends State<NewStudentPage> {
               Text('Número de pagamentos'),
               DropdownButtonFormField<String>(
                 value: _paymentCountController,
-                items: ['1','2','3','4','5','6','7','8','9','10','11','12']
-                    .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                    .toList(),
+                items:
+                    [
+                          '1',
+                          '2',
+                          '3',
+                          '4',
+                          '5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          '10',
+                          '11',
+                          '12',
+                        ]
+                        .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                        .toList(),
                 onChanged: (value) {
                   setState(() {
                     _paymentCountController = value!;
                     _paymentCount = int.tryParse(value) ?? 0;
                     _paymentDates = List<DateTime?>.filled(_paymentCount, null);
-                    _dateControllers = List.generate(_paymentCount, (_) => TextEditingController());
+                    _dateControllers = List.generate(
+                      _paymentCount,
+                      (_) => TextEditingController(),
+                    );
                   });
                 },
               ),
@@ -221,7 +239,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                           setState(() {
                             _paymentDates[index] = pickedDate;
                             _dateControllers[index].text =
-                            '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                                '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
                           });
                         }
                       },
@@ -245,9 +263,14 @@ class _NewStudentPageState extends State<NewStudentPage> {
               ),
               SizedBox(height: 12),
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage()),
+                  );
+                },
                 icon: Icon(Icons.calendar_today),
-                label: Text('Agendar Treino'),
+                label: Text('Montar Treino'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),
