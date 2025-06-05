@@ -12,14 +12,14 @@ import 'features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
 
 class TreinadorProApp extends StatefulWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
   static void setLocale(BuildContext context, Locale newLocale) {
     final _TreinadorProAppState? state = context.findAncestorStateOfType<_TreinadorProAppState>();
     state?.setLocale(newLocale);
   }
 
-  TreinadorProApp({super.key});
+  TreinadorProApp({super.key, required this.config});
 
   @override
   State<TreinadorProApp> createState() => _TreinadorProAppState();
@@ -44,11 +44,11 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
       theme: ThemeData(primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white
       ),
-      home: SplashPage(),
+      home: SplashPage(config: widget.config),
       routes: {
-        AppRoutes.validateCode: (context) => ValidateSixDigitPage(),
-        AppRoutes.login: (context) => LoginPage(),
-        AppRoutes.welcome: (context) => WelcomeScreen(),
+        AppRoutes.validateCode: (context) => ValidateSixDigitPage(config: widget.config,),
+        AppRoutes.login: (context) => LoginPage(config: widget.config,),
+        AppRoutes.welcome: (context) => WelcomeScreen(config: widget.config,),
         AppRoutes.dashboard: (context) => DashboardPage()
       },
     );  }

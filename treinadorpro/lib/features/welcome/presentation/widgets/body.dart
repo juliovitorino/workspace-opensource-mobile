@@ -11,9 +11,9 @@ import 'package:treinadorpro/l10n/app_localizations.dart';
 import '../../../../config/app_config.dart';
 
 class Body extends StatelessWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
-  Body({super.key});
+  Body({super.key, required this.config});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class Body extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return LoginPage();
+                    return LoginPage(config: config);
                   },
                 ),
               );
@@ -49,7 +49,7 @@ class Body extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return RegisterPage();
+                    return RegisterPage(config: config);
                   },
                 ),
               );

@@ -3,13 +3,12 @@ import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/widgets/brand_image.dart';
 
 import '../../../../config/app_config.dart';
-import '../../../../config/service_locator.dart';
 import '../widgets/text_splash.dart';
 
 class SplashPage extends StatefulWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
-  SplashPage({super.key});
+  SplashPage({super.key, required this.config});
 
   @override
   State<SplashPage> createState() => _SplashPageState();

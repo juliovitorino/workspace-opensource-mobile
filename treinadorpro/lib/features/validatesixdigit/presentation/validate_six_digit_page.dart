@@ -11,12 +11,12 @@ import '../../../l10n/app_localizations.dart';
 
 class ValidateSixDigitPage extends StatelessWidget {
 
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
   final _formKey = GlobalKey<FormState>();
   final _codeController = TextEditingController();
 
-  ValidateSixDigitPage({super.key});
+  ValidateSixDigitPage({super.key, required this.config});
 
   void _processFormListener(BuildContext context, HandlerState state) async {
     if (state.errorMessage != null) {

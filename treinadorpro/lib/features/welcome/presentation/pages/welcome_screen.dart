@@ -5,14 +5,14 @@ import 'package:treinadorpro/config/service_locator.dart';
 import '../widgets/body.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
-  WelcomeScreen({super.key});
+  WelcomeScreen({super.key, required this.config});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
+      body: Body(config: config),
     );
   }
 }

@@ -14,13 +14,13 @@ import '../widgets/rounded_password_field.dart';
 import '../widgets/social_button_row.dart';
 
 class LoginPage extends StatelessWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  LoginPage({super.key});
+  LoginPage({super.key, required this.config});
 
   Future<void> _processFormListener(BuildContext context, HandlerState state) async {
     if (state.errorMessage != null) {
