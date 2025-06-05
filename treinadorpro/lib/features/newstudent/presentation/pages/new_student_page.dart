@@ -20,7 +20,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _startTimeController = TextEditingController();
 
   String _gender = 'Masculino';
-  String _planType = 'Plano Mensal Intermediário';
+  String _planType = 'Pacote Básico - 4 semanas';
 
   PackTrainingEntity? _selectedPackage;
 
@@ -144,7 +144,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
               //   'Duração do treino', julio
               //   keyboardType: TextInputType.datetime,
               // ),
-
+              //
               DropdownButtonFormField<String>(
                 value: _endTimeController,
                 items:
