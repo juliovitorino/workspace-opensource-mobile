@@ -8,11 +8,11 @@ import 'package:treinadorpro/features/notifications/presentation/pages/notificat
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
 import 'package:treinadorpro/features/todayworkout/presentation/pages/today_workouts_page.dart';
 import 'package:treinadorpro/features/trainerprofile/presentation/pages/trainer_profile_page_detail.dart';
-import 'package:treinadorpro/features/trainingpackage/presentation/training_packages_page.dart';
+import 'package:treinadorpro/features/trainingpackage/presentation/pages/training_packages_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../../core/constants/styles.dart';
-import '../../../../core/infrastructure/storage/user_entity_local_storage_service_impl.dart';
+import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_impl.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {

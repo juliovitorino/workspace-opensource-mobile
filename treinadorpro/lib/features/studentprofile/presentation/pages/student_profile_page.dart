@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_circle_avatar.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_heading_name.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 
 class StudentProfilePage extends StatelessWidget {
   final String studentName = 'João Pedro';
@@ -33,7 +37,7 @@ class StudentProfilePage extends StatelessWidget {
     'Coxa Direita': '58 cm',
     'Coxa Esquerda': '57.5 cm',
     'Panturrilha Direita': '38 cm',
-    'Panturrilha Esquerda': '37.8 cm'
+    'Panturrilha Esquerda': '37.8 cm',
   };
 
   @override
@@ -45,41 +49,36 @@ class StudentProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: CircleAvatar(
-                radius: 40,
-                child: Text(studentName[0], style: TextStyle(fontSize: 32)),
-              ),
-            ),
+            Center(child: ProWidgetCircleAvatar(name: studentName)),
             SizedBox(height: 12),
-            Center(
-              child: Text(studentName,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Center(child: ProWidgetHeadingName(name: studentName)),
+            
+            SizedBox(height: 16),
+
+            ProWidgetSectionTitle(title: 'Informações Pessoais'),
+            ProWidgetInfoRow(label: 'Sexo', value: gender),
+            ProWidgetInfoRow(label: 'Nascimento', value:  dob),
+            ProWidgetInfoRow(label: 'Telefone', value: phone),
+            ProWidgetInfoRow(label: 'Email', value: email),
+
+            SizedBox(height: 16),
+            ProWidgetSectionTitle(title: 'Plano Atual'),
+            ProWidgetInfoRow(label: 'Plano', value:  plan),
+            ProWidgetInfoRow(label: 'Início', value:  startDate),
+            ProWidgetInfoRow(label: 'Vencimento', value: endDate),
+            ProWidgetInfoRow(label: 'Frequência', value: frequency),
+
+            SizedBox(height: 16),
+            ProWidgetSectionTitle(title: 'Objetivo e Treinos'),
+            ProWidgetInfoRow(label: 'Objetivo', value: objective),
+            ProWidgetInfoRow(label: 'Último Treino', value: lastWorkout),
+            ProWidgetInfoRow(label: 'Próximo Treino', value: nextWorkout),
+
+            SizedBox(height: 16),
+            ProWidgetSectionTitle(title: 'Avaliação Física'),
+            ...bodyMetrics.entries.map(
+              (entry) => ProWidgetInfoRow(label: entry.key, value: entry.value),
             ),
-            SizedBox(height: 16),
-
-            _sectionTitle('Informações Pessoais'),
-            _infoRow('Sexo', gender),
-            _infoRow('Nascimento', dob),
-            _infoRow('Telefone', phone),
-            _infoRow('Email', email),
-
-            SizedBox(height: 16),
-            _sectionTitle('Plano Atual'),
-            _infoRow('Plano', plan),
-            _infoRow('Início', startDate),
-            _infoRow('Vencimento', endDate),
-            _infoRow('Frequência', frequency),
-
-            SizedBox(height: 16),
-            _sectionTitle('Objetivo e Treinos'),
-            _infoRow('Objetivo', objective),
-            _infoRow('Último Treino', lastWorkout),
-            _infoRow('Próximo Treino', nextWorkout),
-
-            SizedBox(height: 16),
-            _sectionTitle('Avaliação Física'),
-            ...bodyMetrics.entries.map((entry) => _infoRow(entry.key, entry.value)),
 
             SizedBox(height: 8),
 
@@ -90,11 +89,13 @@ class StudentProfilePage extends StatelessWidget {
             ),
 
             SizedBox(height: 16),
-            _sectionTitle('Pagamentos Recentes'),
-            ...lastPayments.map((p) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text('• $p'),
-            )),
+            ProWidgetSectionTitle(title: 'Pagamentos Recentes'),
+            ...lastPayments.map(
+              (p) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text('• $p'),
+              ),
+            ),
 
             SizedBox(height: 24),
             Row(
@@ -133,21 +134,4 @@ class StudentProfilePage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _sectionTitle(String title) => Padding(
-    padding: const EdgeInsets.only(bottom: 6),
-    child: Text(title,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-  );
-
-  Widget _infoRow(String label, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 2.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label + ':', style: TextStyle(fontWeight: FontWeight.w500)),
-        Text(value),
-      ],
-    ),
-  );
 }

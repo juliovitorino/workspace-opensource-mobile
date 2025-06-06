@@ -25,4 +25,13 @@ final kWelcomeUserMessageTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+final kCircleAvatarTextStyle =  TextStyle(
+  fontSize: 32,
+  fontWeight: FontWeight.bold,
+);
+
 final kHeading = TextStyle(fontWeight: FontWeight.bold);
+
+final kHeadingName = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+
+final kSectionTitleTextStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
