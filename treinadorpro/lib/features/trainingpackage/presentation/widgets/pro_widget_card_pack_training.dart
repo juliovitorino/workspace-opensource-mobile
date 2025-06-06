@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/pages/training_package_page_detail.dart';
 
-import '../../../../core/domain/entities/pack_training_entity.dart';
+import '../../../../core/domain/entities/pack_training.dart';
 import '../../../newstudent/presentation/pages/new_student_page.dart';
 
 class ProWidgetCardPackTraining extends StatelessWidget {
@@ -20,6 +20,7 @@ class ProWidgetCardPackTraining extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('${pkg.modality?.namePt}'),
           Text('${pkg.durationDays} dias • ${pkg.weeklyFrequency}x/semana'),
           Text(pkg.notes),
           Text(

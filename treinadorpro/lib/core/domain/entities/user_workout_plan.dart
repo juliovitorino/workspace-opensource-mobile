@@ -1,19 +1,19 @@
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/core/domain/entities/user_pack_training_entity.dart';
+import 'package:treinadorpro/core/domain/entities/user_pack_training.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/goal.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/program.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/work_group.dart';
 
-part 'user_workout_plan_entity.g.dart';
+part 'user_workout_plan.g.dart';
 
 @Collection()
-class UserWorkoutPlanEntity {
+class UserWorkoutPlan {
   final Id? id;
 
   @ignore
-  final UserPackTrainingEntity? userPackTrainingEntity;
+  final UserPackTraining? userPackTrainingEntity;
 
   @ignore
   final Modality? modality;
@@ -45,7 +45,7 @@ class UserWorkoutPlanEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  UserWorkoutPlanEntity({
+  UserWorkoutPlan({
     this.id,
     this.userPackTrainingEntity,
     this.modality,

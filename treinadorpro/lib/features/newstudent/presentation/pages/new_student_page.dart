@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training_entity.dart';
-import 'package:treinadorpro/core/domain/entities/user_entity.dart';
+import 'package:treinadorpro/core/domain/entities/pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
+
+import '../../../../core/domain/entities/trainer_user.dart';
 
 class NewStudentPage extends StatefulWidget {
   @override
@@ -19,8 +22,15 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _objectiveController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
 
+  TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
+
   String _gender = 'Masculino';
   String _planType = 'Pacote Básico - 4 semanas';
+
+  bool _isActionButtonStudentSelector = true;
+  bool _isShowPersonalDataSection = false;
+  bool _isShowExistingStudentSection = false;
+  bool _isShowCardOldStudentSelected = false;
 
   PackTrainingEntity? _selectedPackage;
 
@@ -43,7 +53,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Novo Aluno')),
+      appBar: AppBar(title: Text('Novo Contrato')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -51,32 +61,9 @@ class _NewStudentPageState extends State<NewStudentPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionTitle('Dados Pessoais'),
-              _buildTextField(_nameController, 'Nome completo', required: true),
-              _buildTextField(
-                _dobController,
-                'Data de nascimento (AAAA-MM-DD)',
-                keyboardType: TextInputType.datetime,
-              ),
-              _buildTextField(
-                _phoneController,
-                'Telefone',
-                keyboardType: TextInputType.phone,
-                required: true,
-              ),
-              _buildTextField(_emailController, 'Email'),
-              SizedBox(height: 8),
-              Text('Sexo'),
-              DropdownButtonFormField<String>(
-                value: _gender,
-                items: ['Masculino', 'Feminino', 'Outro']
-                    .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                    .toList(),
-                onChanged: (val) => setState(() => _gender = val!),
-              ),
-
+              // pack training section
               SizedBox(height: 16),
-              _buildSectionTitle('Pacote Contratado'),
+              ProWidgetSectionTitle(title: 'Pacote Contratado'),
               DropdownButtonFormField<String>(
                 value: _planType,
                 items: PackTrainingEntity.packTrainings
@@ -90,16 +77,20 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 onChanged: (String? value) {
                   setState(() {
                     _planType = value!;
-                    _selectedPackage = PackTrainingEntity.packTrainings.firstWhere(
-                      (pkg) => pkg.description == value,
-                      orElse: () => PackTrainingEntity(
-                        description: '',
-                        durationDays: 0,
-                        weeklyFrequency: 0,
-                        price: 0,
-                        notes: '', externalId: '', personalUser: UserEntity.users[0], status: '',
-                      ),
-                    );
+                    _selectedPackage = PackTrainingEntity.packTrainings
+                        .firstWhere(
+                          (pkg) => pkg.description == value,
+                          orElse: () => PackTrainingEntity(
+                            description: '',
+                            durationDays: 0,
+                            weeklyFrequency: 0,
+                            price: 0,
+                            notes: '',
+                            externalId: '',
+                            personalUser: User.users[0],
+                            status: '',
+                          ),
+                        );
                   });
                 },
               ),
@@ -115,6 +106,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(_selectedPackage!.modality!.namePt),
                         Text(
                           '${_selectedPackage!.durationDays} dias • ${_selectedPackage!.weeklyFrequency}x/semana',
                         ),
@@ -127,7 +119,128 @@ class _NewStudentPageState extends State<NewStudentPage> {
                     ),
                   ),
                 ),
+
+              // END pack training section
               SizedBox(height: 16),
+
+              // Action button student selector
+              if (_isActionButtonStudentSelector)
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => setState(() {
+                        _isActionButtonStudentSelector = false;
+                        _isShowExistingStudentSection = false;
+                        _isShowPersonalDataSection = true;
+                      }),
+                      icon: Icon(Icons.person_add),
+                      label: Text('Novo Aluno'),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () => setState(() {
+                        _isActionButtonStudentSelector = false;
+                        _isShowExistingStudentSection = true;
+                        _isShowPersonalDataSection = false;
+                      }),
+                      icon: Icon(Icons.fitness_center),
+                      label: Text('Meu Aluno Antigo'),
+                    ),
+                  ],
+                ),
+
+              // END Action button student selector
+              SizedBox(height: 16),
+
+              ProWidgetSectionTitle(title: 'Dados Pessoais'),
+
+              // Old Student Section
+              if (_isShowExistingStudentSection)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Aluno'),
+                    DropdownButtonFormField<TrainerUser>(
+                      items: TrainerUser.trainerUsers
+                          .where(
+                            (e) =>
+                                e.studentUser!.userProfile.contains('STUDENT'),
+                          )
+                          .map(
+                            (item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(item.studentUser!.name),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) =>
+                          setState(() {
+                            _trainerUser = value!;
+                            _isShowCardOldStudentSelected = true;
+                          } ),
+                    ),
+                  ],
+                ),
+
+              if(_isShowCardOldStudentSelected)
+                Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    title: Text(
+                      _trainerUser.studentUser!.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_trainerUser.studentUser!.email),
+                        Text(_trainerUser.studentUser?.cellphone ?? ''),
+                      ],
+                    ),
+                  ),
+                ),
+              // personal data section
+              if (_isShowPersonalDataSection)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField(
+                      _nameController,
+                      'Nome completo',
+                      required: true,
+                    ),
+                    _buildTextField(
+                      _dobController,
+                      'Data de nascimento (AAAA-MM-DD)',
+                      keyboardType: TextInputType.datetime,
+                    ),
+                    _buildTextField(
+                      _phoneController,
+                      'Telefone',
+                      keyboardType: TextInputType.phone,
+                      required: true,
+                    ),
+                    _buildTextField(_emailController, 'Email'),
+                    SizedBox(height: 8),
+                    Text('Sexo'),
+                    DropdownButtonFormField<String>(
+                      value: _gender,
+                      items: ['Masculino', 'Feminino', 'Outro']
+                          .map(
+                            (g) => DropdownMenuItem(value: g, child: Text(g)),
+                          )
+                          .toList(),
+                      onChanged: (val) => setState(() => _gender = val!),
+                    ),
+                  ],
+                ),
+
+              SizedBox(height: 32),
+
+              // training info section
+              ProWidgetSectionTitle(title: 'Informações Sobre o Treino'),
+
               _buildTextField(
                 _planStartController,
                 'Data de início (AAAA-MM-DD)',
@@ -139,21 +252,10 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 'Hora de Início do Treino (HH:MI)',
                 keyboardType: TextInputType.datetime,
               ),
-              // _buildTextField(
-              //   _endTimeController,
-              //   'Duração do treino', julio
-              //   keyboardType: TextInputType.datetime,
-              // ),
-              //
+
               DropdownButtonFormField<String>(
                 value: _endTimeController,
-                items:
-                [
-                  '30 minutos',
-                  '45 minutos',
-                  '1 hora',
-                  '2 horas',
-                ]
+                items: ['30 minutos', '45 minutos', '1 hora', '2 horas']
                     .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                     .toList(),
                 onChanged: (value) {
@@ -188,13 +290,15 @@ class _NewStudentPageState extends State<NewStudentPage> {
               ),
 
               SizedBox(height: 16),
-              _buildSectionTitle('Objetivo'),
               _buildTextField(
                 _objectiveController,
-                'Hipertrofia, emagrecimento, saúde, etc.',
+                'Digite seu objetivo: Hipertrofia, emagrecimento, saúde, etc.',
               ),
 
-              _buildSectionTitle('Forma de Pagamento'),
+              // END training info section
+
+              // payment section
+              ProWidgetSectionTitle(title: 'Forma de Pagamento'),
 
               SizedBox(height: 8),
               Text('Número de pagamentos'),
@@ -263,6 +367,9 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 },
               ),
 
+              // END payment section
+
+              // Action button section
               SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () {
@@ -271,7 +378,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                   }
                 },
                 icon: Icon(Icons.check_circle),
-                label: Text('Salvar Cadastro'),
+                label: Text('Salvar Contrato'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),
@@ -294,6 +401,8 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 onPressed: () => Navigator.pop(context),
                 child: Text('Cancelar'),
               ),
+
+              // END Action button section
             ],
           ),
         ),

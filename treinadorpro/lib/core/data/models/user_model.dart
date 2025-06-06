@@ -1,6 +1,6 @@
-import '../../domain/entities/user_entity.dart';
+import '../../domain/entities/user.dart';
 
-class UserModel extends UserEntity {
+class UserModel extends User {
   const UserModel({
     required int id,
     required String uuidId,

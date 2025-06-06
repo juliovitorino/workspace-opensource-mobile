@@ -1,12 +1,13 @@
 import 'package:decimal/decimal.dart';
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training_entity.dart';
-import 'package:treinadorpro/core/domain/entities/user_entity.dart';
+import 'package:treinadorpro/core/domain/entities/pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/domain/entities/user_workout_plan.dart';
 
-part 'user_pack_training_entity.g.dart';
+part 'user_pack_training.g.dart';
 
 @Collection()
-class UserPackTrainingEntity {
+class UserPackTraining {
   final Id? id;
   final String externalId;
 
@@ -14,7 +15,7 @@ class UserPackTrainingEntity {
   final PackTrainingEntity? packTrainingEntity;
 
   @ignore
-  final UserEntity? studentUser;
+  final User? studentUser;
 
   final String goalDescription;
 
@@ -25,11 +26,15 @@ class UserPackTrainingEntity {
   final String startTime;
   final String duration;
   final List<int> daysOfWeek;
+
+  @ignore
+  final List<UserWorkoutPlan>? userWorkoutPlanList;
+
   final String status; // 'A', 'B', 'I', 'P'
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const UserPackTrainingEntity({
+  const UserPackTraining({
     this.id,
     required this.externalId,
     this.packTrainingEntity,
@@ -40,17 +45,18 @@ class UserPackTrainingEntity {
     required this.startTime,
     required this.duration,
     required this.daysOfWeek,
+    this.userWorkoutPlanList,
     required this.status,
     this.createdAt,
     this.updatedAt,
   });
 
-  static final List<UserPackTrainingEntity> mockUserPackTrainings = [
-    UserPackTrainingEntity(
+  static final List<UserPackTraining> mockUserPackTrainings = [
+    UserPackTraining(
       id: 1,
       externalId: '5c238d12-3f8b-4d95-aaff-123456789003',
       packTrainingEntity: PackTrainingEntity.packTrainings[0],
-      studentUser: UserEntity.users[1],
+      studentUser: User.users[1],
       goalDescription: 'Ganhar massa muscular',
       price: Decimal.parse('299.90'),
       currency: 'BRL',

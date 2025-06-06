@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training_entity.dart';
+import 'package:treinadorpro/core/domain/entities/pack_training.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/widgets/pro_widget_card_pack_training.dart';
 
 class TrainingPackagePage extends StatefulWidget {
@@ -15,7 +17,7 @@ class _TrainingPackagePageState extends State<TrainingPackagePage> {
 
   @override
   void initState() {
-    // copy from mocked if environment os dev
+    // copy from mocked if environment is dev
     packTrainingEntityList = PackTrainingEntity.packTrainings.toList();
     super.initState();
   }
@@ -46,11 +48,13 @@ class _TrainingPackagePageState extends State<TrainingPackagePage> {
         onPressed: () {
           setState(() {
 
+            // Just testing...
             packTrainingEntityList?.add(PackTrainingEntity(
                 externalId: 'dssdfsdfdsf',
                 description: 'bbbb',
                 durationDays: 1,
                 weeklyFrequency: 1,
+                currency: 'BRL',
                 price: 1,
                 notes: 'sldkfskdf',
                 status: 'A'));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:treinadorpro/core/domain/entities/user_entity.dart';
+import 'package:treinadorpro/core/domain/entities/user.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_entity_local_storage_service.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state.dart';
 
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
             ),
       );
 
-      await _userEntityLocalStorage.save(UserEntity.currentUser);
+      await _userEntityLocalStorage.save(User.currentUser);
       Navigator.popAndPushNamed(context, AppRoutes.dashboard);
 
     }

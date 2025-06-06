@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pack_training_entity.dart';
+part of 'pack_training.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator

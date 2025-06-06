@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_action_buttons_page_detail.dart';
 
-import '../../../../core/domain/entities/pack_training_entity.dart';
+import '../../../../core/domain/entities/pack_training.dart';
 import '../../../../core/widgets/pro_widget_heading_name.dart';
 import '../../../../core/widgets/pro_widget_info_row.dart';
 import '../../../../core/widgets/pro_widget_section_title.dart';
@@ -28,13 +28,20 @@ class TrainingPackagePageDetail extends StatelessWidget {
             Divider(height: 32),
 
             ProWidgetSectionTitle(title: 'Detalhes'),
-            ProWidgetInfoRow(label: 'Duração', value: packTrainingEntity.durationDays.toString() + ' dias'),
-            ProWidgetInfoRow(label: 'Frequência', value: packTrainingEntity.weeklyFrequency.toString() + 'x/semana'),
-            ProWidgetInfoRow(label: 'Valor', value: packTrainingEntity.currency! + ' ' + packTrainingEntity.price.toString()),
+            ProWidgetInfoRow(label: 'Modalidade', value: packTrainingEntity.modality!.namePt),
+            ProWidgetInfoRow(label: 'Duração', value: '${packTrainingEntity.durationDays} dias'),
+            ProWidgetInfoRow(label: 'Frequência', value: '${packTrainingEntity.weeklyFrequency}x/semana'),
+            ProWidgetInfoRow(label: 'Valor', value: '${packTrainingEntity.currency!} ${packTrainingEntity.price}'),
             ProWidgetInfoRow(label: 'Notas', value: packTrainingEntity.notes),
 
             // Action buttons for page detail
-            ProWidgetActionButtonsPageDetail(onPressedEdit: (){}, onPressedDelete: (){}),
+            ProWidgetActionButtonsPageDetail(
+                textEdit: 'Editar',
+                onPressedEdit: (){},
+                textDelete: 'Excluir',
+                onPressedDelete: (){},
+                textBack: 'Fechar',
+            ),
           ],
         ),
       ),

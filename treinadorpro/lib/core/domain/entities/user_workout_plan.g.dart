@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_workout_plan_entity.dart';
+part of 'user_workout_plan.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,14 +9,13 @@ part of 'user_workout_plan_entity.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetUserWorkoutPlanEntityCollection on Isar {
-  IsarCollection<UserWorkoutPlanEntity> get userWorkoutPlanEntitys =>
-      this.collection();
+extension GetUserWorkoutPlanCollection on Isar {
+  IsarCollection<UserWorkoutPlan> get userWorkoutPlans => this.collection();
 }
 
-const UserWorkoutPlanEntitySchema = CollectionSchema(
-  name: r'UserWorkoutPlanEntity',
-  id: -1255575724563913293,
+const UserWorkoutPlanSchema = CollectionSchema(
+  name: r'UserWorkoutPlan',
+  id: 6479211840890131386,
   properties: {
     r'comments': PropertySchema(
       id: 0,
@@ -89,22 +88,22 @@ const UserWorkoutPlanEntitySchema = CollectionSchema(
       type: IsarType.dateTime,
     )
   },
-  estimateSize: _userWorkoutPlanEntityEstimateSize,
-  serialize: _userWorkoutPlanEntitySerialize,
-  deserialize: _userWorkoutPlanEntityDeserialize,
-  deserializeProp: _userWorkoutPlanEntityDeserializeProp,
+  estimateSize: _userWorkoutPlanEstimateSize,
+  serialize: _userWorkoutPlanSerialize,
+  deserialize: _userWorkoutPlanDeserialize,
+  deserializeProp: _userWorkoutPlanDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _userWorkoutPlanEntityGetId,
-  getLinks: _userWorkoutPlanEntityGetLinks,
-  attach: _userWorkoutPlanEntityAttach,
+  getId: _userWorkoutPlanGetId,
+  getLinks: _userWorkoutPlanGetLinks,
+  attach: _userWorkoutPlanAttach,
   version: '3.1.0+1',
 );
 
-int _userWorkoutPlanEntityEstimateSize(
-  UserWorkoutPlanEntity object,
+int _userWorkoutPlanEstimateSize(
+  UserWorkoutPlan object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -122,8 +121,8 @@ int _userWorkoutPlanEntityEstimateSize(
   return bytesCount;
 }
 
-void _userWorkoutPlanEntitySerialize(
-  UserWorkoutPlanEntity object,
+void _userWorkoutPlanSerialize(
+  UserWorkoutPlan object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -144,13 +143,13 @@ void _userWorkoutPlanEntitySerialize(
   writer.writeDateTime(offsets[13], object.updatedAt);
 }
 
-UserWorkoutPlanEntity _userWorkoutPlanEntityDeserialize(
+UserWorkoutPlan _userWorkoutPlanDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = UserWorkoutPlanEntity(
+  final object = UserWorkoutPlan(
     comments: reader.readString(offsets[0]),
     createdAt: reader.readDateTimeOrNull(offsets[1]),
     customExercise: reader.readString(offsets[2]),
@@ -170,7 +169,7 @@ UserWorkoutPlanEntity _userWorkoutPlanEntityDeserialize(
   return object;
 }
 
-P _userWorkoutPlanEntityDeserializeProp<P>(
+P _userWorkoutPlanDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -210,32 +209,30 @@ P _userWorkoutPlanEntityDeserializeProp<P>(
   }
 }
 
-Id _userWorkoutPlanEntityGetId(UserWorkoutPlanEntity object) {
+Id _userWorkoutPlanGetId(UserWorkoutPlan object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _userWorkoutPlanEntityGetLinks(
-    UserWorkoutPlanEntity object) {
+List<IsarLinkBase<dynamic>> _userWorkoutPlanGetLinks(UserWorkoutPlan object) {
   return [];
 }
 
-void _userWorkoutPlanEntityAttach(
-    IsarCollection<dynamic> col, Id id, UserWorkoutPlanEntity object) {}
+void _userWorkoutPlanAttach(
+    IsarCollection<dynamic> col, Id id, UserWorkoutPlan object) {}
 
-extension UserWorkoutPlanEntityQueryWhereSort
-    on QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QWhere> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhere>
-      anyId() {
+extension UserWorkoutPlanQueryWhereSort
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QWhere> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
-    UserWorkoutPlanEntity, QWhereClause> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhereClause>
-      idEqualTo(Id id) {
+extension UserWorkoutPlanQueryWhere
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QWhereClause> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhereClause> idEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -244,7 +241,7 @@ extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhereClause>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhereClause>
       idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
@@ -267,7 +264,7 @@ extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhereClause>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhereClause>
       idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -276,8 +273,9 @@ extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhereClause> idLessThan(
+      Id id,
+      {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -285,8 +283,7 @@ extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterWhereClause>
-      idBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -303,10 +300,10 @@ extension UserWorkoutPlanEntityQueryWhere on QueryBuilder<UserWorkoutPlanEntity,
   }
 }
 
-extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
-    UserWorkoutPlanEntity, UserWorkoutPlanEntity, QFilterCondition> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsEqualTo(
+extension UserWorkoutPlanQueryFilter
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QFilterCondition> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -319,8 +316,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -335,8 +332,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -351,8 +348,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -371,8 +368,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -385,8 +382,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -399,8 +396,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       commentsContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -411,8 +407,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       commentsMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -423,8 +418,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'comments',
@@ -433,8 +428,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> commentsIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      commentsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'comments',
@@ -443,8 +438,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtIsNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'createdAt',
@@ -452,8 +447,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtIsNotNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'createdAt',
@@ -461,8 +456,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtEqualTo(DateTime? value) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -471,8 +466,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtGreaterThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -485,8 +480,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -499,8 +494,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> createdAtBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      createdAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -517,8 +512,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -531,8 +526,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -547,8 +542,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -563,8 +558,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -583,8 +578,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -597,8 +592,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -611,8 +606,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       customExerciseContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -623,8 +617,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       customExerciseMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -635,8 +628,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'customExercise',
@@ -645,8 +638,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customExerciseIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customExerciseIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'customExercise',
@@ -655,8 +648,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -669,8 +662,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -685,8 +678,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -701,8 +694,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -721,8 +714,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -735,8 +728,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -749,8 +742,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       customProgramContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -761,8 +753,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       customProgramMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -773,8 +764,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'customProgram',
@@ -783,8 +774,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> customProgramIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      customProgramIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'customProgram',
@@ -793,8 +784,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -807,8 +798,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -823,8 +814,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -839,8 +830,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -859,8 +850,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -873,8 +864,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -887,8 +878,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -899,8 +889,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -911,8 +900,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'execution',
@@ -921,8 +910,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'execution',
@@ -931,8 +920,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -945,8 +934,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -961,8 +950,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -977,8 +966,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -997,8 +986,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1011,8 +1000,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1025,8 +1014,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionMethodContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1037,8 +1025,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionMethodMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1049,8 +1036,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'executionMethod',
@@ -1059,8 +1046,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionMethodIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionMethodIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'executionMethod',
@@ -1069,8 +1056,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1083,8 +1070,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1099,8 +1086,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1115,8 +1102,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1135,8 +1122,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1149,8 +1136,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1163,8 +1150,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionTimeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1175,8 +1161,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       executionTimeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1187,8 +1172,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'executionTime',
@@ -1197,8 +1182,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> executionTimeIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      executionTimeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'executionTime',
@@ -1207,8 +1192,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1221,8 +1206,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1237,8 +1222,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1253,8 +1238,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1273,8 +1258,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1287,8 +1272,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1301,8 +1286,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       externalIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1313,8 +1297,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       externalIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1325,8 +1308,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'externalId',
@@ -1335,8 +1318,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> externalIdIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      externalIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'externalId',
@@ -1345,8 +1328,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idIsNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -1354,8 +1337,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idIsNotNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'id',
@@ -1363,8 +1346,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idEqualTo(Id? value) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -1373,8 +1356,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1387,8 +1370,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1401,8 +1384,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> idBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -1419,8 +1402,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1433,8 +1416,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1449,8 +1432,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1465,8 +1448,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1485,8 +1468,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1499,8 +1482,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1513,8 +1496,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       obsContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1525,8 +1507,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       obsMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1537,8 +1518,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'obs',
@@ -1547,8 +1528,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> obsIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      obsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'obs',
@@ -1557,8 +1538,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtyRepsEqualTo(int value) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtyRepsEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'qtyReps',
@@ -1567,8 +1548,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtyRepsGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtyRepsGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -1581,8 +1562,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtyRepsLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtyRepsLessThan(
     int value, {
     bool include = false,
   }) {
@@ -1595,8 +1576,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtyRepsBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtyRepsBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1613,8 +1594,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtySeriesEqualTo(int value) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtySeriesEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'qtySeries',
@@ -1623,8 +1604,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtySeriesGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtySeriesGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -1637,8 +1618,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtySeriesLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtySeriesLessThan(
     int value, {
     bool include = false,
   }) {
@@ -1651,8 +1632,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> qtySeriesBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      qtySeriesBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1669,8 +1650,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1683,8 +1664,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1699,8 +1680,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1715,8 +1696,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1735,8 +1716,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1749,8 +1730,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1763,8 +1744,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       restTimeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1775,8 +1755,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       restTimeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1787,8 +1766,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'restTime',
@@ -1797,8 +1776,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> restTimeIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      restTimeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'restTime',
@@ -1807,8 +1786,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusEqualTo(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1821,8 +1800,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1837,8 +1816,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1853,8 +1832,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1873,8 +1852,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusStartsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1887,8 +1866,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusEndsWith(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1901,8 +1880,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       statusContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1913,8 +1891,7 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-          QAfterFilterCondition>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
       statusMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -1925,8 +1902,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusIsEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'status',
@@ -1935,8 +1912,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> statusIsNotEmpty() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      statusIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'status',
@@ -1945,8 +1922,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtIsNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'updatedAt',
@@ -1954,8 +1931,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtIsNotNull() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'updatedAt',
@@ -1963,8 +1940,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtEqualTo(DateTime? value) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'updatedAt',
@@ -1973,8 +1950,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtGreaterThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtGreaterThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -1987,8 +1964,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtLessThan(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -2001,8 +1978,8 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity,
-      QAfterFilterCondition> updatedAtBetween(
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterFilterCondition>
+      updatedAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -2020,204 +1997,200 @@ extension UserWorkoutPlanEntityQueryFilter on QueryBuilder<
   }
 }
 
-extension UserWorkoutPlanEntityQueryObject on QueryBuilder<
-    UserWorkoutPlanEntity, UserWorkoutPlanEntity, QFilterCondition> {}
+extension UserWorkoutPlanQueryObject
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QFilterCondition> {}
 
-extension UserWorkoutPlanEntityQueryLinks on QueryBuilder<UserWorkoutPlanEntity,
-    UserWorkoutPlanEntity, QFilterCondition> {}
+extension UserWorkoutPlanQueryLinks
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QFilterCondition> {}
 
-extension UserWorkoutPlanEntityQuerySortBy
-    on QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QSortBy> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+extension UserWorkoutPlanQuerySortBy
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QSortBy> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByComments() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'comments', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCommentsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'comments', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCustomExercise() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customExercise', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCustomExerciseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customExercise', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCustomProgram() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customProgram', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByCustomProgramDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customProgram', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecution() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'execution', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecutionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'execution', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecutionMethod() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionMethod', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecutionMethodDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionMethod', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecutionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExecutionTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      sortByObs() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> sortByObs() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'obs', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      sortByObsDesc() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> sortByObsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'obs', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      sortByQtyReps() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> sortByQtyReps() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtyReps', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByQtyRepsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtyReps', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByQtySeries() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtySeries', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByQtySeriesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtySeries', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByRestTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'restTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByRestTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'restTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      sortByStatus() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
@@ -2225,212 +2198,206 @@ extension UserWorkoutPlanEntityQuerySortBy
   }
 }
 
-extension UserWorkoutPlanEntityQuerySortThenBy
-    on QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QSortThenBy> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+extension UserWorkoutPlanQuerySortThenBy
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QSortThenBy> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByComments() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'comments', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCommentsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'comments', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCustomExercise() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customExercise', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCustomExerciseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customExercise', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCustomProgram() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customProgram', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByCustomProgramDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'customProgram', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecution() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'execution', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecutionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'execution', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecutionMethod() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionMethod', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecutionMethodDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionMethod', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecutionTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExecutionTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'executionTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenById() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenByIdDesc() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenByObs() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenByObs() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'obs', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenByObsDesc() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenByObsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'obs', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenByQtyReps() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenByQtyReps() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtyReps', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByQtyRepsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtyReps', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByQtySeries() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtySeries', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByQtySeriesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'qtySeries', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByRestTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'restTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByRestTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'restTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
-      thenByStatus() {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QAfterSortBy>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QAfterSortBy>
       thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
@@ -2438,23 +2405,23 @@ extension UserWorkoutPlanEntityQuerySortThenBy
   }
 }
 
-extension UserWorkoutPlanEntityQueryWhereDistinct
-    on QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct> {
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
-      distinctByComments({bool caseSensitive = true}) {
+extension UserWorkoutPlanQueryWhereDistinct
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> distinctByComments(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'comments', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByCustomExercise({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'customExercise',
@@ -2462,7 +2429,7 @@ extension UserWorkoutPlanEntityQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByCustomProgram({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'customProgram',
@@ -2470,14 +2437,14 @@ extension UserWorkoutPlanEntityQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
-      distinctByExecution({bool caseSensitive = true}) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> distinctByExecution(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'execution', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByExecutionMethod({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'executionMethod',
@@ -2485,7 +2452,7 @@ extension UserWorkoutPlanEntityQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByExecutionTime({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'executionTime',
@@ -2493,49 +2460,49 @@ extension UserWorkoutPlanEntityQueryWhereDistinct
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByExternalId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'externalId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
-      distinctByObs({bool caseSensitive = true}) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> distinctByObs(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'obs', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByQtyReps() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'qtyReps');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByQtySeries() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'qtySeries');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
-      distinctByRestTime({bool caseSensitive = true}) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> distinctByRestTime(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'restTime', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
-      distinctByStatus({bool caseSensitive = true}) {
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct> distinctByStatus(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, UserWorkoutPlanEntity, QDistinct>
+  QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QDistinct>
       distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
@@ -2543,104 +2510,98 @@ extension UserWorkoutPlanEntityQueryWhereDistinct
   }
 }
 
-extension UserWorkoutPlanEntityQueryProperty on QueryBuilder<
-    UserWorkoutPlanEntity, UserWorkoutPlanEntity, QQueryProperty> {
-  QueryBuilder<UserWorkoutPlanEntity, int, QQueryOperations> idProperty() {
+extension UserWorkoutPlanQueryProperty
+    on QueryBuilder<UserWorkoutPlan, UserWorkoutPlan, QQueryProperty> {
+  QueryBuilder<UserWorkoutPlan, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
-      commentsProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> commentsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'comments');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, DateTime?, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, DateTime?, QQueryOperations>
       createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations>
       customExerciseProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customExercise');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations>
       customProgramProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customProgram');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
-      executionProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> executionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'execution');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations>
       executionMethodProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'executionMethod');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations>
       executionTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'executionTime');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
-      externalIdProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> externalIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'externalId');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations> obsProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> obsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'obs');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, int, QQueryOperations> qtyRepsProperty() {
+  QueryBuilder<UserWorkoutPlan, int, QQueryOperations> qtyRepsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qtyReps');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, int, QQueryOperations>
-      qtySeriesProperty() {
+  QueryBuilder<UserWorkoutPlan, int, QQueryOperations> qtySeriesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'qtySeries');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
-      restTimeProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> restTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'restTime');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, String, QQueryOperations>
-      statusProperty() {
+  QueryBuilder<UserWorkoutPlan, String, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
     });
   }
 
-  QueryBuilder<UserWorkoutPlanEntity, DateTime?, QQueryOperations>
+  QueryBuilder<UserWorkoutPlan, DateTime?, QQueryOperations>
       updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');

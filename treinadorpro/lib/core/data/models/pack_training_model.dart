@@ -1,7 +1,7 @@
 
 import 'package:treinadorpro/core/data/models/user_model.dart';
 
-import '../../domain/entities/pack_training_entity.dart';
+import '../../domain/entities/pack_training.dart';
 
 class PackTrainingModel extends PackTrainingEntity {
   const PackTrainingModel({

@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/core/domain/entities/user_entity.dart';
+import 'package:treinadorpro/core/domain/entities/user.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_entity_local_storage_service.dart';
 
 import '../../../main.dart';
@@ -8,25 +8,25 @@ class UserEntityLocalStorageServiceIsar implements IUserEntityLocalStorageServic
   @override
   Future<void> delete(int id) async {
     await isar.writeTxn(() async {
-      await isar.userEntitys.delete(id);
+      await isar.users.delete(id);
     });
   }
 
   @override
-  Future<List<UserEntity>> getAll() async {
-    return await isar.userEntitys.where().findAll();
+  Future<List<User>> getAll() async {
+    return await isar.users.where().findAll();
   }
 
   @override
-  Future<UserEntity?> getById(int id) async {
-    UserEntity? userEntity = await isar.userEntitys.get(id);
+  Future<User?> getById(int id) async {
+    User? userEntity = await isar.users.get(id);
     return userEntity;
   }
 
   @override
-  Future<void> save(UserEntity user) async{
+  Future<void> save(User user) async{
     await isar.writeTxn(() async {
-      await isar.userEntitys.put(user);
+      await isar.users.put(user);
     });
 
   }
