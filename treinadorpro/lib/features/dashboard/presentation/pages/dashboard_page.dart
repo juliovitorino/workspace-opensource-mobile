@@ -11,12 +11,12 @@ import 'package:treinadorpro/features/trainingpackage/presentation/pages/trainin
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../../core/constants/styles.dart';
-import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_impl.dart';
+import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {
 
-  final _userEntityLocalStorage = UserEntityLocalStorageServiceImpl();
+  final _userEntityLocalStorage = UserEntityLocalStorageServiceIsar();
 
   @override
   Widget build(BuildContext context) {

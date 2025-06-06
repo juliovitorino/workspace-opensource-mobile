@@ -6,7 +6,7 @@ import 'package:treinadorpro/features/login/presentation/blocs/login_state.dart'
 
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_impl.dart';
+import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_brand_image.dart';
 import '../../../../core/widgets/pro_widget_rounded_button.dart';
@@ -17,7 +17,7 @@ import '../widgets/pro_widget_social_button_row.dart';
 
 class LoginPage extends StatelessWidget {
   final AppConfig config;
-  final IUserEntityLocalStorageService _userEntityLocalStorage = UserEntityLocalStorageServiceImpl();
+  final IUserEntityLocalStorageService _userEntityLocalStorage = UserEntityLocalStorageServiceIsar();
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();

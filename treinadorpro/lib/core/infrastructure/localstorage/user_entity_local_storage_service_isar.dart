@@ -4,7 +4,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_entity_local_
 
 import '../../../main.dart';
 
-class UserEntityLocalStorageServiceImpl implements IUserEntityLocalStorageService {
+class UserEntityLocalStorageServiceIsar implements IUserEntityLocalStorageService {
   @override
   Future<void> delete(int id) async {
     await isar.writeTxn(() async {
