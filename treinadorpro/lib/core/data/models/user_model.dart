@@ -1,8 +1,10 @@
+import 'package:isar/isar.dart';
+
 import '../../domain/entities/user.dart';
 
 class UserModel extends User {
   const UserModel({
-    required int id,
+    required Id id,
     required String uuidId,
     required String name,
     required String email,

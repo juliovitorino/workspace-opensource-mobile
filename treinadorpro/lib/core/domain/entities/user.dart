@@ -4,7 +4,7 @@ part 'user.g.dart'; // will be generated with build_runner
 
 @Collection()
 class User {
-  final Id? id;
+  final Id id;
   final String uuidId;
   final String name;
   final String email;
@@ -21,7 +21,7 @@ class User {
   final DateTime? updatedAt;
 
   const User({
-    this.id,
+    required this.id,
     required this.uuidId,
     required this.name,
     required this.email,
