@@ -20,12 +20,6 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? trainerName;
-
-    _userEntityLocalStorage.getById(99999).then((userEntity) {
-      trainerName = userEntity?.name;
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: Text('AppName'),
