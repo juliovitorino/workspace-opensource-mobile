@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/domain/entities/user_entity.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
@@ -10,11 +11,21 @@ import 'package:treinadorpro/features/trainerprofile/presentation/pages/trainer_
 import 'package:treinadorpro/features/trainingpackage/presentation/training_packages_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
+import '../../../../core/infrastructure/storage/user_entity_local_storage_service_impl.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {
+
+  final _userEntityLocalStorage = UserEntityLocalStorageServiceImpl();
+
   @override
   Widget build(BuildContext context) {
+    String? trainerName;
+
+    _userEntityLocalStorage.getById(99999).then((userEntity) {
+      trainerName = userEntity?.name;
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AppName'),
@@ -43,10 +54,16 @@ class DashboardPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Text(
-              'Bom dia, Julio! 👋',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            FutureBuilder(future: _userEntityLocalStorage.getById(99999), builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('Carregando...');
+              } else if (snapshot.hasData && snapshot.data != null) {
+                return Text('Bem-vindo, ${snapshot.data!.name} 👋',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),);
+              } else {
+                return const Text('Usuário não encontrado');
+              }
+            }),
             SizedBox(height: 8),
             Text('📅 Hoje: Sexta-feira, 31 de Maio'),
             SizedBox(height: 16),

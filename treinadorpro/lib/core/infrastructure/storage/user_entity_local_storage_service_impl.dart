@@ -19,13 +19,17 @@ class UserEntityLocalStorageServiceImpl implements IUserEntityLocalStorageServic
 
   @override
   Future<UserEntity?> getById(int id) async {
-    return await isar.userEntitys.get(id);
+    UserEntity? userEntity = await isar.userEntitys.get(id);
+    print("${userEntity?.name}");
+    return userEntity;
   }
 
   @override
   Future<void> save(UserEntity user) async{
     await isar.writeTxn(() async {
       await isar.userEntitys.put(user);
+      print("Salvando objeto com id = ${user.id} ${user.name}");
+
     });
 
   }
