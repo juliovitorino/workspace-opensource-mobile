@@ -1,5 +1,10 @@
+import 'package:isar/isar.dart';
+
+part 'user_entity.g.dart'; // will be generated with build_runner
+
+@Collection()
 class UserEntity {
-  final int? id;
+  final Id? id;
   final String uuidId;
   final String name;
   final String email;
