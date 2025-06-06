@@ -4,7 +4,7 @@ part 'user_entity.g.dart'; // will be generated with build_runner
 
 @Collection()
 class UserEntity {
-  final Id id;
+  final Id? id;
   final String uuidId;
   final String name;
   final String email;
@@ -21,7 +21,7 @@ class UserEntity {
   final DateTime? updatedAt;
 
   const UserEntity({
-    required this.id,
+    this.id,
     required this.uuidId,
     required this.name,
     required this.email,

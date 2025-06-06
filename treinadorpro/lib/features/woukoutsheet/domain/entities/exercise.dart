@@ -1,5 +1,10 @@
+import 'package:isar/isar.dart';
+
+part 'exercise.g.dart';
+
+@Collection()
 class Exercise {
-  final int id;
+  final Id? id;
   final String namePt;
   final String nameEn;
   final String nameEs;
@@ -7,10 +12,12 @@ class Exercise {
   final String? videoUrlEn;
   final String? videoUrlEs;
   final String imageUuid;
-  final String status;
+  final String? status; // 'A', 'B', 'I', 'P'
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   const Exercise({
-    required this.id,
+    this.id,
     required this.namePt,
     required this.nameEn,
     required this.nameEs,
@@ -18,7 +25,9 @@ class Exercise {
     this.videoUrlEn,
     this.videoUrlEs,
     required this.imageUuid,
-    required this.status,
+    this.status,
+    this.createdAt,
+    this.updatedAt
   });
 
   static List<Exercise> exercises = [

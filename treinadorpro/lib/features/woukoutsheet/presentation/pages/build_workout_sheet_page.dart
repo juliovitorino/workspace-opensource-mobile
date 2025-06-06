@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user_entity.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/Exercise.dart';
+import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/goal.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/program.dart';
@@ -365,7 +365,7 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
                   }
                 },
                 icon: Icon(Icons.check_circle),
-                label: Text('Salvar Exercício'),
+                label: Text('Salvar Exercício no Rascunho da Ficha'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),

@@ -1,9 +1,17 @@
+import 'package:isar/isar.dart';
+
 import 'user_entity.dart';
 
+part 'pack_training_entity.g.dart';
+
+@Collection()
 class PackTrainingEntity {
-  final int? id;
+  final Id? id;
   final String externalId;
-  final UserEntity personalUser;
+
+  @ignore
+  final UserEntity? personalUser;
+
   final String description;
   final int durationDays;
   final int weeklyFrequency;
@@ -17,7 +25,7 @@ class PackTrainingEntity {
   const PackTrainingEntity({
     this.id,
     required this.externalId,
-    required this.personalUser,
+    this.personalUser,
     required this.description,
     required this.durationDays,
     required this.weeklyFrequency,

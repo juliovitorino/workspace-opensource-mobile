@@ -2,7 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/domain/entities/pack_training_entity.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/widgets/pro_widget_card_pack_training.dart';
 
-class TrainingPackagesPage extends StatelessWidget {
+class TrainingPackagePage extends StatefulWidget {
+  const TrainingPackagePage({super.key});
+
+  @override
+  State<TrainingPackagePage> createState() => _TrainingPackagePageState();
+}
+
+class _TrainingPackagePageState extends State<TrainingPackagePage> {
+
+  List<PackTrainingEntity>? packTrainingEntityList;
+
+  @override
+  void initState() {
+    // copy from mocked if environment os dev
+    packTrainingEntityList = PackTrainingEntity.packTrainings.toList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +36,25 @@ class TrainingPackagesPage extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: PackTrainingEntity.packTrainings.length,
+        itemCount: packTrainingEntityList!.length,
         itemBuilder: (context, index) {
-          final pkg = PackTrainingEntity.packTrainings[index];
+          final pkg = packTrainingEntityList![index];
           return ProWidgetCardPackTraining(pkg: pkg);
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navegar para página de adicionar pacote
+          setState(() {
+
+            packTrainingEntityList?.add(PackTrainingEntity(
+                externalId: 'dssdfsdfdsf',
+                description: 'bbbb',
+                durationDays: 1,
+                weeklyFrequency: 1,
+                price: 1,
+                notes: 'sldkfskdf',
+                status: 'A'));
+          });
         },
         tooltip: 'Adicionar novo pacote',
         child: Icon(Icons.add),

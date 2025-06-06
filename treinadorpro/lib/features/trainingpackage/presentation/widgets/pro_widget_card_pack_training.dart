@@ -45,8 +45,8 @@ class ProWidgetCardPackTraining extends StatelessWidget {
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.edit),
-                  label: Text('Editar'),
+                  icon: Icon(Icons.visibility),
+                  label: Text('Detalhes'),
                 ),
               ]
           ),
