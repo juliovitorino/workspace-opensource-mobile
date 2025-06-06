@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/constants/styles.dart';
 
-class RoundedButton extends StatelessWidget {
+class ProWidgetRoundedButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final Color color, textColor;
 
-  const RoundedButton({
+  const ProWidgetRoundedButton({
     super.key,
     required this.text,
     this.onPressed,

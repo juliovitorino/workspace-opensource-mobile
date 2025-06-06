@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
-import 'package:treinadorpro/core/widgets/brand_image.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_brand_image.dart';
 
 import '../../../../config/app_config.dart';
-import '../widgets/text_splash.dart';
+import '../widgets/pro_widget_text_splash.dart';
 
 class SplashPage extends StatefulWidget {
   final AppConfig config;
@@ -54,9 +54,9 @@ class _SplashPageState extends State<SplashPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextSplash(text: widget.config.appName),
-                        TextSplash(text: 'Carregando configurações'),
-                        TextSplash(
+                        ProWidgetTextSplash(text: widget.config.appName),
+                        ProWidgetTextSplash(text: 'Carregando configurações'),
+                        ProWidgetTextSplash(
                           text: 'Versão ${widget.config.appMinorVersion}',
                         ),
                       ],
@@ -76,7 +76,7 @@ class _SplashPageState extends State<SplashPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    BrandImage(imagePath: 'assets/logos/logo.jpg')
+                    ProWidgetBrandImage(imagePath: 'assets/logos/logo.jpg')
                   ],
                 ),
               ),

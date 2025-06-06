@@ -6,7 +6,7 @@ import 'package:treinadorpro/features/validatesixdigit/blocs/validate_six_digit_
 
 import '../../../config/app_config.dart';
 import '../../../config/service_locator.dart';
-import '../../../core/widgets/rounded_button.dart';
+import '../../../core/widgets/pro_widget_rounded_button.dart';
 import '../../../l10n/app_localizations.dart';
 
 class ValidateSixDigitPage extends StatelessWidget {
@@ -37,7 +37,7 @@ class ValidateSixDigitPage extends StatelessWidget {
   }
 
   Widget _buildValidateButton(BuildContext context) {
-    return RoundedButton(
+    return ProWidgetRoundedButton(
       text: 'VALIDAR',
       onPressed: () {
         if (_formKey.currentState!.validate()) {

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/constants/styles.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_circle_avatar.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_heading_name.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 
 class TrainerProfilePageDetail extends StatelessWidget {
   final String name = 'Jorge Mendes';
@@ -39,32 +44,29 @@ class TrainerProfilePageDetail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 45,
-              child: Text(name[0], style: TextStyle(fontSize: 32)),
-            ),
+            ProWidgetCircleAvatar(name: name),
             SizedBox(height: 12),
-            Text(name, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            ProWidgetHeadingName(name: name),
             SizedBox(height: 4),
             Text(cref, style: TextStyle(color: Colors.grey[700])),
             Divider(height: 32),
 
-            _sectionTitle('Contato'),
-            _infoRow('Telefone', phone),
-            _infoRow('E-mail', email),
-            _infoRow('Nascimento', birthDate),
+            ProWidgetSectionTitle(title: 'Contato'),
+            ProWidgetInfoRow(label: 'Telefone', value: phone),
+            ProWidgetInfoRow(label: 'E-mail', value: email),
+            ProWidgetInfoRow(label: 'Nascimento', value: birthDate),
 
             SizedBox(height: 16),
-            _sectionTitle('Atuação'),
-            _infoRow('Local', location),
-            _infoRow('Especialidades', specialties.join(', ')),
-            _infoRow('Experiência', experience),
+            ProWidgetSectionTitle(title: 'Atuação'),
+            ProWidgetInfoRow(label: 'Local', value: location),
+            ProWidgetInfoRow(label: 'Especialidades', value: specialties.join(', ')),
+            ProWidgetInfoRow(label: 'Experiência', value: experience),
 
             SizedBox(height: 16),
-            _sectionTitle('Indicadores'),
-            _infoRow('Alunos ativos', activeStudents.toString()),
-            _infoRow('Treinos no mês', sessionsThisMonth.toString()),
-            _infoRow('Faturamento', revenue),
+            ProWidgetSectionTitle(title: 'Indicadores'),
+            ProWidgetInfoRow(label: 'Alunos ativos', value: activeStudents.toString()),
+            ProWidgetInfoRow(label: 'Treinos no mês', value: sessionsThisMonth.toString()),
+            ProWidgetInfoRow(label: 'Faturamento', value: revenue),
 
             SizedBox(height: 24),
             ElevatedButton.icon(
@@ -86,22 +88,4 @@ class TrainerProfilePageDetail extends StatelessWidget {
     );
   }
 
-  Widget _sectionTitle(String title) => Align(
-    alignment: Alignment.centerLeft,
-    child: Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-    ),
-  );
-
-  Widget _infoRow(String label, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label + ':', style: TextStyle(fontWeight: FontWeight.w500)),
-        Flexible(child: Text(value, textAlign: TextAlign.right)),
-      ],
-    ),
-  );
 }

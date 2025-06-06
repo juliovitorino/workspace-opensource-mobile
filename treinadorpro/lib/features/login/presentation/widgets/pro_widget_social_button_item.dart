@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SocialButtonItem extends StatelessWidget {
+class ProWidgetSocialButtonItem extends StatelessWidget {
   final AssetImage logo;
   final void Function()? onTap;
-  const SocialButtonItem({super.key, required this.logo, required this.onTap});
+  const ProWidgetSocialButtonItem({super.key, required this.logo, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

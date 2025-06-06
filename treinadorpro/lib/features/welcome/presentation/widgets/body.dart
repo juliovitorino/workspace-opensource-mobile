@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/config/service_locator.dart';
-import 'package:treinadorpro/core/widgets/brand_image.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_brand_image.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/register/presentation/pages/register_page.dart';
 import 'package:treinadorpro/features/welcome/presentation/widgets/background.dart';
-import 'package:treinadorpro/core/widgets/rounded_button.dart';
-import 'package:treinadorpro/features/welcome/presentation/widgets/language_dropdown_button.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
+import 'package:treinadorpro/features/welcome/presentation/widgets/pro_widget_language_dropdown_button.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../config/app_config.dart';
@@ -27,9 +27,9 @@ class Body extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: size.height * 0.03),
-          BrandImage(imagePath: "assets/logos/logo.jpg", height: 246, width: 256),
+          ProWidgetBrandImage(imagePath: "assets/logos/logo.jpg", height: 246, width: 256),
           SizedBox(height: size.height * 0.03),
-          RoundedButton(
+          ProWidgetRoundedButton(
             text: AppLocalizations.of(context)!.login,
             onPressed: () {
               Navigator.push(
@@ -42,7 +42,7 @@ class Body extends StatelessWidget {
               );
             },
           ),
-          RoundedButton(
+          ProWidgetRoundedButton(
             text: AppLocalizations.of(context)!.signup,
             onPressed: () {
               Navigator.push(
@@ -57,7 +57,7 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.03),
           Text(AppLocalizations.of(context)!.languages),
-          LanguageDropdownButton(),
+          ProWidgetLanguageDropdownButton(),
           Text('Versão ${config.appMinorVersion} - ${config.enviroment}')
         ],
       ),

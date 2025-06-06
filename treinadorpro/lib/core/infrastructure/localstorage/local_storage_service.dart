@@ -1,4 +1,4 @@
-abstract class IStorageService<T> {
+abstract class ILocalStorageService<T> {
 
   Future<void> save(T object);
 

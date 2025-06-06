@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/constants/styles.dart';
 
 import '../../domain/entities/available_time.dart';
 
-class FreeAvailableTime extends StatefulWidget {
+class ProWidgetFreeAvailableTime extends StatefulWidget {
   @override
-  State<FreeAvailableTime> createState() => _FreeAvailableTimeState();
+  State<ProWidgetFreeAvailableTime> createState() => _ProWidgetFreeAvailableTimeState();
 }
 
-class _FreeAvailableTimeState extends State<FreeAvailableTime> {
+class _ProWidgetFreeAvailableTimeState extends State<ProWidgetFreeAvailableTime> {
   final List<String> days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
   int selectedDay = 0;
@@ -29,7 +30,7 @@ class _FreeAvailableTimeState extends State<FreeAvailableTime> {
         SizedBox(height: 16),
         Text(
           'Selecione um dia da semana para ver agenda livre:',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: kHeading,
         ),
         SizedBox(height: 8),
         SizedBox(
@@ -65,7 +66,7 @@ class _FreeAvailableTimeState extends State<FreeAvailableTime> {
         SizedBox(height: 16),
         Text(
           filteredTimes.length == 0 ? 'Não há horário disponível' : 'Encontrei ${filteredTimes.length} horários disponíveis:',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: kHeading,
         ),
         SizedBox(height: 8),
 

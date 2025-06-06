@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/constants/styles.dart';
 
-class TextFieldContainer extends StatelessWidget {
+class ProWidgetTextFieldContainer extends StatelessWidget {
   final Widget child;
   final Color color;
-  const TextFieldContainer({super.key, required this.child, this.color = kPrimaryLightColor});
+  const ProWidgetTextFieldContainer({super.key, required this.child, this.color = kPrimaryLightColor});
 
   @override
   Widget build(BuildContext context) {
