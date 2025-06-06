@@ -1,7 +1,5 @@
 import 'app_config.dart';
-import 'package:injectable/injectable.dart';
 
-@Singleton()
 class DevConfig implements AppConfig {
   @override
   String get apiBackendUrl => 'https://dev.api.exemplo.com';

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treinadorpro/core/domain/entities/user_entity.dart';
+import 'package:treinadorpro/core/infrastructure/storage/user_entity_local_storage_service_impl.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state.dart';
 
 import '../../../../config/app_config.dart';
-import '../../../../config/service_locator.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/brand_image.dart';
@@ -14,13 +15,14 @@ import '../widgets/rounded_password_field.dart';
 import '../widgets/social_button_row.dart';
 
 class LoginPage extends StatelessWidget {
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _userEntityLocalStorage = UserEntityLocalStorageServiceImpl();
 
-  LoginPage({super.key});
+  LoginPage({super.key, required this.config});
 
   Future<void> _processFormListener(BuildContext context, HandlerState state) async {
     if (state.errorMessage != null) {
@@ -36,6 +38,7 @@ class LoginPage extends StatelessWidget {
             ),
       );
 
+      await _userEntityLocalStorage.save(UserEntity.currentUser);
       Navigator.popAndPushNamed(context, AppRoutes.dashboard);
 
     }

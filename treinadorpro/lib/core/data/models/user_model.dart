@@ -2,7 +2,7 @@ import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
-    int? id,
+    required int id,
     required String uuidId,
     required String name,
     required String email,

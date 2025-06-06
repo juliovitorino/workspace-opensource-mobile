@@ -1,5 +1,10 @@
+import 'package:isar/isar.dart';
+
+part 'user_entity.g.dart'; // will be generated with build_runner
+
+@Collection()
 class UserEntity {
-  final int? id;
+  final Id id;
   final String uuidId;
   final String name;
   final String email;
@@ -16,7 +21,7 @@ class UserEntity {
   final DateTime? updatedAt;
 
   const UserEntity({
-    this.id,
+    required this.id,
     required this.uuidId,
     required this.name,
     required this.email,
@@ -32,6 +37,24 @@ class UserEntity {
     this.createdAt,
     this.updatedAt,
   });
+
+  static final UserEntity currentUser = UserEntity(
+    id: 99999,
+    uuidId: '5711aba6-9100-4f88-9a40-ced7bbc45d85',
+    name: 'Satoshi Nakamoto',
+    email: 'satoshi.nakamoto@example.com',
+    cellphone: '+5511999990001',
+    birthday: DateTime(1990, 5, 10),
+    gender: 'F',
+    urlPhotoProfile: 'https://example.com/photos/satoshi.jpg',
+    userProfile: 'PERSONAL_TRAINER',
+    masterLanguage: 'pt-BR',
+    guardianIntegration: null,
+    lastLogin: DateTime.now().subtract(const Duration(days: 1)),
+    status: 'A',
+    createdAt: DateTime.now().subtract(const Duration(days: 365)),
+    updatedAt: DateTime.now(),
+  );
 
   static final List<UserEntity> users = [
     UserEntity(

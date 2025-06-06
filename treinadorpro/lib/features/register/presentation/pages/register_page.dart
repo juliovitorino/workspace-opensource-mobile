@@ -11,7 +11,7 @@ import '../blocs/register_state.dart';
 
 class RegisterPage extends StatelessWidget {
 
-  final config = getIt<AppConfig>();
+  final AppConfig config;
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -20,7 +20,7 @@ class RegisterPage extends StatelessWidget {
   final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
 
-  RegisterPage({super.key});
+  RegisterPage({super.key, required this.config});
 
   String? passwordChecker(BuildContext context, String pwd1, String pwd2) {
     if( pwd1 != pwd2) {

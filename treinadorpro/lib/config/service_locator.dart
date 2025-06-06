@@ -1,23 +1,16 @@
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
 import 'package:treinadorpro/config/dev_config.dart';
 import 'package:treinadorpro/config/prod_config.dart';
 
 import 'app_config.dart';
 
-final getIt = GetIt.instance;
-
-@InjectableInit()
-void configureDependencies() {
-
+AppConfig configureDependencies() {
   const env = String.fromEnvironment('ENV');
 
-  switch (env){
+  switch (env) {
     case 'prod':
-      getIt.registerSingleton<AppConfig>(ProdConfig());
-      break;
+      return ProdConfig();
     case 'dev':
     default:
-      getIt.registerSingleton<AppConfig>(DevConfig());
+      return DevConfig();
   }
 }
