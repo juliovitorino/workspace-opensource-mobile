@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 import 'package:treinadorpro/treinador_pro_app.dart';
 
-class LanguageDropdownButton extends StatelessWidget {
-  const LanguageDropdownButton({super.key});
+class ProWidgetLanguageDropdownButton extends StatelessWidget {
+  const ProWidgetLanguageDropdownButton({super.key});
 
   @override
   Widget build(BuildContext context) {

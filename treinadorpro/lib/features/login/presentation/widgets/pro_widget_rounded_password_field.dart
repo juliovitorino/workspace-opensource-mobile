@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/styles.dart';
-import '../../../../core/widgets/text_field_container.dart';
+import '../../../../core/widgets/pro_widget_text_field_container.dart';
 
 
-class RoundedPasswordField extends StatelessWidget {
+class ProWidgetRoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final Color color;
   final TextEditingController? controller;
-  const RoundedPasswordField({super.key, required this.onChanged, this.color = kPrimaryLightColor, this.controller});
+  const ProWidgetRoundedPasswordField({super.key, required this.onChanged, this.color = kPrimaryLightColor, this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return TextFieldContainer(
+    return ProWidgetTextFieldContainer(
       color: color,
       child: TextField(
         controller: controller,

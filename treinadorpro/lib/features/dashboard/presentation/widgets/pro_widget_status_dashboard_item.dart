@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/constants/styles.dart';
 
-class StatusDashboardItem extends StatelessWidget {
+class ProWidgetStatusDashboardItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String trailing;
   final Color? color;
   final VoidCallback? onTap;
 
-  const StatusDashboardItem({
+  const ProWidgetStatusDashboardItem({
     super.key,
     required this.icon,
     required this.title,

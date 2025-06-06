@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TextSplash extends StatelessWidget {
+class ProWidgetTextSplash extends StatelessWidget {
   final String text;
 
-  const TextSplash({super.key, required this.text});
+  const ProWidgetTextSplash({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/domain/entities/user_entity.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
-import 'package:treinadorpro/features/dashboard/presentation/widgets/status_dashboard_item.dart';
-import 'package:treinadorpro/features/dashboard/presentation/widgets/free_available_time.dart';
+import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
+import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
 import 'package:treinadorpro/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
@@ -11,6 +11,7 @@ import 'package:treinadorpro/features/trainerprofile/presentation/pages/trainer_
 import 'package:treinadorpro/features/trainingpackage/presentation/training_packages_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
+import '../../../../core/constants/styles.dart';
 import '../../../../core/infrastructure/storage/user_entity_local_storage_service_impl.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
@@ -53,7 +54,7 @@ class DashboardPage extends StatelessWidget {
                 return const Text('Carregando...');
               } else if (snapshot.hasData && snapshot.data != null) {
                 return Text('Bem-vindo, ${snapshot.data!.name} 👋',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),);
+                  style: kWelcomeUserMessageTextStyle);
               } else {
                 return const Text('Usuário não encontrado');
               }
@@ -61,7 +62,7 @@ class DashboardPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('📅 Hoje: Sexta-feira, 31 de Maio'),
             SizedBox(height: 16),
-            StatusDashboardItem(
+            ProWidgetStatusDashboardItem(
               icon: Icons.fitness_center,
               title: 'Treinos de hoje',
               trailing: '3 alunos',
@@ -72,7 +73,7 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
-            StatusDashboardItem(
+            ProWidgetStatusDashboardItem(
               icon: Icons.edit_note,
               title: 'Pacotes de Treino',
               trailing: '3 opções',
@@ -83,7 +84,7 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
-            StatusDashboardItem(
+            ProWidgetStatusDashboardItem(
               icon: Icons.attach_money,
               title: 'Pagamentos em atraso',
               trailing: '2 alunos',
@@ -95,7 +96,7 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
-            StatusDashboardItem(
+            ProWidgetStatusDashboardItem(
               icon: Icons.group,
               title: 'Alunos ativos',
               trailing: '18',
@@ -106,7 +107,7 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
-            StatusDashboardItem(
+            ProWidgetStatusDashboardItem(
               icon: Icons.bar_chart,
               title: 'Faturamento Maio',
               trailing: 'R\$ 4.200,00',
@@ -146,7 +147,7 @@ class DashboardPage extends StatelessWidget {
                 ),
               ],
             ),
-            FreeAvailableTime(),
+            ProWidgetFreeAvailableTime(),
           ],
         ),
       ),

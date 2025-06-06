@@ -7,12 +7,12 @@ import 'package:treinadorpro/features/login/presentation/blocs/login_state.dart'
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/states/handler_state.dart';
-import '../../../../core/widgets/brand_image.dart';
-import '../../../../core/widgets/rounded_button.dart';
+import '../../../../core/widgets/pro_widget_brand_image.dart';
+import '../../../../core/widgets/pro_widget_rounded_button.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../widgets/rounded_input_field.dart';
-import '../widgets/rounded_password_field.dart';
-import '../widgets/social_button_row.dart';
+import '../widgets/pro_widget_rounded_input_field.dart';
+import '../widgets/pro_widget_rounded_password_field.dart';
+import '../widgets/pro_widget_social_button_row.dart';
 
 class LoginPage extends StatelessWidget {
   final AppConfig config;
@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _buildLoginButton(BuildContext context) {
-    return RoundedButton(
+    return ProWidgetRoundedButton(
       text: 'ENTRAR',
       onPressed: () {
         if (_formKey.currentState!.validate()) {
@@ -69,15 +69,15 @@ class LoginPage extends StatelessWidget {
           children: [
             Text(AppLocalizations.of(context)!.login),
             SizedBox(height: size.height * 0.03),
-            BrandImage(imagePath: 'assets/logos/logo.jpg'),
+            ProWidgetBrandImage(imagePath: 'assets/logos/logo.jpg'),
             SizedBox(height: size.height * 0.03),
-            RoundedInputField(hintText: "Your Email", onChanged: (value) {}, controller: _emailController,),
-            RoundedPasswordField(onChanged: (value) {}, controller: _passwordController,),
+            ProWidgetRoundedInputField(hintText: "Your Email", onChanged: (value) {}, controller: _emailController,),
+            ProWidgetRoundedPasswordField(onChanged: (value) {}, controller: _passwordController,),
             const SizedBox(height: 20),
             state.isLoading
                 ? const CircularProgressIndicator()
                 : _buildLoginButton(context),
-            SocialButtonRow(),
+            ProWidgetSocialButtonRow(),
           ],
         ),
       ),

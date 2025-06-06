@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/features/login/presentation/widgets/social_button_item.dart';
+import 'package:treinadorpro/features/login/presentation/widgets/pro_widget_social_button_item.dart';
 
-class SocialButtonRow extends StatelessWidget {
-  const SocialButtonRow({super.key});
+class ProWidgetSocialButtonRow extends StatelessWidget {
+  const ProWidgetSocialButtonRow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +11,11 @@ class SocialButtonRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SocialButtonItem(
+          ProWidgetSocialButtonItem(
             onTap: () => print('Login with Apple tapped'),
             logo: AssetImage('assets/logos/apple.png'),
           ),
-          SocialButtonItem(
+          ProWidgetSocialButtonItem(
             onTap: () => print('Login with Google tapped'),
             logo: AssetImage('assets/logos/google.png'),
           ),

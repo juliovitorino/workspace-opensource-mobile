@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
-import 'package:treinadorpro/core/widgets/rounded_button.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../core/states/handler_state.dart';
@@ -76,7 +76,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _buildRegisterButton(BuildContext context) {
-    return RoundedButton(
+    return ProWidgetRoundedButton(
       text: AppLocalizations.of(context)!.formRegisterButton,
       onPressed: () {
         if (_formKey.currentState!.validate()) {
