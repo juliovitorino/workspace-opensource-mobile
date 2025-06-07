@@ -1,7 +1,7 @@
 import 'package:treinadorpro/core/data/models/user_model.dart';
-import '../../domain/entities/trainer_user_entity.dart';
+import '../../domain/entities/trainer_user.dart';
 
-class TrainerUserModel extends TrainerUserEntity {
+class TrainerUserModel extends TrainerUser {
   const TrainerUserModel({
     int? id,
     required UserModel personalUser,

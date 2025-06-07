@@ -1,9 +1,21 @@
-import 'user_entity.dart';
+import 'package:isar/isar.dart';
+import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
 
+import 'user.dart';
+
+part 'pack_training.g.dart';
+
+@Collection()
 class PackTrainingEntity {
-  final int? id;
+  final Id? id;
   final String externalId;
-  final UserEntity personalUser;
+
+  @ignore
+  final User? personalUser;
+
+  @ignore
+  final Modality? modality;
+
   final String description;
   final int durationDays;
   final int weeklyFrequency;
@@ -17,7 +29,8 @@ class PackTrainingEntity {
   const PackTrainingEntity({
     this.id,
     required this.externalId,
-    required this.personalUser,
+    this.personalUser,
+    this.modality,
     required this.description,
     required this.durationDays,
     required this.weeklyFrequency,
@@ -33,7 +46,8 @@ class PackTrainingEntity {
     PackTrainingEntity(
       id: 1,
       externalId: 'a14f1c8d-ccaa-4b32-9387-74d6ec3d0d01',
-      personalUser: UserEntity.users[0],
+      personalUser: User.users[0],
+      modality: Modality.modalities[0],
       description: 'Pacote Básico - 4 semanas',
       durationDays: 30,
       weeklyFrequency: 3,
@@ -47,7 +61,8 @@ class PackTrainingEntity {
     PackTrainingEntity(
       id: 2,
       externalId: 'b91f1d0a-bb52-4f32-9f70-68f5cb9f64f2',
-      personalUser: UserEntity.users[0],
+      personalUser: User.users[0],
+      modality: Modality.modalities[1],
       description: 'Pacote Intermediário - 8 semanas',
       durationDays: 60,
       weeklyFrequency: 4,
@@ -61,7 +76,8 @@ class PackTrainingEntity {
     PackTrainingEntity(
       id: 3,
       externalId: 'c82a2f4b-1e28-47ae-b1c2-48bdfde79961',
-      personalUser: UserEntity.users[0],
+      personalUser: User.users[0],
+      modality: Modality.modalities[2],
       description: 'Pacote Avançado - 12 semanas',
       durationDays: 90,
       weeklyFrequency: 5,

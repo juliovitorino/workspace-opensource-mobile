@@ -1,16 +1,26 @@
+import 'package:isar/isar.dart';
+
+part 'goal.g.dart';
+
+@Collection()
 class Goal {
-  final int id;
+  final Id? id;
   final String namePt;
   final String nameEn;
   final String nameEs;
-  final String status;
+  final String status; // 'A', 'B', 'I', 'P'
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   const Goal({
-    required this.id,
+    this.id,
     required this.namePt,
     required this.nameEn,
     required this.nameEs,
     required this.status,
+    this.createdAt,
+    this.updatedAt
+
   });
 
   static List<Goal> goals = [

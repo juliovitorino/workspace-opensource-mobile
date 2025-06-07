@@ -1,8 +1,10 @@
-import '../../domain/entities/user_entity.dart';
+import 'package:isar/isar.dart';
 
-class UserModel extends UserEntity {
+import '../../domain/entities/user.dart';
+
+class UserModel extends User {
   const UserModel({
-    required int id,
+    required Id id,
     required String uuidId,
     required String name,
     required String email,

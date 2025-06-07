@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/user_entity.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
-import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
+import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
 import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
 import 'package:treinadorpro/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
@@ -12,12 +11,12 @@ import 'package:treinadorpro/features/trainingpackage/presentation/pages/trainin
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../../core/constants/styles.dart';
-import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_impl.dart';
+import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {
 
-  final _userEntityLocalStorage = UserEntityLocalStorageServiceImpl();
+  final _userEntityLocalStorage = UserEntityLocalStorageServiceIsar();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +61,8 @@ class DashboardPage extends StatelessWidget {
             SizedBox(height: 8),
             Text('📅 Hoje: Sexta-feira, 31 de Maio'),
             SizedBox(height: 16),
+
+            // today workout
             ProWidgetStatusDashboardItem(
               icon: Icons.fitness_center,
               title: 'Treinos de hoje',
@@ -73,6 +74,8 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
+
+            // training packs
             ProWidgetStatusDashboardItem(
               icon: Icons.edit_note,
               title: 'Pacotes de Treino',
@@ -80,10 +83,12 @@ class DashboardPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => TrainingPackagesPage()),
+                  MaterialPageRoute(builder: (_) => TrainingPackagePage()),
                 );
               },
             ),
+
+            // overdue payments
             ProWidgetStatusDashboardItem(
               icon: Icons.attach_money,
               title: 'Pagamentos em atraso',
@@ -96,6 +101,8 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
+
+            // active students
             ProWidgetStatusDashboardItem(
               icon: Icons.group,
               title: 'Alunos ativos',
@@ -107,6 +114,8 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
+
+            // revenue monthly
             ProWidgetStatusDashboardItem(
               icon: Icons.bar_chart,
               title: 'Faturamento Maio',
@@ -118,7 +127,10 @@ class DashboardPage extends StatelessWidget {
                 );
               },
             ),
+
             SizedBox(height: 24),
+
+            //action buttons
             Wrap(
               spacing: 10,
               runSpacing: 10,
@@ -147,6 +159,8 @@ class DashboardPage extends StatelessWidget {
                 ),
               ],
             ),
+
+            // available free time
             ProWidgetFreeAvailableTime(),
           ],
         ),

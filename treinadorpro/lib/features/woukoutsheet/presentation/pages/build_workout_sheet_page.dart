@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/trainer_user_entity.dart';
+import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/Exercise.dart';
+import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/goal.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
 import 'package:treinadorpro/features/woukoutsheet/domain/entities/program.dart';
@@ -40,7 +40,7 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
   Program _program = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
   Exercise _exercise = Exercise.exercises.first;
-  TrainerUserEntity _trainerUser = TrainerUserEntity.trainerUsers.first;
+  TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   WeightUnit _weightUnit = WeightUnit.kg;
@@ -196,13 +196,13 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
 
 
               Text('Aluno'),
-              DropdownButtonFormField<TrainerUserEntity>(
-                items: TrainerUserEntity.trainerUsers
-                .where((e) => e.studentUser.userProfile.contains('STUDENT'))
+              DropdownButtonFormField<TrainerUser>(
+                items: TrainerUser.trainerUsers
+                .where((e) => e.studentUser!.userProfile.contains('STUDENT'))
                     .map(
                       (item) => DropdownMenuItem(
                         value: item,
-                        child: Text(item.studentUser.name),
+                        child: Text(item.studentUser!.name),
                       ),
                     )
                     .toList(),
@@ -365,7 +365,7 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
                   }
                 },
                 icon: Icon(Icons.check_circle),
-                label: Text('Salvar Exercício'),
+                label: Text('Salvar Exercício no Rascunho da Ficha'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),

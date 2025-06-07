@@ -4,7 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:treinadorpro/treinador_pro_app.dart';
 
 import 'config/service_locator.dart';
-import 'core/domain/entities/user_entity.dart';
+import 'core/domain/entities/user.dart';
 
 late Isar isar;
 
@@ -13,7 +13,7 @@ Future<void> main() async {
 
   final dir = await getApplicationDocumentsDirectory();
   isar = await Isar.open(
-    [UserEntitySchema], // lista de schemas usados
+    [UserSchema], // lista de schemas usados
     directory: dir.path,
   );
 

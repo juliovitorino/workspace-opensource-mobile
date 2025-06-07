@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
 
-part 'user_entity.g.dart'; // will be generated with build_runner
+part 'user.g.dart'; // will be generated with build_runner
 
 @Collection()
-class UserEntity {
+class User {
   final Id id;
   final String uuidId;
   final String name;
@@ -20,7 +20,7 @@ class UserEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const UserEntity({
+  const User({
     required this.id,
     required this.uuidId,
     required this.name,
@@ -38,7 +38,7 @@ class UserEntity {
     this.updatedAt,
   });
 
-  static final UserEntity currentUser = UserEntity(
+  static final User currentUser = User(
     id: 99999,
     uuidId: '5711aba6-9100-4f88-9a40-ced7bbc45d85',
     name: 'Satoshi Nakamoto',
@@ -56,8 +56,8 @@ class UserEntity {
     updatedAt: DateTime.now(),
   );
 
-  static final List<UserEntity> users = [
-    UserEntity(
+  static final List<User> users = [
+    User(
       id: 1,
       uuidId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
       name: 'Alice Maria Silva',
@@ -74,7 +74,7 @@ class UserEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 365)),
       updatedAt: DateTime.now(),
     ),
-    UserEntity(
+    User(
       id: 2,
       uuidId: 'e2c56db5-dffb-48d2-b060-d0f5a71096e0',
       name: 'Bruno Ferreira',
@@ -91,7 +91,7 @@ class UserEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 200)),
       updatedAt: DateTime.now(),
     ),
-    UserEntity(
+    User(
       id: 3,
       uuidId: '9a3c8d56-7e54-4a1a-939b-51b6efbfe22e',
       name: 'Carla Beatriz Souza',
@@ -108,7 +108,7 @@ class UserEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 500)),
       updatedAt: DateTime.now(),
     ),
-    UserEntity(
+    User(
       id: 4,
       uuidId: 'e2c56db5-dffb-48d2-b060-d0f5a71096e0',
       name: 'Antonio Carlos',
@@ -125,7 +125,7 @@ class UserEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 200)),
       updatedAt: DateTime.now(),
     ),
-    UserEntity(
+    User(
       id: 5,
       uuidId: 'e2c56db5-dffb-48d2-b060-d0f5a71096e0',
       name: 'Mayara Maravilha',

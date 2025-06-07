@@ -1,4 +1,4 @@
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/Exercise.dart';
+import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
 
 class ExerciseModel extends Exercise {
   final DateTime? createdAt;
