@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:treinadorpro/core/data/models/personal_feature_model.dart';
 
 import '../../domain/entities/user.dart';
 
@@ -19,6 +20,7 @@ class UserModel extends User {
     required String status,
     DateTime? createdAt,
     DateTime? updatedAt,
+    PersonalFeatureModel? personalFeature
   }) : super(
     id: id,
     uuidId: uuidId,
@@ -35,45 +37,48 @@ class UserModel extends User {
     status: status,
     createdAt: createdAt,
     updatedAt: updatedAt,
+    personalFeature: personalFeature
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    print("user_model => $json");
     return UserModel(
       id: json['id'],
-      uuidId: json['uuid_id'],
+      uuidId: json['uuidId'],
       name: json['name'],
       email: json['email'],
       cellphone: json['cellphone'],
       birthday: json['birthday'] != null ? DateTime.parse(json['birthday']) : null,
       gender: json['gender'],
-      urlPhotoProfile: json['url_photo_profile'],
-      userProfile: json['user_profile'],
-      masterLanguage: json['master_language'],
-      guardianIntegration: json['guardian_integration'],
-      lastLogin: json['last_login'] != null ? DateTime.parse(json['last_login']) : null,
+      urlPhotoProfile: json['urlPhotoProfile'],
+      userProfile: json['userProfile'],
+      masterLanguage: json['masterLanguage'],
+      guardianIntegration: json['guardianIntegration'] ?? '',
+      lastLogin: json['lastLogin'] != null ? DateTime.parse(json['lastLogin']) : null,
       status: json['status'] ?? 'A',
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+      personalFeature: PersonalFeatureModel.fromJson(json['personalFeature'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'uuid_id': uuidId,
+      'uuidId': uuidId,
       'name': name,
       'email': email,
       'cellphone': cellphone,
       'birthday': birthday?.toIso8601String(),
       'gender': gender,
-      'url_photo_profile': urlPhotoProfile,
-      'user_profile': userProfile,
-      'master_language': masterLanguage,
-      'guardian_integration': guardianIntegration,
-      'last_login': lastLogin?.toIso8601String(),
+      'urlPhotoProfile': urlPhotoProfile,
+      'userProfile': userProfile,
+      'masterLanguage': masterLanguage,
+      'guardianIntegration': guardianIntegration,
+      'lastLogin': lastLogin?.toIso8601String(),
       'status': status,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

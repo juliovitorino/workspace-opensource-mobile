@@ -1,72 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/constants/styles.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_circle_avatar.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_heading_name.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 
-class TrainerProfilePageDetail extends StatelessWidget {
-  final String name = 'Jorge Mendes';
-  final String cref = 'CREF 123456-G/RJ';
-  final String phone = '(21) 98765-4321';
-  final String email = 'jorge.pt@email.com';
-  final String birthDate = '12/06/1988';
-  final String experience = '8 anos';
+class TrainerProfilePageDetail extends ConsumerStatefulWidget {
+  const TrainerProfilePageDetail({super.key});
 
-  final List<String> specialties = [
-    'Musculação',
-    'Funcional',
-    'Online',
-    'Alongamento'
-  ];
+  @override
+  ConsumerState<TrainerProfilePageDetail> createState() => _TrainerProfilePageDetailState();
 
-  final String location = 'Academia PowerFit - Copacabana/RJ';
+}
+
+class _TrainerProfilePageDetailState extends ConsumerState<TrainerProfilePageDetail> {
   final int activeStudents = 22;
   final int sessionsThisMonth = 96;
   final String revenue = 'R\$ 6.480,00';
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+        ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userState = ref.watch(userViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meu Perfil'),
+        title: const Text('Meu Perfil'),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               // lógica para editar perfil
             },
           )
         ],
       ),
-      body: SingleChildScrollView(
+      body: userState.when(
+        data: (user) => _buildTrainerProfileContent(user),
+        error: (e, _) => Center(child: Text('Erro: $e')),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
+
+
+  Widget _buildTrainerProfileContent(UserModel user) =>
+      SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ProWidgetCircleAvatar(name: name),
+            ProWidgetCircleAvatar(name: user.name),
             SizedBox(height: 12),
-            ProWidgetHeadingName(name: name),
+            ProWidgetHeadingName(name: user.name),
             SizedBox(height: 4),
-            Text(cref, style: TextStyle(color: Colors.grey[700])),
+            Text(user.personalFeature!.register!, style: TextStyle(color: Colors.grey[700])),
             Divider(height: 32),
 
             ProWidgetSectionTitle(title: 'Contato'),
-            ProWidgetInfoRow(label: 'Telefone', value: phone),
-            ProWidgetInfoRow(label: 'E-mail', value: email),
-            ProWidgetInfoRow(label: 'Nascimento', value: birthDate),
+            ProWidgetInfoRow(label: 'Telefone', value: user.cellphone!),
+            ProWidgetInfoRow(label: 'E-mail', value: user.email!),
+            ProWidgetInfoRow(label: 'Nascimento', value: user.birthday.toString()),
 
             SizedBox(height: 16),
             ProWidgetSectionTitle(title: 'Atuação'),
-            ProWidgetInfoRow(label: 'Local', value: location),
-            ProWidgetInfoRow(label: 'Especialidades', value: specialties.join(', ')),
-            ProWidgetInfoRow(label: 'Experiência', value: experience),
+            ProWidgetInfoRow(label: 'Local', value: user.personalFeature!.place!),
+            ProWidgetInfoRow(label: 'Especialidades', value: user.personalFeature!.specialty!),
+            ProWidgetInfoRow(label: 'Experiência', value: user.personalFeature!.experience!),
+
+            SizedBox(height: 16),
+            ProWidgetSectionTitle(title: 'Plano'),
+            ProWidgetInfoRow(label: 'Descrição', value: 'FREEMIUM'),
+            ProWidgetInfoRow(label: 'Valor', value: 'BRL 67,00'),
+            ProWidgetInfoRow(label: 'Desconto', value: 'BRL 67,00'),
+            ProWidgetInfoRow(label: 'Frequência', value: 'Mensal'),
+            ProWidgetInfoRow(label: 'Vencimento', value: '2025-10-30'),
+            ProWidgetInfoRow(label: 'Qtde pacotes permitidos', value: '5'),
+            ProWidgetInfoRow(label: 'Qtde alunos permitidos', value: '15'),
+            ProWidgetInfoRow(label: 'Situação', value: 'PENDENTE'),
 
             SizedBox(height: 16),
             ProWidgetSectionTitle(title: 'Indicadores'),
             ProWidgetInfoRow(label: 'Alunos ativos', value: activeStudents.toString()),
             ProWidgetInfoRow(label: 'Treinos no mês', value: sessionsThisMonth.toString()),
             ProWidgetInfoRow(label: 'Faturamento', value: revenue),
+
+            SizedBox(height: 16),
+            ProWidgetSectionTitle(title: 'Outros'),
+            ProWidgetInfoRow(label: 'Situação', value: user.status),
+            ProWidgetInfoRow(label: 'Registro Criado em', value: user.createdAt.toString()),
+            ProWidgetInfoRow(label: 'Última Atualização', value: user.updatedAt.toString()),
+            ProWidgetInfoRow(label: 'Último login', value: user.lastLogin.toString()),
 
             SizedBox(height: 24),
             ElevatedButton.icon(
@@ -84,8 +117,5 @@ class TrainerProfilePageDetail extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
+      );
 }

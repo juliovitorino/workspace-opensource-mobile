@@ -10,8 +10,18 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
   @override
   Future<UserModel> fetchById(int id) async {
-    final json = await apiClient.get('https://jsonplaceholder.typicode.com/users/$id');
-    return UserModel.fromJson(json);
+    final response = await apiClient.get('https://jsonplaceholder.typicode.com/users/$id');
+    return UserModel.fromJson(response);
+  }
+
+  @override
+  Future<UserModel> fetchByUUID(String uuid) async {
+    print('user_remote_datasource :: uuid = $uuid');
+
+    final response = await apiClient.get('http://localhost:8080/v1/api/business/user/trainer/$uuid');
+    print("user_remote_datasource :: response = $response");
+    final userJson = response['objectResponse'];
+    return UserModel.fromJson(userJson);
   }
 
 }
