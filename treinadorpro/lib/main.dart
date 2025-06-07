@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/treinador_pro_app.dart';
@@ -12,10 +13,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final dir = await getApplicationDocumentsDirectory();
-  isar = await Isar.open(
-    [UserSchema],
-    directory: dir.path,
-  );
+  isar = await Isar.open([UserSchema], directory: dir.path);
 
-  runApp(TreinadorProApp(config: configureDependencies()));
+  // enclose App into a ProviderScope() for Consumer() widget
+  // to know that exists a provider
+  runApp(
+    ProviderScope(child: TreinadorProApp(config: configureDependencies())),
+  );
 }

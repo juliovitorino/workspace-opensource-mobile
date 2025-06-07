@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/constants/styles.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_circle_avatar.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_heading_name.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
+
+import '../../../../core/domain/entities/user.dart';
 
 class TrainerProfilePageDetail extends StatelessWidget {
   final String name = 'Jorge Mendes';
@@ -39,14 +43,35 @@ class TrainerProfilePageDetail extends StatelessWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
+      body: Consumer(
+          builder: (context, ref, _){
+            
+            // execute only once after first frame
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b');
+            });
+
+            final userState = ref.watch(userViewModelProvider);
+
+            return userState.when(
+                data: (user) => _buildTrainerProfileContent(user),
+                error: (e, _) => Center(child: Text('Erro: $e')),
+                loading: () => const Center(child: CircularProgressIndicator())
+            );
+
+          })
+    );
+  }
+
+  Widget _buildTrainerProfileContent(UserModel user) =>
+      SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ProWidgetCircleAvatar(name: name),
+            ProWidgetCircleAvatar(name: user.name),
             SizedBox(height: 12),
-            ProWidgetHeadingName(name: name),
+            ProWidgetHeadingName(name: user.name),
             SizedBox(height: 4),
             Text(cref, style: TextStyle(color: Colors.grey[700])),
             Divider(height: 32),
@@ -84,8 +109,5 @@ class TrainerProfilePageDetail extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
+      );
 }

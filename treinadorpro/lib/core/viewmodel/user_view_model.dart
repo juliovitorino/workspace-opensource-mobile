@@ -20,6 +20,18 @@ class UserViewModel extends StateNotifier<AsyncValue<UserModel>> {
 
   }
 
+  Future<void> findUserByUUID(String uuid) async {
+    try {
+      print('user_view_model :: uuid = $uuid');
+      state = const AsyncValue.loading();
+      final user = await _repository.findByUUID(uuid);
+      state = AsyncValue.data(user);
+    } catch(e, st) {
+      state = AsyncValue.error(e, st);
+    }
+
+  }
+
 
 
 }
