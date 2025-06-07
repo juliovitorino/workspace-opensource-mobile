@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:treinadorpro/core/data/models/personal_feature_model.dart';
 
 import '../../domain/entities/user.dart';
 
@@ -19,6 +20,7 @@ class UserModel extends User {
     required String status,
     DateTime? createdAt,
     DateTime? updatedAt,
+    PersonalFeatureModel? personalFeature
   }) : super(
     id: id,
     uuidId: uuidId,
@@ -35,6 +37,7 @@ class UserModel extends User {
     status: status,
     createdAt: createdAt,
     updatedAt: updatedAt,
+    personalFeature: personalFeature
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +58,7 @@ class UserModel extends User {
       status: json['status'] ?? 'A',
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+      personalFeature: PersonalFeatureModel.fromJson(json['personalFeature'])
     );
   }
 

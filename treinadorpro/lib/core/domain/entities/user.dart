@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:treinadorpro/core/domain/entities/personal_feature.dart';
 
 part 'user.g.dart'; // will be generated with build_runner
 
@@ -20,6 +21,9 @@ class User {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  @ignore
+  final PersonalFeature? personalFeature;
+
   const User({
     required this.id,
     required this.uuidId,
@@ -36,6 +40,7 @@ class User {
     required this.status,
     this.createdAt,
     this.updatedAt,
+    this.personalFeature
   });
 
   static final User currentUser = User(
@@ -54,6 +59,7 @@ class User {
     status: 'A',
     createdAt: DateTime.now().subtract(const Duration(days: 365)),
     updatedAt: DateTime.now(),
+    personalFeature: PersonalFeature.personalFeatures[0]
   );
 
   static final List<User> users = [
@@ -73,6 +79,7 @@ class User {
       status: 'A',
       createdAt: DateTime.now().subtract(const Duration(days: 365)),
       updatedAt: DateTime.now(),
+      personalFeature: PersonalFeature.personalFeatures[0]
     ),
     User(
       id: 2,
@@ -90,6 +97,7 @@ class User {
       status: 'A',
       createdAt: DateTime.now().subtract(const Duration(days: 200)),
       updatedAt: DateTime.now(),
+      personalFeature: PersonalFeature.personalFeatures[0]
     ),
     User(
       id: 3,
@@ -107,6 +115,8 @@ class User {
       status: 'A',
       createdAt: DateTime.now().subtract(const Duration(days: 500)),
       updatedAt: DateTime.now(),
+      personalFeature: PersonalFeature.personalFeatures[0]
+
     ),
     User(
       id: 4,
@@ -124,6 +134,8 @@ class User {
       status: 'A',
       createdAt: DateTime.now().subtract(const Duration(days: 200)),
       updatedAt: DateTime.now(),
+      personalFeature: PersonalFeature.personalFeatures[0]
+
     ),
     User(
       id: 5,
@@ -141,6 +153,8 @@ class User {
       status: 'A',
       createdAt: DateTime.now().subtract(const Duration(days: 200)),
       updatedAt: DateTime.now(),
+      personalFeature: PersonalFeature.personalFeatures[0]
+
     ),
   ];
 }
