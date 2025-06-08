@@ -7,7 +7,6 @@ import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/features/validatesixdigit/blocs/validate_six_digit_cubit.dart';
 
 import '../../../config/app_config.dart';
-import '../../../config/service_locator.dart';
 import '../../../core/widgets/pro_widget_rounded_button.dart';
 import '../../../l10n/app_localizations.dart';
 

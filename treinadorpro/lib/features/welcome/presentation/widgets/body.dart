@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_brand_image.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';

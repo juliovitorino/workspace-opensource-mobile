@@ -18,12 +18,18 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
   @override
   Future<UserModel> fetchByUUID(String uuid) async {
-    print('user_remote_datasource :: uuid = $uuid');
+    final String url = '${config.apiBackendUrl}/v1/api/business/user/trainer/$uuid';
 
-    final response = await apiClient.get('${config.apiBackendUrl}/v1/api/business/user/trainer/$uuid');
-    print("user_remote_datasource :: response = $response");
-    final userJson = response['objectResponse'];
-    return UserModel.fromJson(userJson);
+    if(config.isDebugMode) {
+      print('user_remote_datasource :: uuid = $uuid');
+      print('call url = $url');
+    }
+
+      final response = await apiClient.get(url);
+      if(config.isDebugMode) print("user_remote_datasource :: response = $response");
+
+      final userJson = response['objectResponse'];
+      return UserModel.fromJson(userJson);
   }
 
 }
