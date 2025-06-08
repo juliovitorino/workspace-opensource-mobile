@@ -18,4 +18,7 @@ class ProdConfig implements AppConfig {
 
   @override
   String get enviroment => 'Production';
+
+  @override
+  bool get isDebugMode => false;
 }

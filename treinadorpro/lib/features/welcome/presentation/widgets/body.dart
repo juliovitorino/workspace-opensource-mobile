@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/service_locator.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_brand_image.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/register/presentation/pages/register_page.dart';
@@ -10,13 +12,14 @@ import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../config/app_config.dart';
 
-class Body extends StatelessWidget {
-  final AppConfig config;
+class Body extends ConsumerWidget {
 
-  Body({super.key, required this.config});
+  Body({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AppConfig config = ref.watch(appConfigProvider);
+
     Size size = MediaQuery.of(context).size;
     return Background(
       child: Column(
@@ -36,7 +39,7 @@ class Body extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return LoginPage(config: config);
+                    return LoginPage();
                   },
                 ),
               );
@@ -49,7 +52,7 @@ class Body extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return RegisterPage(config: config);
+                    return RegisterPage();
                   },
                 ),
               );

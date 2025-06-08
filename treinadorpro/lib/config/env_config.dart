@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'app_config.dart';
 
-class DevConfig implements AppConfig {
+class EnvConfig implements AppConfig {
   @override
   String get apiBackendUrl => dotenv.env['API_BASE_URL'] ?? '';
 

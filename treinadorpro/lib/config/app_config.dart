@@ -6,4 +6,5 @@ abstract class AppConfig {
   String get appVersion;
   String get appMinorVersion;
   String get enviroment;
+  bool get isDebugMode;
 }
