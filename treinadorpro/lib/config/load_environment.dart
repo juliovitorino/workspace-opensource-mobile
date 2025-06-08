@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -9,17 +10,17 @@ Future<void> loadEnvironment() async {
   const env = String.fromEnvironment('ENV', defaultValue: 'dev');
   print('Environment selected => $env');
 
-  final environmentFilename = 'application.properties-$env.env';
+  final environmentFilename = 'assets/env/application.properties-$env.env';
   print('Searching for enviroment filename => $environmentFilename');
 
-  File envFile = File(environmentFilename);
-  if (!envFile.existsSync()) {
-    print('Enviroment File $environmentFilename not found!');
-    exit(1);
-  } else {
-    print('Environment file found!');
-  }
+  try {
 
-  print('Loading environment file from => ${envFile.absolute.path}');
-  await dotenv.load(fileName: envFile.absolute.path);
+    print('Searching bundle for => $environmentFilename');
+    final content = await rootBundle.loadString(environmentFilename);
+
+    print('Bundle response is ok for enviroment file');
+    await dotenv.load(fileName: environmentFilename);
+  } catch (e) {
+    print('Error loading enviroment file: $e');
+  }
 }

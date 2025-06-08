@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_circle_avatar.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_heading_name.dart';
@@ -20,9 +22,12 @@ class _TrainerProfilePageDetailState extends ConsumerState<TrainerProfilePageDet
   final int sessionsThisMonth = 96;
   final String revenue = 'R\$ 6.480,00';
 
+  late final AppConfig config;
+
   @override
   void initState() {
     super.initState();
+    config = ref.read(appConfigProvider);
     Future.microtask(() {
         ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b');
     });
@@ -100,6 +105,13 @@ class _TrainerProfilePageDetailState extends ConsumerState<TrainerProfilePageDet
             ProWidgetInfoRow(label: 'Registro Criado em', value: user.createdAt.toString()),
             ProWidgetInfoRow(label: 'Última Atualização', value: user.updatedAt.toString()),
             ProWidgetInfoRow(label: 'Último login', value: user.lastLogin.toString()),
+
+            if(config.isDebugMode)
+              SizedBox(height: 16),
+              ProWidgetSectionTitle(title: 'Detalhes Técnicos'),
+              ProWidgetInfoRow(label: 'Página', value: 'trainer_profile_page_detail.dart'),
+
+
 
             SizedBox(height: 24),
             ElevatedButton.icon(
