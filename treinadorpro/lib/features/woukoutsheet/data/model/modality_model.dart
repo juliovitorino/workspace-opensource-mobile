@@ -1,5 +1,5 @@
 
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
+import 'package:treinadorpro/core/domain/entities/modality.dart';
 
 class ModalityModel extends Modality {
   final DateTime? createdAt;

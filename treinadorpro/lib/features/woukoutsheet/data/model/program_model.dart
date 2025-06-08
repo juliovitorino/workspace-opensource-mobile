@@ -1,4 +1,4 @@
-import '../../domain/entities/program.dart';
+import '../../../../core/domain/entities/program.dart';
 
 class ProgramModel extends Program {
   final DateTime? createdAt;

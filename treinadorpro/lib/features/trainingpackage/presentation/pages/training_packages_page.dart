@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/widgets/pro_widget_card_pack_training.dart';
 
 class TrainingPackagePage extends StatefulWidget {
@@ -13,12 +13,12 @@ class TrainingPackagePage extends StatefulWidget {
 
 class _TrainingPackagePageState extends State<TrainingPackagePage> {
 
-  List<PackTrainingEntity>? packTrainingEntityList;
+  List<TrainingPack>? packTrainingEntityList;
 
   @override
   void initState() {
     // copy from mocked if environment is dev
-    packTrainingEntityList = PackTrainingEntity.packTrainings.toList();
+    packTrainingEntityList = TrainingPack.trainingPacks.toList();
     super.initState();
   }
 
@@ -49,7 +49,7 @@ class _TrainingPackagePageState extends State<TrainingPackagePage> {
           setState(() {
 
             // Just testing...
-            packTrainingEntityList?.add(PackTrainingEntity(
+            packTrainingEntityList?.add(TrainingPack(
                 externalId: 'dssdfsdfdsf',
                 description: 'bbbb',
                 durationDays: 1,

@@ -1,4 +1,4 @@
-import '../../domain/entities/goal.dart';
+import '../../../../core/domain/entities/goal.dart';
 
 class GoalModel extends Goal {
   final DateTime? createdAt;

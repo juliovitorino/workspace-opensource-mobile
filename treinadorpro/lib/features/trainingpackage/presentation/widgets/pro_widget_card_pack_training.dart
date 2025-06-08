@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/pages/training_package_page_detail.dart';
 
-import '../../../../core/domain/entities/pack_training.dart';
+import '../../../../core/domain/entities/training_pack.dart';
 import '../../../newstudent/presentation/pages/new_student_page.dart';
 
 class ProWidgetCardPackTraining extends StatelessWidget {
-  final PackTrainingEntity pkg;
+  final TrainingPack pkg;
 
   const ProWidgetCardPackTraining({super.key, required this.pkg});
 

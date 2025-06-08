@@ -1,13 +1,16 @@
 
+import 'package:treinadorpro/core/data/models/modality_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/domain/entities/modality.dart';
 
-import '../../domain/entities/pack_training.dart';
+import '../../domain/entities/training_pack.dart';
 
-class PackTrainingModel extends PackTrainingEntity {
-  const PackTrainingModel({
+class TrainingPackModel extends TrainingPack {
+  const TrainingPackModel({
     int? id,
     required String externalId,
     required UserModel personalUser,
+    required Modality modality,
     required String description,
     required int durationDays,
     required int weeklyFrequency,
@@ -21,6 +24,7 @@ class PackTrainingModel extends PackTrainingEntity {
     id: id,
     externalId: externalId,
     personalUser: personalUser,
+    modality: modality,
     description: description,
     durationDays: durationDays,
     weeklyFrequency: weeklyFrequency,
@@ -32,11 +36,12 @@ class PackTrainingModel extends PackTrainingEntity {
     updatedAt: updatedAt,
   );
 
-  factory PackTrainingModel.fromJson(Map<String, dynamic> json) {
-    return PackTrainingModel(
+  factory TrainingPackModel.fromJson(Map<String, dynamic> json) {
+    return TrainingPackModel(
       id: json['id'],
       externalId: json['external_id'],
       personalUser: UserModel.fromJson(json['personal_user']),
+      modality: ModalityModel.fromJson(json['modality']),
       description: json['description'],
       durationDays: json['duration_days'],
       weeklyFrequency: json['weekly_frequency'],
@@ -54,6 +59,7 @@ class PackTrainingModel extends PackTrainingEntity {
       'id': id,
       'external_id': externalId,
       'personal_user': (personalUser as UserModel).toJson(),
+      'modality': (modality as ModalityModel).toJson(),
       'description': description,
       'duration_days': durationDays,
       'weekly_frequency': weeklyFrequency,

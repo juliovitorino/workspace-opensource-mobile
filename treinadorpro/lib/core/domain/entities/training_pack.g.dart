@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pack_training.dart';
+part of 'training_pack.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,14 +9,13 @@ part of 'pack_training.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetPackTrainingEntityCollection on Isar {
-  IsarCollection<PackTrainingEntity> get packTrainingEntitys =>
-      this.collection();
+extension GetTrainingPackCollection on Isar {
+  IsarCollection<TrainingPack> get trainingPacks => this.collection();
 }
 
-const PackTrainingEntitySchema = CollectionSchema(
-  name: r'PackTrainingEntity',
-  id: 1900215667940921842,
+const TrainingPackSchema = CollectionSchema(
+  name: r'TrainingPack',
+  id: -2946603945682683323,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,
@@ -69,22 +68,22 @@ const PackTrainingEntitySchema = CollectionSchema(
       type: IsarType.long,
     )
   },
-  estimateSize: _packTrainingEntityEstimateSize,
-  serialize: _packTrainingEntitySerialize,
-  deserialize: _packTrainingEntityDeserialize,
-  deserializeProp: _packTrainingEntityDeserializeProp,
+  estimateSize: _trainingPackEstimateSize,
+  serialize: _trainingPackSerialize,
+  deserialize: _trainingPackDeserialize,
+  deserializeProp: _trainingPackDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _packTrainingEntityGetId,
-  getLinks: _packTrainingEntityGetLinks,
-  attach: _packTrainingEntityAttach,
+  getId: _trainingPackGetId,
+  getLinks: _trainingPackGetLinks,
+  attach: _trainingPackAttach,
   version: '3.1.0+1',
 );
 
-int _packTrainingEntityEstimateSize(
-  PackTrainingEntity object,
+int _trainingPackEstimateSize(
+  TrainingPack object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -102,8 +101,8 @@ int _packTrainingEntityEstimateSize(
   return bytesCount;
 }
 
-void _packTrainingEntitySerialize(
-  PackTrainingEntity object,
+void _trainingPackSerialize(
+  TrainingPack object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -120,13 +119,13 @@ void _packTrainingEntitySerialize(
   writer.writeLong(offsets[9], object.weeklyFrequency);
 }
 
-PackTrainingEntity _packTrainingEntityDeserialize(
+TrainingPack _trainingPackDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = PackTrainingEntity(
+  final object = TrainingPack(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
     currency: reader.readStringOrNull(offsets[1]),
     description: reader.readString(offsets[2]),
@@ -142,7 +141,7 @@ PackTrainingEntity _packTrainingEntityDeserialize(
   return object;
 }
 
-P _packTrainingEntityDeserializeProp<P>(
+P _trainingPackDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -174,31 +173,29 @@ P _packTrainingEntityDeserializeProp<P>(
   }
 }
 
-Id _packTrainingEntityGetId(PackTrainingEntity object) {
+Id _trainingPackGetId(TrainingPack object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _packTrainingEntityGetLinks(
-    PackTrainingEntity object) {
+List<IsarLinkBase<dynamic>> _trainingPackGetLinks(TrainingPack object) {
   return [];
 }
 
-void _packTrainingEntityAttach(
-    IsarCollection<dynamic> col, Id id, PackTrainingEntity object) {}
+void _trainingPackAttach(
+    IsarCollection<dynamic> col, Id id, TrainingPack object) {}
 
-extension PackTrainingEntityQueryWhereSort
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QWhere> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhere> anyId() {
+extension TrainingPackQueryWhereSort
+    on QueryBuilder<TrainingPack, TrainingPack, QWhere> {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension PackTrainingEntityQueryWhere
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QWhereClause> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhereClause>
-      idEqualTo(Id id) {
+extension TrainingPackQueryWhere
+    on QueryBuilder<TrainingPack, TrainingPack, QWhereClause> {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -207,8 +204,8 @@ extension PackTrainingEntityQueryWhere
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -230,8 +227,9 @@ extension PackTrainingEntityQueryWhere
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhereClause> idGreaterThan(
+      Id id,
+      {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -239,8 +237,8 @@ extension PackTrainingEntityQueryWhere
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhereClause> idLessThan(Id id,
+      {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -248,8 +246,7 @@ extension PackTrainingEntityQueryWhere
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterWhereClause>
-      idBetween(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -266,9 +263,9 @@ extension PackTrainingEntityQueryWhere
   }
 }
 
-extension PackTrainingEntityQueryFilter
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QFilterCondition> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+extension TrainingPackQueryFilter
+    on QueryBuilder<TrainingPack, TrainingPack, QFilterCondition> {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -277,7 +274,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -286,7 +283,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -296,7 +293,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -310,7 +307,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtLessThan(
     DateTime? value, {
     bool include = false,
@@ -324,7 +321,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       createdAtBetween(
     DateTime? lower,
     DateTime? upper, {
@@ -342,7 +339,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -351,7 +348,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -360,7 +357,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyEqualTo(
     String? value, {
     bool caseSensitive = true,
@@ -374,7 +371,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyGreaterThan(
     String? value, {
     bool include = false,
@@ -390,7 +387,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyLessThan(
     String? value, {
     bool include = false,
@@ -406,7 +403,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyBetween(
     String? lower,
     String? upper, {
@@ -426,7 +423,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -440,7 +437,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -454,7 +451,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -465,7 +462,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -476,7 +473,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -486,7 +483,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       currencyIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -496,7 +493,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -510,7 +507,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionGreaterThan(
     String value, {
     bool include = false,
@@ -526,7 +523,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionLessThan(
     String value, {
     bool include = false,
@@ -542,7 +539,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionBetween(
     String lower,
     String upper, {
@@ -562,7 +559,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -576,7 +573,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -590,7 +587,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -601,7 +598,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -612,7 +609,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -622,7 +619,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       descriptionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -632,7 +629,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       durationDaysEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -642,7 +639,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       durationDaysGreaterThan(
     int value, {
     bool include = false,
@@ -656,7 +653,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       durationDaysLessThan(
     int value, {
     bool include = false,
@@ -670,7 +667,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       durationDaysBetween(
     int lower,
     int upper, {
@@ -688,7 +685,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -702,7 +699,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdGreaterThan(
     String value, {
     bool include = false,
@@ -718,7 +715,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdLessThan(
     String value, {
     bool include = false,
@@ -734,7 +731,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdBetween(
     String lower,
     String upper, {
@@ -754,7 +751,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -768,7 +765,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -782,7 +779,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -793,7 +790,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -804,7 +801,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -814,7 +811,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       externalIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -824,8 +821,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      idIsNull() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -833,7 +829,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -842,8 +838,8 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      idEqualTo(Id? value) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> idEqualTo(
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -852,8 +848,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      idGreaterThan(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -866,8 +861,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      idLessThan(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -880,8 +874,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      idBetween(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -898,8 +891,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesEqualTo(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -912,7 +904,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       notesGreaterThan(
     String value, {
     bool include = false,
@@ -928,8 +920,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesLessThan(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -944,8 +935,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesBetween(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -964,7 +954,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       notesStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -978,8 +968,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesEndsWith(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -992,8 +981,9 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'notes',
@@ -1003,8 +993,9 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      notesMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> notesMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'notes',
@@ -1014,7 +1005,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       notesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1024,7 +1015,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       notesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1034,8 +1025,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      priceEqualTo(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> priceEqualTo(
     double value, {
     double epsilon = Query.epsilon,
   }) {
@@ -1048,7 +1038,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       priceGreaterThan(
     double value, {
     bool include = false,
@@ -1064,8 +1054,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      priceLessThan(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> priceLessThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -1080,8 +1069,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      priceBetween(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> priceBetween(
     double lower,
     double upper, {
     bool includeLower = true,
@@ -1100,8 +1088,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      statusEqualTo(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> statusEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1114,7 +1101,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusGreaterThan(
     String value, {
     bool include = false,
@@ -1130,7 +1117,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusLessThan(
     String value, {
     bool include = false,
@@ -1146,8 +1133,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      statusBetween(
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> statusBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1166,7 +1152,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -1180,7 +1166,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -1194,7 +1180,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1205,8 +1191,9 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
-      statusMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> statusMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'status',
@@ -1216,7 +1203,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1226,7 +1213,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1236,7 +1223,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1245,7 +1232,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -1254,7 +1241,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1264,7 +1251,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -1278,7 +1265,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtLessThan(
     DateTime? value, {
     bool include = false,
@@ -1292,7 +1279,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       updatedAtBetween(
     DateTime? lower,
     DateTime? upper, {
@@ -1310,7 +1297,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       weeklyFrequencyEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1320,7 +1307,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       weeklyFrequencyGreaterThan(
     int value, {
     bool include = false,
@@ -1334,7 +1321,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       weeklyFrequencyLessThan(
     int value, {
     bool include = false,
@@ -1348,7 +1335,7 @@ extension PackTrainingEntityQueryFilter
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterFilterCondition>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       weeklyFrequencyBetween(
     int lower,
     int upper, {
@@ -1367,148 +1354,133 @@ extension PackTrainingEntityQueryFilter
   }
 }
 
-extension PackTrainingEntityQueryObject
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QFilterCondition> {}
+extension TrainingPackQueryObject
+    on QueryBuilder<TrainingPack, TrainingPack, QFilterCondition> {}
 
-extension PackTrainingEntityQueryLinks
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QFilterCondition> {}
+extension TrainingPackQueryLinks
+    on QueryBuilder<TrainingPack, TrainingPack, QFilterCondition> {}
 
-extension PackTrainingEntityQuerySortBy
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QSortBy> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByCreatedAt() {
+extension TrainingPackQuerySortBy
+    on QueryBuilder<TrainingPack, TrainingPack, QSortBy> {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByCreatedAtDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByCurrency() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByCurrency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByCurrencyDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByCurrencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByDescription() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByDurationDays() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByDurationDays() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationDays', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       sortByDurationDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationDays', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByExternalId() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       sortByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByNotes() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByNotes() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notes', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByNotesDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByNotesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notes', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByPrice() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByPrice() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByPriceDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByPriceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByStatus() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByStatusDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByUpdatedAt() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      sortByUpdatedAtDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       sortByWeeklyFrequency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'weeklyFrequency', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       sortByWeeklyFrequencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'weeklyFrequency', Sort.desc);
@@ -1516,156 +1488,139 @@ extension PackTrainingEntityQuerySortBy
   }
 }
 
-extension PackTrainingEntityQuerySortThenBy
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QSortThenBy> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByCreatedAt() {
+extension TrainingPackQuerySortThenBy
+    on QueryBuilder<TrainingPack, TrainingPack, QSortThenBy> {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByCreatedAtDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByCurrency() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByCurrency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByCurrencyDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByCurrencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByDescription() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByDurationDays() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByDurationDays() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationDays', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       thenByDurationDaysDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'durationDays', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByExternalId() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       thenByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenById() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByIdDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByNotes() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByNotes() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notes', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByNotesDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByNotesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notes', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByPrice() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByPrice() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByPriceDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByPriceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByStatus() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByStatusDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByUpdatedAt() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
-      thenByUpdatedAtDesc() {
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy> thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       thenByWeeklyFrequency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'weeklyFrequency', Sort.asc);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QAfterSortBy>
+  QueryBuilder<TrainingPack, TrainingPack, QAfterSortBy>
       thenByWeeklyFrequencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'weeklyFrequency', Sort.desc);
@@ -1673,72 +1628,68 @@ extension PackTrainingEntityQuerySortThenBy
   }
 }
 
-extension PackTrainingEntityQueryWhereDistinct
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct> {
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByCreatedAt() {
+extension TrainingPackQueryWhereDistinct
+    on QueryBuilder<TrainingPack, TrainingPack, QDistinct> {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByCurrency({bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByCurrency(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'currency', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByDescription({bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByDescription(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByDurationDays() {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByDurationDays() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'durationDays');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByExternalId({bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByExternalId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'externalId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByNotes({bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByNotes(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notes', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByPrice() {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByPrice() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'price');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByStatus({bool caseSensitive = true}) {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByStatus(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
-      distinctByUpdatedAt() {
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct> distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, PackTrainingEntity, QDistinct>
+  QueryBuilder<TrainingPack, TrainingPack, QDistinct>
       distinctByWeeklyFrequency() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'weeklyFrequency');
@@ -1746,76 +1697,69 @@ extension PackTrainingEntityQueryWhereDistinct
   }
 }
 
-extension PackTrainingEntityQueryProperty
-    on QueryBuilder<PackTrainingEntity, PackTrainingEntity, QQueryProperty> {
-  QueryBuilder<PackTrainingEntity, int, QQueryOperations> idProperty() {
+extension TrainingPackQueryProperty
+    on QueryBuilder<TrainingPack, TrainingPack, QQueryProperty> {
+  QueryBuilder<TrainingPack, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, DateTime?, QQueryOperations>
-      createdAtProperty() {
+  QueryBuilder<TrainingPack, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, String?, QQueryOperations>
-      currencyProperty() {
+  QueryBuilder<TrainingPack, String?, QQueryOperations> currencyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'currency');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, String, QQueryOperations>
-      descriptionProperty() {
+  QueryBuilder<TrainingPack, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, int, QQueryOperations>
-      durationDaysProperty() {
+  QueryBuilder<TrainingPack, int, QQueryOperations> durationDaysProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'durationDays');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, String, QQueryOperations>
-      externalIdProperty() {
+  QueryBuilder<TrainingPack, String, QQueryOperations> externalIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'externalId');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, String, QQueryOperations> notesProperty() {
+  QueryBuilder<TrainingPack, String, QQueryOperations> notesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notes');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, double, QQueryOperations> priceProperty() {
+  QueryBuilder<TrainingPack, double, QQueryOperations> priceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'price');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, String, QQueryOperations> statusProperty() {
+  QueryBuilder<TrainingPack, String, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, DateTime?, QQueryOperations>
-      updatedAtProperty() {
+  QueryBuilder<TrainingPack, DateTime?, QQueryOperations> updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });
   }
 
-  QueryBuilder<PackTrainingEntity, int, QQueryOperations>
-      weeklyFrequencyProperty() {
+  QueryBuilder<TrainingPack, int, QQueryOperations> weeklyFrequencyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'weeklyFrequency');
     });

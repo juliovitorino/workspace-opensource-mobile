@@ -21,22 +21,22 @@ class TrainerUserModel extends TrainerUser {
   factory TrainerUserModel.fromJson(Map<String, dynamic> json) {
     return TrainerUserModel(
       id: json['id'],
-      personalUser: UserModel.fromJson(json['personal_user']),
-      studentUser: UserModel.fromJson(json['student_user']),
+      personalUser: UserModel.fromJson(json['personalUser']),
+      studentUser: UserModel.fromJson(json['studentUser']),
       status: json['status'] ?? 'A',
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'personal_user': (personalUser as UserModel).toJson(),
-      'student_user': (studentUser as UserModel).toJson(),
+      'personalUser': (personalUser as UserModel).toJson(),
+      'studentUser': (studentUser as UserModel).toJson(),
       'status': status,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }
