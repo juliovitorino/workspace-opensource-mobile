@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_brand_image.dart';
 
 import '../../../../config/app_config.dart';
 import '../widgets/pro_widget_text_splash.dart';
 
-class SplashPage extends StatefulWidget {
-  final AppConfig config;
+class SplashPage extends ConsumerStatefulWidget {
 
-  SplashPage({super.key, required this.config});
+  SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
+
+  late final AppConfig config;
+
   @override
   void initState() {
     super.initState();
+    config = ref.read(appConfigProvider);
     _simulateLoading();
   }
 
   Future<void> _simulateLoading() async {
-    await Future.delayed(const Duration(seconds: 5)); // simula carregamento
+    await Future.delayed(const Duration(seconds: 5)); // simula carregamento ... substituir por carga de parametrizações globais
     if (mounted) {
       Navigator.popAndPushNamed(context, AppRoutes.welcome);
     }
@@ -54,10 +59,10 @@ class _SplashPageState extends State<SplashPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ProWidgetTextSplash(text: widget.config.appName),
+                        ProWidgetTextSplash(text: config.appName),
                         ProWidgetTextSplash(text: 'Carregando configurações'),
                         ProWidgetTextSplash(
-                          text: 'Versão ${widget.config.appMinorVersion}',
+                          text: 'Versão ${config.appMinorVersion}',
                         ),
                       ],
                     ),

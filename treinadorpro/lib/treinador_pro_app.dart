@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/config/service_locator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/styles.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/splash/presentation/pages/splash_page.dart';
@@ -11,22 +12,22 @@ import 'core/constants/app_routes.dart';
 import 'features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
 
-class TreinadorProApp extends StatefulWidget {
-  final AppConfig config;
+class TreinadorProApp extends ConsumerStatefulWidget {
 
   static void setLocale(BuildContext context, Locale newLocale) {
     final _TreinadorProAppState? state = context.findAncestorStateOfType<_TreinadorProAppState>();
     state?.setLocale(newLocale);
   }
 
-  TreinadorProApp({super.key, required this.config});
+  const TreinadorProApp({super.key});
 
   @override
-  State<TreinadorProApp> createState() => _TreinadorProAppState();
+  ConsumerState<TreinadorProApp> createState() => _TreinadorProAppState();
 }
 
-class _TreinadorProAppState extends State<TreinadorProApp> {
+class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
   Locale _locale = const Locale('pt');
+  late final AppConfig config;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -35,7 +36,16 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // get appConfig instance at the beggining life cycle
+    config = ref.read(appConfigProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Treinador Pro',
       locale: _locale,
@@ -44,11 +54,11 @@ class _TreinadorProAppState extends State<TreinadorProApp> {
       theme: ThemeData(primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white
       ),
-      home: SplashPage(config: widget.config),
+      home: SplashPage(),
       routes: {
-        AppRoutes.validateCode: (context) => ValidateSixDigitPage(config: widget.config,),
-        AppRoutes.login: (context) => LoginPage(config: widget.config,),
-        AppRoutes.welcome: (context) => WelcomeScreen(config: widget.config,),
+        AppRoutes.validateCode: (context) => ValidateSixDigitPage(),
+        AppRoutes.login: (context) => LoginPage(),
+        AppRoutes.welcome: (context) => WelcomeScreen(),
         AppRoutes.dashboard: (context) => DashboardPage()
       },
     );  }

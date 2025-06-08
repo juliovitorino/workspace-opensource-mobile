@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
-import 'package:treinadorpro/config/service_locator.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../core/states/handler_state.dart';
 import '../blocs/register_state.dart';
 
-class RegisterPage extends StatelessWidget {
-
-  final AppConfig config;
+class RegisterPage extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -20,7 +19,7 @@ class RegisterPage extends StatelessWidget {
   final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
 
-  RegisterPage({super.key, required this.config});
+  RegisterPage({super.key});
 
   String? passwordChecker(BuildContext context, String pwd1, String pwd2) {
     if( pwd1 != pwd2) {
@@ -75,7 +74,7 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRegisterButton(BuildContext context) {
+  Widget _buildRegisterButton(BuildContext context, AppConfig config) {
     return ProWidgetRoundedButton(
       text: AppLocalizations.of(context)!.formRegisterButton,
       onPressed: () {
@@ -91,7 +90,7 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFormArea(HandlerState state, BuildContext context){
+  Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config){
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -107,7 +106,7 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 20),
             state.isLoading
                 ? const CircularProgressIndicator()
-                : _buildRegisterButton(context)
+                : _buildRegisterButton(context, config)
           ],
         ),
       ),
@@ -132,28 +131,30 @@ class RegisterPage extends StatelessWidget {
     }
   }
 
-  Widget _buildForm(BuildContext context, HandlerState state){
+  Widget _buildForm(BuildContext context, HandlerState state, AppConfig config){
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height,
         ),
         child: IntrinsicHeight(
-          child: _buildFormArea(state, context),
+          child: _buildFormArea(state, context, config),
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AppConfig config = ref.watch(appConfigProvider);
+
     return BlocProvider(
       create: (_) => RegisterCubit(),
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle)),
         body: BlocConsumer<RegisterCubit, HandlerState>(
           listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildForm(context, state)
+          builder: (context, state) => _buildForm(context, state, config)
         ),
       ),
     );
