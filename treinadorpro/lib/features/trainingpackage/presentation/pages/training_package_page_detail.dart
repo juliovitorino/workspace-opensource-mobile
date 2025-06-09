@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_action_buttons_page_detail.dart';
 
-import '../../../../core/domain/entities/pack_training.dart';
+import '../../../../core/domain/entities/training_pack.dart';
 import '../../../../core/widgets/pro_widget_heading_name.dart';
 import '../../../../core/widgets/pro_widget_info_row.dart';
 import '../../../../core/widgets/pro_widget_section_title.dart';
 
 class TrainingPackagePageDetail extends StatelessWidget {
 
-  final PackTrainingEntity packTrainingEntity;
+  final TrainingPack packTrainingEntity;
 
   const TrainingPackagePageDetail({super.key, required this.packTrainingEntity});
 

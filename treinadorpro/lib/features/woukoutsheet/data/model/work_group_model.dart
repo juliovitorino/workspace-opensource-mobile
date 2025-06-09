@@ -1,5 +1,5 @@
 
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/domain/entities/work_group.dart';
 
 class WorkGroupModel extends WorkGroup {
   final DateTime? createdAt;

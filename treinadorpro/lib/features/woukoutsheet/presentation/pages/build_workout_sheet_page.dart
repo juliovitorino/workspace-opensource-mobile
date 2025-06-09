@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/goal.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/program.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/domain/entities/exercise.dart';
+import 'package:treinadorpro/core/domain/entities/goal.dart';
+import 'package:treinadorpro/core/domain/entities/modality.dart';
+import 'package:treinadorpro/core/domain/entities/program.dart';
+import 'package:treinadorpro/core/domain/entities/work_group.dart';
 
 class BuildWorkoutSheetPage extends StatefulWidget {
   const BuildWorkoutSheetPage({super.key});

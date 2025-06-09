@@ -1,8 +1,10 @@
 import 'package:decimal/decimal.dart';
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
 import 'package:treinadorpro/core/domain/entities/user_workout_plan.dart';
+
+import 'modality.dart';
 
 part 'user_pack_training.g.dart';
 
@@ -12,7 +14,7 @@ class UserPackTraining {
   final String externalId;
 
   @ignore
-  final PackTrainingEntity? packTrainingEntity;
+  final TrainingPack? packTrainingEntity;
 
   @ignore
   final User? studentUser;
@@ -55,7 +57,7 @@ class UserPackTraining {
     UserPackTraining(
       id: 1,
       externalId: '5c238d12-3f8b-4d95-aaff-123456789003',
-      packTrainingEntity: PackTrainingEntity.packTrainings[0],
+      packTrainingEntity: TrainingPack.trainingPacks[0],
       studentUser: User.users[1],
       goalDescription: 'Ganhar massa muscular',
       price: Decimal.parse('299.90'),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/domain/entities/pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
+import '../../../../core/domain/entities/modality.dart';
 import '../../../../core/domain/entities/trainer_user.dart';
 
 class NewStudentPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   bool _isShowExistingStudentSection = false;
   bool _isShowCardOldStudentSelected = false;
 
-  PackTrainingEntity? _selectedPackage;
+  TrainingPack? _selectedPackage;
 
   final List<String> _days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   final List<String> _selectedDays = [];
@@ -66,7 +67,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
               ProWidgetSectionTitle(title: 'Pacote Contratado'),
               DropdownButtonFormField<String>(
                 value: _planType,
-                items: PackTrainingEntity.packTrainings
+                items: TrainingPack.trainingPacks
                     .map(
                       (p) => DropdownMenuItem(
                         value: p.description,
@@ -77,10 +78,10 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 onChanged: (String? value) {
                   setState(() {
                     _planType = value!;
-                    _selectedPackage = PackTrainingEntity.packTrainings
+                    _selectedPackage = TrainingPack.trainingPacks
                         .firstWhere(
                           (pkg) => pkg.description == value,
-                          orElse: () => PackTrainingEntity(
+                          orElse: () => TrainingPack(
                             description: '',
                             durationDays: 0,
                             weeklyFrequency: 0,

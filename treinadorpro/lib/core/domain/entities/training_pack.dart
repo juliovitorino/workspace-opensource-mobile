@@ -1,12 +1,12 @@
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
 
+import 'modality.dart';
 import 'user.dart';
 
-part 'pack_training.g.dart';
+part 'training_pack.g.dart';
 
 @Collection()
-class PackTrainingEntity {
+class TrainingPack {
   final Id? id;
   final String externalId;
 
@@ -26,7 +26,7 @@ class PackTrainingEntity {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const PackTrainingEntity({
+  const TrainingPack({
     this.id,
     required this.externalId,
     this.personalUser,
@@ -42,8 +42,8 @@ class PackTrainingEntity {
     this.updatedAt,
   });
 
-  static final List<PackTrainingEntity> packTrainings = [
-    PackTrainingEntity(
+  static final List<TrainingPack> trainingPacks = [
+    TrainingPack(
       id: 1,
       externalId: 'a14f1c8d-ccaa-4b32-9387-74d6ec3d0d01',
       personalUser: User.users[0],
@@ -58,7 +58,7 @@ class PackTrainingEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 20)),
       updatedAt: DateTime.now(),
     ),
-    PackTrainingEntity(
+    TrainingPack(
       id: 2,
       externalId: 'b91f1d0a-bb52-4f32-9f70-68f5cb9f64f2',
       personalUser: User.users[0],
@@ -73,7 +73,7 @@ class PackTrainingEntity {
       createdAt: DateTime.now().subtract(const Duration(days: 15)),
       updatedAt: DateTime.now(),
     ),
-    PackTrainingEntity(
+    TrainingPack(
       id: 3,
       externalId: 'c82a2f4b-1e28-47ae-b1c2-48bdfde79961',
       personalUser: User.users[0],

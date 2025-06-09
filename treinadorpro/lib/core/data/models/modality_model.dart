@@ -1,33 +1,34 @@
 
-import 'package:treinadorpro/core/domain/entities/modality.dart';
+import '../../domain/entities/modality.dart';
 
 class ModalityModel extends Modality {
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
   const ModalityModel({
-    required id,
-    required namePt,
-    required nameEn,
-    required nameEs,
-    required status,
-    this.createdAt,
-    this.updatedAt
+    int? id,
+    required String namePt,
+    required String nameEs,
+    required String nameEn,
+    required String status,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super(
     id: id,
-    nameEn: nameEn,
-    nameEs: nameEs,
     namePt: namePt,
+    nameEs: nameEs,
+    nameEn: nameEn,
     status: status,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
   );
 
   factory ModalityModel.fromJson(Map<String, dynamic> json) {
+    print('modality_model :: parsing fromJson');
+
     return ModalityModel(
       id: json['id'],
       namePt: json['namePt'],
-      nameEn: json['nameEn'],
       nameEs: json['nameEs'],
-      status: json['status'],
+      nameEn: json['nameEn'],
+      status: json['status'] ?? 'A',
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
@@ -37,11 +38,11 @@ class ModalityModel extends Modality {
     return {
       'id': id,
       'namePt': namePt,
-      'nameEn': nameEn,
       'nameEs': nameEs,
+      'nameEn': nameEn,
       'status': status,
       'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String()
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

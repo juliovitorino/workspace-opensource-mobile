@@ -7,4 +7,5 @@ abstract class AppConfig {
   String get appMinorVersion;
   String get enviroment;
   bool get isDebugMode;
+  int get defaultPageSize;
 }

@@ -1,10 +1,10 @@
 import 'package:isar/isar.dart';
 import 'package:treinadorpro/core/domain/entities/user_pack_training.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/exercise.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/goal.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/modality.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/program.dart';
-import 'package:treinadorpro/features/woukoutsheet/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/domain/entities/exercise.dart';
+import 'package:treinadorpro/core/domain/entities/goal.dart';
+import 'package:treinadorpro/core/domain/entities/modality.dart';
+import 'package:treinadorpro/core/domain/entities/program.dart';
+import 'package:treinadorpro/core/domain/entities/work_group.dart';
 
 part 'user_workout_plan.g.dart';
 
