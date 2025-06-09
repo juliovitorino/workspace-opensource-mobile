@@ -23,4 +23,8 @@ class EnvConfig implements AppConfig {
 
   @override
   bool get isDebugMode => dotenv.env['DEBUG'] == 'true';
+
+  @override
+  int get defaultPageSize => int.tryParse(dotenv.env['DEFAULT_PAGE_SIZE'] ?? '') ?? 10;
+
 }
