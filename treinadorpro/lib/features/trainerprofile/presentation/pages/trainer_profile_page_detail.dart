@@ -29,7 +29,7 @@ class _TrainerProfilePageDetailState extends ConsumerState<TrainerProfilePageDet
     super.initState();
     config = ref.read(appConfigProvider);
     Future.microtask(() {
-        ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b');
+        ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b'); //mocked
     });
   }
 

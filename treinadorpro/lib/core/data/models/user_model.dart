@@ -41,7 +41,7 @@ class UserModel extends User {
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    print("user_model => $json");
+    print('user_model :: parsing fromJson');
     return UserModel(
       id: json['id'],
       uuidId: json['uuidId'],

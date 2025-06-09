@@ -1,8 +1,7 @@
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/datasources/itraining_pack_remote_datasource.dart';
-import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart';
+import 'package:treinadorpro/core/data/models/page_result_response_model.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
-import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
 class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
@@ -25,22 +24,23 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   }
 
   @override
-  Future<List<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid) async {
-    final String url = '${config.apiBackendUrl}/v1/api/business/trainingpack/$uuid';
+  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid, int page, int size) async {
+    final String url = '${config.apiBackendUrl}/v1/api/business/trainingpack?page=$page&size=$size&externalId=$uuid';
 
     if(config.isDebugMode) {
       print('training_pack_remote_datasource :: uuid = $uuid');
       print('call url = $url');
     }
 
-    final response = await apiClient.get(url);
-    if(config.isDebugMode) print("training_pack_remote_datasource :: response = $response");
+    final jsonResponse = await apiClient.get(url);
+    if(config.isDebugMode) {
+      print("training_pack_remote_datasource :: jsonResponse = $jsonResponse");
+    }
 
-    final List<dynamic> jsonList = response['objectResponse'];
-
-    return jsonList.map(
-            (packTrainingItemJson) => TrainingPackModel.fromJson(packTrainingItemJson)
-      ).toList();
+    return PageResultResponseModel.fromJson(
+        jsonResponse['objectResponse'],
+        (trainingPackItem) => TrainingPackModel.fromJson(trainingPackItem)
+    );
   }
 
 }

@@ -37,38 +37,39 @@ class TrainingPackModel extends TrainingPack {
   );
 
   factory TrainingPackModel.fromJson(Map<String, dynamic> json) {
+    print('training_pack_model :: parsing fromJson');
     return TrainingPackModel(
       id: json['id'],
-      externalId: json['external_id'],
-      personalUser: UserModel.fromJson(json['personal_user']),
+      externalId: json['externalId'],
+      personalUser: UserModel.fromJson(json['personalTrainer']),
       modality: ModalityModel.fromJson(json['modality']),
       description: json['description'],
-      durationDays: json['duration_days'],
-      weeklyFrequency: json['weekly_frequency'],
+      durationDays: json['durationDays'],
+      weeklyFrequency: json['weeklyFrequency'],
       notes: json['notes'],
       price: (json['price'] as num).toDouble(),
       currency: json['currency'],
       status: json['status'] ?? 'A',
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'external_id': externalId,
-      'personal_user': (personalUser as UserModel).toJson(),
+      'externalId': externalId,
+      'personalUser': (personalUser as UserModel).toJson(),
       'modality': (modality as ModalityModel).toJson(),
       'description': description,
-      'duration_days': durationDays,
-      'weekly_frequency': weeklyFrequency,
+      'durationDays': durationDays,
+      'weeklyFrequency': weeklyFrequency,
       'notes': notes,
       'price': price,
       'currency': currency,
       'status': status,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

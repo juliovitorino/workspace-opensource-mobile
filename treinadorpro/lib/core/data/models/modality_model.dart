@@ -1,8 +1,5 @@
 
-import 'package:treinadorpro/core/data/models/user_model.dart';
-
 import '../../domain/entities/modality.dart';
-import '../../domain/entities/training_pack.dart';
 
 class ModalityModel extends Modality {
   const ModalityModel({
@@ -24,14 +21,16 @@ class ModalityModel extends Modality {
   );
 
   factory ModalityModel.fromJson(Map<String, dynamic> json) {
+    print('modality_model :: parsing fromJson');
+
     return ModalityModel(
       id: json['id'],
       namePt: json['namePt'],
       nameEs: json['nameEs'],
       nameEn: json['nameEn'],
       status: json['status'] ?? 'A',
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
@@ -42,8 +41,8 @@ class ModalityModel extends Modality {
       'nameEs': nameEs,
       'nameEn': nameEn,
       'status': status,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }
