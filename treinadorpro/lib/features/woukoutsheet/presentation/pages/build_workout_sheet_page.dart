@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
@@ -7,15 +9,21 @@ import 'package:treinadorpro/core/domain/entities/goal.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 
-class BuildWorkoutSheetPage extends StatefulWidget {
+import '../../../../core/data/models/modality_model.dart';
+import '../../../../core/provider/modality_provider.dart';
+
+class BuildWorkoutSheetPage extends ConsumerStatefulWidget {
   const BuildWorkoutSheetPage({super.key});
 
   @override
-  State<BuildWorkoutSheetPage> createState() => _BuildWorkoutSheetPageState();
+  ConsumerState<BuildWorkoutSheetPage> createState() =>
+      _BuildWorkoutSheetPageState();
 }
 
-class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
+class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _exerciseController = TextEditingController();
   final TextEditingController _seriesController = TextEditingController();
@@ -30,12 +38,14 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
   final TextEditingController _customExerciseController =
       TextEditingController();
 
+  late final AppConfig config;
+
   List<Exercise> _filteredExercises = Exercise.exercises;
   bool _showExerciseListView = true;
   bool _isPersonalizedProgram = false;
   bool _isCustomExercise = false;
 
-  Modality _modality = Modality.modalities.first;
+  late Modality _modality; // = Modality.modalities.first;
   Goal _goal = Goal.goals.first;
   Program _program = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
@@ -44,6 +54,15 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   WeightUnit _weightUnit = WeightUnit.kg;
+
+  @override
+  void initState() {
+    super.initState();
+    config = ref.read(appConfigProvider);
+    Future.microtask(() {
+      ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
+    });
+  }
 
   void _filterExercises(String query) {
     setState(() {
@@ -65,7 +84,11 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
             onTap: () => setState(() {
               _exerciseController.text = _filteredExercises[index].namePt;
               _showExerciseListView = false;
-              _isCustomExercise = (_filteredExercises[index].namePt.toLowerCase() == 'personalizado' ) ? true : false;
+              _isCustomExercise =
+                  (_filteredExercises[index].namePt.toLowerCase() ==
+                      'personalizado')
+                  ? true
+                  : false;
             }),
           );
         },
@@ -184,8 +207,18 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
 
   @override
   Widget build(BuildContext context) {
+    final modalityState = ref.watch(modalityViewModelProvider);
+
     return Scaffold(
-      appBar: AppBar(title: Text('Montar Treino')),
+      appBar: AppBar(
+        title: Text('Montar Treino'),
+        actions: [
+          ProWidgetInfoAlertDialog(
+            title: 'page',
+            text: 'build_workout_sheet_page.dart',
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -193,12 +226,13 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-
+              // student
               Text('Aluno'),
               DropdownButtonFormField<TrainerUser>(
                 items: TrainerUser.trainerUsers
-                .where((e) => e.studentUser!.userProfile.contains('STUDENT'))
+                    .where(
+                      (e) => e.studentUser!.userProfile.contains('STUDENT'),
+                    )
                     .map(
                       (item) => DropdownMenuItem(
                         value: item,
@@ -209,18 +243,25 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
                 onChanged: (value) => setState(() => _trainerUser = value!),
               ),
 
-
+              // Modality
               Text('Modalidade'),
-              DropdownButtonFormField<Modality>(
-                items: Modality.modalities
-                    .map(
-                      (modalityItem) => DropdownMenuItem(
+              modalityState.when(
+                data: (modalityList) {
+                  final sortedList = [...modalityList]..sort((a, b) => a.namePt.compareTo(b.namePt));
+                  return DropdownButtonFormField<ModalityModel>(
+                    items: sortedList
+                        .map(
+                          (modalityItem) => DropdownMenuItem<ModalityModel>(
                         value: modalityItem,
                         child: Text(modalityItem.namePt),
                       ),
                     )
-                    .toList(),
-                onChanged: (value) => setState(() => _modality = value!),
+                        .toList(),
+                    onChanged: (value) => setState(() => _modality = value!),
+                  );
+                },
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
               ),
 
               SizedBox(height: 10),
@@ -279,7 +320,9 @@ class _BuildWorkoutSheetPageState extends State<BuildWorkoutSheetPage> {
                 onChanged: (value) => setState(() => _workGroup = value!),
               ),
 
-              _isCustomExercise ? _buildCustomExercise() : _buildSearchExercise(),
+              _isCustomExercise
+                  ? _buildCustomExercise()
+                  : _buildSearchExercise(),
 
               _showExerciseListView ? _buildExerciseListView() : Container(),
 
