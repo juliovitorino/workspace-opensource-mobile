@@ -75,17 +75,6 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
     return null;
   }
 
-  // Widget _buildMockedListView() {
-  //   return ListView.builder(
-  //     padding: const EdgeInsets.all(12),
-  //     itemCount: packTrainingEntityList!.length,
-  //     itemBuilder: (context, index) {
-  //       final pkg = packTrainingEntityList![index];
-  //       return ProWidgetCardPackTraining(pkg: pkg);
-  //     },
-  //   );
-  // }
-
   Widget _buildListView(PageResultResponseModel pageResultResponseModel) {
     return ListView.builder(
       controller: _scrollController,
@@ -126,23 +115,7 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
         loading: () => Center(child: CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            // Just testing...
-            packTrainingEntityList?.add(
-              TrainingPack(
-                externalId: 'dssdfsdfdsf',
-                description: 'bbbb',
-                durationDays: 1,
-                weeklyFrequency: 1,
-                currency: 'BRL',
-                price: 1,
-                notes: 'sldkfskdf',
-                status: 'A',
-              ),
-            );
-          });
-        },
+        onPressed: () {},
         tooltip: 'Adicionar novo pacote',
         child: Icon(Icons.add),
       ),
