@@ -1,7 +1,9 @@
 
+import 'package:treinadorpro/core/data/models/iname.dart';
+
 import '../../domain/entities/modality.dart';
 
-class ModalityModel extends Modality {
+class ModalityModel extends Modality implements IName {
   const ModalityModel({
     int? id,
     required String namePt,
@@ -44,5 +46,10 @@ class ModalityModel extends Modality {
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
+  }
+
+  @override
+  String getName() {
+    return this.namePt; // Waiting for int10l
   }
 }
