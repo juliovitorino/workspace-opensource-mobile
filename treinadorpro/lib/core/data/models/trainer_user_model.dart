@@ -19,7 +19,9 @@ class TrainerUserModel extends TrainerUser {
   );
 
   factory TrainerUserModel.fromJson(Map<String, dynamic> json) {
-    return TrainerUserModel(
+    print('trainer_user_model :: parsing fromJson has just started');
+
+    final response = TrainerUserModel(
       id: json['id'],
       personalUser: UserModel.fromJson(json['personalUser']),
       studentUser: UserModel.fromJson(json['studentUser']),
@@ -27,6 +29,9 @@ class TrainerUserModel extends TrainerUser {
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
+    print('trainer_user_model :: parsing fromJson has been finished successfully');
+
+    return response;
   }
 
   Map<String, dynamic> toJson() {

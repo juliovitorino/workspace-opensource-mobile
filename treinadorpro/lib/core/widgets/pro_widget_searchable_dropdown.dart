@@ -96,6 +96,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>  extends State<ProWidge
                 onChanged: (T? newValue) {
                   setState(() {
                     _selectedItem = newValue;
+                    _isSeachableItem = false;
                     if (widget.onChanged != null) {
                       widget.onChanged!(newValue);
                     }

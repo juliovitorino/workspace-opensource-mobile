@@ -5,6 +5,7 @@ part 'exercise.g.dart';
 @Collection()
 class Exercise {
   final Id? id;
+  final String? externalId;
   final String namePt;
   final String nameEn;
   final String nameEs;
@@ -18,6 +19,7 @@ class Exercise {
 
   const Exercise({
     this.id,
+    this.externalId,
     required this.namePt,
     required this.nameEn,
     required this.nameEs,

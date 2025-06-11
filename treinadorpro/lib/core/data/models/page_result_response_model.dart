@@ -17,7 +17,7 @@ class PageResultResponseModel<T> {
   ) {
     print('page_result_response_model :: parsing fromJson');
 
-    return PageResultResponseModel<T>(
+    final response = PageResultResponseModel<T>(
       page: json['page'] as int,
       totalPages: json['totalPages'] as int,
       count: json['count'] as int,
@@ -25,5 +25,9 @@ class PageResultResponseModel<T> {
           .map((item) => fromJsonT(item as Map<String, dynamic>))
           .toList(),
     );
+
+    print('page_result_response_model :: parsing fromJson was finished successfully');
+
+    return response;
   }
 }

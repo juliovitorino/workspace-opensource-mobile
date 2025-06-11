@@ -41,25 +41,28 @@ class UserModel extends User {
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    print('user_model :: parsing fromJson');
-    return UserModel(
-      id: json['id'],
-      uuidId: json['uuidId'],
-      name: json['name'],
-      email: json['email'],
-      cellphone: json['cellphone'],
-      birthday: json['birthday'] != null ? DateTime.parse(json['birthday']) : null,
-      gender: json['gender'],
-      urlPhotoProfile: json['urlPhotoProfile'],
-      userProfile: json['userProfile'],
-      masterLanguage: json['masterLanguage'],
-      guardianIntegration: json['guardianIntegration'] ?? '',
-      lastLogin: json['lastLogin'] != null ? DateTime.parse(json['lastLogin']) : null,
-      status: json['status'] ?? 'A',
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
-      personalFeature: PersonalFeatureModel.fromJson(json['personalFeature'])
+    print('user_model :: parsing fromJson has just started');
+    final response = UserModel(
+        id: json['id'],
+        uuidId: json['uuidId'],
+        name: json['name'],
+        email: json['email'],
+        cellphone: json['cellphone'],
+        birthday: json['birthday'] != null ? DateTime.parse(json['birthday']) : null,
+        gender: json['gender'],
+        urlPhotoProfile: json['urlPhotoProfile'],
+        userProfile: json['userProfile'],
+        masterLanguage: json['masterLanguage'],
+        guardianIntegration: json['guardianIntegration'] ?? '',
+        lastLogin: json['lastLogin'] != null ? DateTime.parse(json['lastLogin']) : null,
+        status: json['status'] ?? 'A',
+        createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+        updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+        personalFeature: PersonalFeatureModel.fromJson(json['personalFeature'])
     );
+    print('user_model :: parsing fromJson has been just finished successfully');
+
+    return response;
   }
 
   Map<String, dynamic> toJson() {
