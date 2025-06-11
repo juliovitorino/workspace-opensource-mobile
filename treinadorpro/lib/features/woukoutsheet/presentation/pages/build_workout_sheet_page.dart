@@ -254,30 +254,13 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
               // Modality
               Text('Modalidade'),
-              // modalityState.when(
-              //   data: (modalityList) {
-              //     final sortedList = [...modalityList]..sort((a, b) => a.namePt.compareTo(b.namePt));
-              //     return DropdownButtonFormField<ModalityModel>(
-              //       items: sortedList
-              //           .map(
-              //             (modalityItem) => DropdownMenuItem<ModalityModel>(
-              //           value: modalityItem,
-              //           child: Text(modalityItem.namePt),
-              //         ),
-              //       )
-              //           .toList(),
-              //       onChanged: (value) => setState(() => _modality = value!),
-              //     );
-              //   },
-              //   error: (e, _) => Center(child: Text('Error: $e')),
-              //   loading: () => Center(child: CircularProgressIndicator()),
-              // ),
-
               modalityState.when(
                 data: (modalityList) {
                   final sortedList = [...modalityList]..sort((a, b) => a.getName().compareTo(b.getName()));
                   return ProWidgetSearchableDropdown<ModalityModel>(
                     items: sortedList,
+                    hintTextSearch: "Pesquisar Modalidade...",
+                    hintTextItem: 'Selecione uma modalidade',
                     onChanged: (value) => setState(() => _modality = value!),
                   );
                 },
@@ -287,23 +270,14 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
               SizedBox(height: 10),
               Text('Objetivo'),
-              // DropdownButtonFormField<Goal>(
-              //   items: Goal.goals
-              //       .map(
-              //         (goalItem) => DropdownMenuItem(
-              //           value: goalItem,
-              //           child: Text(goalItem.namePt),
-              //         ),
-              //       )
-              //       .toList(),
-              //   onChanged: (value) => setState(() => _goal = value!),
-              // ),
 
               goalState.when(
                 data: (goalList) {
                   final sortedGoalList = [...goalList]..sort((a, b) => a.getName().compareTo(b.getName()));
                   return ProWidgetSearchableDropdown<GoalModel>(
                     items: sortedGoalList,
+                    hintTextSearch: 'Pesquisar Objetivo...',
+                    hintTextItem: 'Selecione um Objetivo',
                     onChanged: (value) => setState(() => _goal = value!),
                   );
                 },
@@ -361,19 +335,16 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                 data: (list) {
                   final sortedExerciseList = [...list]..sort((a, b) => a.getName().compareTo(b.getName()));
                   return ProWidgetSearchableDropdown<ExerciseModel>(
+                    hintTextSearch: 'Pesquisar exercício...',
+                    hintTextItem: 'Selecione um exercício',
                     items: sortedExerciseList,
+                    customTextInputAllowed: true,
                     onChanged: (value) => setState(() => _exercise = value!),
                   );
                 },
                 error: (e, _) => Center(child: Text('Error: $e')),
                 loading: () => Center(child: CircularProgressIndicator()),
               ),
-              //
-              // _isCustomExercise
-              //     ? _buildCustomExercise()
-              //     : _buildSearchExercise(),
-              //
-              // _showExerciseListView ? _buildExerciseListView() : Container(),
 
               Text('Método de Execução'),
               DropdownButtonFormField<ExecutionMethod>(
