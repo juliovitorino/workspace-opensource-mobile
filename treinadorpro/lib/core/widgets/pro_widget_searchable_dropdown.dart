@@ -23,6 +23,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>  extends State<ProWidge
 
   List<T> _filteredItems = [];
   T? _selectedItem;
+  bool _isSeachableItem = false;
 
   @override
   void initState() {
@@ -63,7 +64,10 @@ class _ProWidgetSearchableDropdownState<T extends IName>  extends State<ProWidge
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
+
+        // TextInput for aearchable item
+        if(_isSeachableItem)
+          Row(
           children: [
             Expanded(
               child: TextField(
@@ -82,24 +86,34 @@ class _ProWidgetSearchableDropdownState<T extends IName>  extends State<ProWidge
           ],
         ),
         const SizedBox(height: 10),
-        DropdownButton<T>(
-          isExpanded: true,
-          value: _selectedItem,
-          hint: const Text('Selecione um item'),
-          onChanged: (T? newValue) {
-            setState(() {
-              _selectedItem = newValue;
-              if (widget.onChanged != null) {
-                widget.onChanged!(newValue);
-              }
-            });
-          },
-          items: _filteredItems.map<DropdownMenuItem<T>>((T item) {
-            return DropdownMenuItem<T>(
-              value: item,
-              child: Text(item.getName()),
-            );
-          }).toList(),
+        Row(
+          children: [
+            Expanded(
+              child: DropdownButton<T>(
+                isExpanded: true,
+                value: _selectedItem,
+                hint: const Text('Selecione um item'),
+                onChanged: (T? newValue) {
+                  setState(() {
+                    _selectedItem = newValue;
+                    if (widget.onChanged != null) {
+                      widget.onChanged!(newValue);
+                    }
+                  });
+                },
+                items: _filteredItems.map<DropdownMenuItem<T>>((T item) {
+                  return DropdownMenuItem<T>(
+                    value: item,
+                    child: Text(item.getName()),
+                  );
+                }).toList(),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => setState(() => _isSeachableItem = !_isSeachableItem),
+            ),
+          ],
         ),
       ],
     );
