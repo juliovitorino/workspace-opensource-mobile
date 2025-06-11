@@ -11,6 +11,7 @@ import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 
 import '../../../../core/data/models/modality_model.dart';
 import '../../../../core/provider/modality_provider.dart';
@@ -245,18 +246,30 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
               // Modality
               Text('Modalidade'),
+              // modalityState.when(
+              //   data: (modalityList) {
+              //     final sortedList = [...modalityList]..sort((a, b) => a.namePt.compareTo(b.namePt));
+              //     return DropdownButtonFormField<ModalityModel>(
+              //       items: sortedList
+              //           .map(
+              //             (modalityItem) => DropdownMenuItem<ModalityModel>(
+              //           value: modalityItem,
+              //           child: Text(modalityItem.namePt),
+              //         ),
+              //       )
+              //           .toList(),
+              //       onChanged: (value) => setState(() => _modality = value!),
+              //     );
+              //   },
+              //   error: (e, _) => Center(child: Text('Error: $e')),
+              //   loading: () => Center(child: CircularProgressIndicator()),
+              // ),
+
               modalityState.when(
                 data: (modalityList) {
-                  final sortedList = [...modalityList]..sort((a, b) => a.namePt.compareTo(b.namePt));
-                  return DropdownButtonFormField<ModalityModel>(
-                    items: sortedList
-                        .map(
-                          (modalityItem) => DropdownMenuItem<ModalityModel>(
-                        value: modalityItem,
-                        child: Text(modalityItem.namePt),
-                      ),
-                    )
-                        .toList(),
+                  final sortedList = [...modalityList]..sort((a, b) => a.getName().compareTo(b.getName()));
+                  return ProWidgetSearchableDropdown<ModalityModel>(
+                    items: sortedList,
                     onChanged: (value) => setState(() => _modality = value!),
                   );
                 },
