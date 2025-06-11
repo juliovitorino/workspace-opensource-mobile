@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
+import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
@@ -10,6 +11,7 @@ import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/exercise_provider.dart';
 import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
@@ -50,9 +52,9 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
   late Modality _modality; // = Modality.modalities.first;
   late Goal _goal; // = Goal.goals.first;
+  late Exercise _exercise; // = Exercise.exercises.first;
   Program _program = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
-  Exercise _exercise = Exercise.exercises.first;
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
@@ -65,6 +67,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     Future.microtask(() {
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
+      ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
     });
   }
 
@@ -213,6 +216,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   Widget build(BuildContext context) {
     final modalityState = ref.watch(modalityViewModelProvider);
     final goalState = ref.watch(goalViewModelProvider);
+    final exerciseState = ref.watch(exerciseViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -349,11 +353,27 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                 onChanged: (value) => setState(() => _workGroup = value!),
               ),
 
-              _isCustomExercise
-                  ? _buildCustomExercise()
-                  : _buildSearchExercise(),
 
-              _showExerciseListView ? _buildExerciseListView() : Container(),
+              SizedBox(height: 10),
+              Text('Exercício'),
+
+              exerciseState.when(
+                data: (list) {
+                  final sortedExerciseList = [...list]..sort((a, b) => a.getName().compareTo(b.getName()));
+                  return ProWidgetSearchableDropdown<ExerciseModel>(
+                    items: sortedExerciseList,
+                    onChanged: (value) => setState(() => _exercise = value!),
+                  );
+                },
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
+              ),
+              //
+              // _isCustomExercise
+              //     ? _buildCustomExercise()
+              //     : _buildSearchExercise(),
+              //
+              // _showExerciseListView ? _buildExerciseListView() : Container(),
 
               Text('Método de Execução'),
               DropdownButtonFormField<ExecutionMethod>(

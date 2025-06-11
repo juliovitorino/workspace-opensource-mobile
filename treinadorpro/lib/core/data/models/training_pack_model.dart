@@ -37,8 +37,8 @@ class TrainingPackModel extends TrainingPack {
   );
 
   factory TrainingPackModel.fromJson(Map<String, dynamic> json) {
-    print('training_pack_model :: parsing fromJson');
-    return TrainingPackModel(
+    print('training_pack_model :: parsing fromJson has just started');
+    final response = TrainingPackModel(
       id: json['id'],
       externalId: json['externalId'],
       personalUser: UserModel.fromJson(json['personalTrainer']),
@@ -53,6 +53,9 @@ class TrainingPackModel extends TrainingPack {
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
+    print('training_pack_model :: parsing fromJson has been just finished successfully');
+
+    return response;
   }
 
   Map<String, dynamic> toJson() {
