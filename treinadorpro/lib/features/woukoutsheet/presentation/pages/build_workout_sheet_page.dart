@@ -10,9 +10,11 @@ import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 
+import '../../../../core/data/models/goal_model.dart';
 import '../../../../core/data/models/modality_model.dart';
 import '../../../../core/provider/modality_provider.dart';
 
@@ -47,7 +49,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   bool _isCustomExercise = false;
 
   late Modality _modality; // = Modality.modalities.first;
-  Goal _goal = Goal.goals.first;
+  late Goal _goal; // = Goal.goals.first;
   Program _program = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
   Exercise _exercise = Exercise.exercises.first;
@@ -62,6 +64,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     config = ref.read(appConfigProvider);
     Future.microtask(() {
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
+      ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
     });
   }
 
@@ -209,6 +212,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   @override
   Widget build(BuildContext context) {
     final modalityState = ref.watch(modalityViewModelProvider);
+    final goalState = ref.watch(goalViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -279,16 +283,28 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
               SizedBox(height: 10),
               Text('Objetivo'),
-              DropdownButtonFormField<Goal>(
-                items: Goal.goals
-                    .map(
-                      (goalItem) => DropdownMenuItem(
-                        value: goalItem,
-                        child: Text(goalItem.namePt),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) => setState(() => _goal = value!),
+              // DropdownButtonFormField<Goal>(
+              //   items: Goal.goals
+              //       .map(
+              //         (goalItem) => DropdownMenuItem(
+              //           value: goalItem,
+              //           child: Text(goalItem.namePt),
+              //         ),
+              //       )
+              //       .toList(),
+              //   onChanged: (value) => setState(() => _goal = value!),
+              // ),
+
+              goalState.when(
+                data: (goalList) {
+                  final sortedGoalList = [...goalList]..sort((a, b) => a.getName().compareTo(b.getName()));
+                  return ProWidgetSearchableDropdown<GoalModel>(
+                    items: sortedGoalList,
+                    onChanged: (value) => setState(() => _goal = value!),
+                  );
+                },
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
               ),
 
               SizedBox(height: 10),
