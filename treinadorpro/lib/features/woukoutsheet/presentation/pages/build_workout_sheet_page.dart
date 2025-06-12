@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
+import 'package:treinadorpro/core/data/models/program_model.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 import 'package:treinadorpro/core/enums/weight_unit_enum.dart';
@@ -13,6 +14,7 @@ import 'package:treinadorpro/core/domain/entities/work_group.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
 import 'package:treinadorpro/core/provider/goal_provider.dart';
+import 'package:treinadorpro/core/provider/program_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 
@@ -53,7 +55,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late Modality _modality; // = Modality.modalities.first;
   late Goal _goal; // = Goal.goals.first;
   late Exercise _exercise; // = Exercise.exercises.first;
-  Program _program = Program.programs.first;
+  late Program _program; // = Program.programs.first;
   WorkGroup _workGroup = WorkGroup.workGroups.first;
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
@@ -68,6 +70,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
       ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
+      ref.read(programViewModelProvider.notifier).findAllActivePrograms();
     });
   }
 
@@ -217,6 +220,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final modalityState = ref.watch(modalityViewModelProvider);
     final goalState = ref.watch(goalViewModelProvider);
     final exerciseState = ref.watch(exerciseViewModelProvider);
+    final programState = ref.watch(programViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -268,6 +272,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                 loading: () => Center(child: CircularProgressIndicator()),
               ),
 
+              // Goal
               SizedBox(height: 10),
               Text('Objetivo'),
 
@@ -285,34 +290,52 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                 loading: () => Center(child: CircularProgressIndicator()),
               ),
 
+              // Program
               SizedBox(height: 10),
               Text('Programa'),
 
-              _isPersonalizedProgram
-                  ? Container()
-                  : DropdownButtonFormField<Program>(
-                      items: Program.programs
-                          .map(
-                            (item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(item.namePt),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) => setState(() {
-                        _program = value!;
-                        _isPersonalizedProgram =
-                            value.namePt.toLowerCase() == 'personalizado'
-                            ? true
-                            : false;
-                      }),
-                    ),
+              programState.when(
+                data: (programList) {
+                  final sortedList = [...programList]..sort((a, b) => a.getName().compareTo(b.getName()));
+                  return ProWidgetSearchableDropdown<ProgramModel>(
+                    items: sortedList,
+                    customTextInputAllowed: true,
+                    hintTextSearch: "Pesquisar Programa...",
+                    hintTextItem: 'Selecione programar',
+                    hintCustomTextInput: 'Informe um programa personalizado',
+                    onChanged: (value) => setState(() => _program = value!),
+                  );
+                },
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
+              ),
+              //
+              // _isPersonalizedProgram
+              //     ? Container()
+              //     : DropdownButtonFormField<Program>(
+              //         items: Program.programs
+              //             .map(
+              //               (item) => DropdownMenuItem(
+              //                 value: item,
+              //                 child: Text(item.namePt),
+              //               ),
+              //             )
+              //             .toList(),
+              //         onChanged: (value) => setState(() {
+              //           _program = value!;
+              //           _isPersonalizedProgram =
+              //               value.namePt.toLowerCase() == 'personalizado'
+              //               ? true
+              //               : false;
+              //         }),
+              //       ),
+              //
+              // // show Custom Program
+              // _isPersonalizedProgram
+              //     ? _buildPersonalizedProgram()
+              //     : Container(),
 
-              // show Custom Program
-              _isPersonalizedProgram
-                  ? _buildPersonalizedProgram()
-                  : Container(),
-
+              // Workgroup
               SizedBox(height: 10),
               Text('Grupo Muscular'),
               DropdownButtonFormField<WorkGroup>(
@@ -328,6 +351,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               ),
 
 
+              // Exercise
               SizedBox(height: 10),
               Text('Exercício'),
 
@@ -337,6 +361,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                   return ProWidgetSearchableDropdown<ExerciseModel>(
                     hintTextSearch: 'Pesquisar exercício...',
                     hintTextItem: 'Selecione um exercício',
+                    hintCustomTextInput: 'Informe um exercício personalizado',
                     items: sortedExerciseList,
                     customTextInputAllowed: true,
                     onChanged: (value) => setState(() => _exercise = value!),

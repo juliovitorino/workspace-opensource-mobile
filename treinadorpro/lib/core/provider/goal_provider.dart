@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/http_api_client_provider.dart';
 import 'package:treinadorpro/core/viewmodel/goal_view_model.dart';
 
+// remote datasource provider
 final goalRemoteDatasourceProvider = Provider<IGoalRemoteDatasource>((ref) {
   final apiClient = ref.read(apiClientProvider);
   final appConfig = ref.watch(appConfigProvider);

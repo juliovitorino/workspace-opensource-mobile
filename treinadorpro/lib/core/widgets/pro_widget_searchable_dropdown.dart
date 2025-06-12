@@ -7,6 +7,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
   final List<T> items;
   final String? hintTextSearch;
   final String? hintTextItem;
+  final String? hintCustomTextInput;
   final Function(T?)? onChanged;
   final bool customTextInputAllowed;
 
@@ -17,6 +18,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
     this.onChanged,
     this.customTextInputAllowed = false,
     this.hintTextItem = 'Selecione um item',
+    this.hintCustomTextInput = 'Campo personalizado',
   });
 
   @override
@@ -161,7 +163,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
               Expanded(
                 child: ProWidgetTextFormField(
                   controller: _customTextEditingController,
-                  label: 'Exercício Personalizado',
+                  label: widget.hintCustomTextInput!,
 
                 ),
               ),
