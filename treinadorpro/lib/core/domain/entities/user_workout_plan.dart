@@ -25,7 +25,7 @@ class UserWorkoutPlan {
   final Program? program;
 
   @ignore
-  final WorkGroup? workgroup;
+  final Workgroup? workgroup;
 
   @ignore
   final Exercise? exercise;

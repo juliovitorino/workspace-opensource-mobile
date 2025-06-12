@@ -10,7 +10,7 @@ part of 'work_group.dart';
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
 extension GetWorkGroupCollection on Isar {
-  IsarCollection<WorkGroup> get workGroups => this.collection();
+  IsarCollection<Workgroup> get workGroups => this.collection();
 }
 
 const WorkGroupSchema = CollectionSchema(
@@ -63,7 +63,7 @@ const WorkGroupSchema = CollectionSchema(
 );
 
 int _workGroupEstimateSize(
-  WorkGroup object,
+  Workgroup object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -76,7 +76,7 @@ int _workGroupEstimateSize(
 }
 
 void _workGroupSerialize(
-  WorkGroup object,
+  Workgroup object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -89,13 +89,13 @@ void _workGroupSerialize(
   writer.writeDateTime(offsets[5], object.updatedAt);
 }
 
-WorkGroup _workGroupDeserialize(
+Workgroup _workGroupDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = WorkGroup(
+  final object = Workgroup(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
     id: id,
     nameEn: reader.readString(offsets[1]),
@@ -131,19 +131,19 @@ P _workGroupDeserializeProp<P>(
   }
 }
 
-Id _workGroupGetId(WorkGroup object) {
+Id _workGroupGetId(Workgroup object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _workGroupGetLinks(WorkGroup object) {
+List<IsarLinkBase<dynamic>> _workGroupGetLinks(Workgroup object) {
   return [];
 }
 
-void _workGroupAttach(IsarCollection<dynamic> col, Id id, WorkGroup object) {}
+void _workGroupAttach(IsarCollection<dynamic> col, Id id, Workgroup object) {}
 
 extension WorkGroupQueryWhereSort
-    on QueryBuilder<WorkGroup, WorkGroup, QWhere> {
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhere> anyId() {
+    on QueryBuilder<Workgroup, Workgroup, QWhere> {
+  QueryBuilder<Workgroup, Workgroup, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -151,8 +151,8 @@ extension WorkGroupQueryWhereSort
 }
 
 extension WorkGroupQueryWhere
-    on QueryBuilder<WorkGroup, WorkGroup, QWhereClause> {
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhereClause> idEqualTo(Id id) {
+    on QueryBuilder<Workgroup, Workgroup, QWhereClause> {
+  QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -161,7 +161,7 @@ extension WorkGroupQueryWhere
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -183,7 +183,7 @@ extension WorkGroupQueryWhere
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -192,7 +192,7 @@ extension WorkGroupQueryWhere
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -201,7 +201,7 @@ extension WorkGroupQueryWhere
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterWhereClause> idBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -219,8 +219,8 @@ extension WorkGroupQueryWhere
 }
 
 extension WorkGroupQueryFilter
-    on QueryBuilder<WorkGroup, WorkGroup, QFilterCondition> {
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> createdAtIsNull() {
+    on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'createdAt',
@@ -228,7 +228,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition>
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
       createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -237,7 +237,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> createdAtEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> createdAtEqualTo(
       DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -247,7 +247,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition>
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
       createdAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -261,7 +261,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> createdAtLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> createdAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -274,7 +274,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> createdAtBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> createdAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -291,7 +291,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idIsNull() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -299,7 +299,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idIsNotNull() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'id',
@@ -307,7 +307,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idEqualTo(
       Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -317,7 +317,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -330,7 +330,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -343,7 +343,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> idBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -360,7 +360,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -373,7 +373,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnGreaterThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -388,7 +388,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -403,7 +403,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -422,7 +422,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnStartsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -435,7 +435,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnEndsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -448,7 +448,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnContains(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -460,7 +460,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnMatches(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -472,7 +472,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnIsEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'nameEn',
@@ -481,7 +481,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEnIsNotEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEnIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'nameEn',
@@ -490,7 +490,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -503,7 +503,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsGreaterThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -518,7 +518,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -533,7 +533,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -552,7 +552,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsStartsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -565,7 +565,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsEndsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -578,7 +578,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsContains(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -590,7 +590,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsMatches(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -602,7 +602,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsIsEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'nameEs',
@@ -611,7 +611,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> nameEsIsNotEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> nameEsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'nameEs',
@@ -620,7 +620,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -633,7 +633,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtGreaterThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -648,7 +648,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -663,7 +663,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -682,7 +682,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtStartsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -695,7 +695,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtEndsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -708,7 +708,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtContains(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -720,7 +720,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtMatches(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -732,7 +732,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtIsEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'namePt',
@@ -741,7 +741,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> namePtIsNotEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> namePtIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'namePt',
@@ -750,7 +750,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -763,7 +763,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusGreaterThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -778,7 +778,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -793,7 +793,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -812,7 +812,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusStartsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -825,7 +825,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusEndsWith(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -838,7 +838,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusContains(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -850,7 +850,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusMatches(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -862,7 +862,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusIsEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'status',
@@ -871,7 +871,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> statusIsNotEmpty() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> statusIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'status',
@@ -880,7 +880,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> updatedAtIsNull() {
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> updatedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'updatedAt',
@@ -888,7 +888,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition>
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
       updatedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -897,7 +897,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> updatedAtEqualTo(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> updatedAtEqualTo(
       DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -907,7 +907,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition>
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
       updatedAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -921,7 +921,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> updatedAtLessThan(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> updatedAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -934,7 +934,7 @@ extension WorkGroupQueryFilter
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterFilterCondition> updatedAtBetween(
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> updatedAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -953,79 +953,79 @@ extension WorkGroupQueryFilter
 }
 
 extension WorkGroupQueryObject
-    on QueryBuilder<WorkGroup, WorkGroup, QFilterCondition> {}
+    on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {}
 
 extension WorkGroupQueryLinks
-    on QueryBuilder<WorkGroup, WorkGroup, QFilterCondition> {}
+    on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {}
 
-extension WorkGroupQuerySortBy on QueryBuilder<WorkGroup, WorkGroup, QSortBy> {
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByCreatedAt() {
+extension WorkGroupQuerySortBy on QueryBuilder<Workgroup, Workgroup, QSortBy> {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByCreatedAtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNameEn() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNameEn() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEn', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNameEnDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNameEnDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEn', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNameEs() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNameEs() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEs', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNameEsDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNameEsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEs', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNamePt() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNamePt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'namePt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByNamePtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByNamePtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'namePt', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByStatus() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByStatusDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByUpdatedAt() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> sortByUpdatedAtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
@@ -1033,86 +1033,86 @@ extension WorkGroupQuerySortBy on QueryBuilder<WorkGroup, WorkGroup, QSortBy> {
 }
 
 extension WorkGroupQuerySortThenBy
-    on QueryBuilder<WorkGroup, WorkGroup, QSortThenBy> {
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByCreatedAt() {
+    on QueryBuilder<Workgroup, Workgroup, QSortThenBy> {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByCreatedAtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenById() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNameEn() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNameEn() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEn', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNameEnDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNameEnDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEn', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNameEs() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNameEs() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEs', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNameEsDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNameEsDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nameEs', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNamePt() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNamePt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'namePt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByNamePtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByNamePtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'namePt', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByStatus() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByStatusDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByUpdatedAt() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QAfterSortBy> thenByUpdatedAtDesc() {
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
@@ -1120,42 +1120,42 @@ extension WorkGroupQuerySortThenBy
 }
 
 extension WorkGroupQueryWhereDistinct
-    on QueryBuilder<WorkGroup, WorkGroup, QDistinct> {
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByCreatedAt() {
+    on QueryBuilder<Workgroup, Workgroup, QDistinct> {
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByNameEn(
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByNameEn(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nameEn', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByNameEs(
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByNameEs(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nameEs', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByNamePt(
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByNamePt(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'namePt', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByStatus(
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByStatus(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<WorkGroup, WorkGroup, QDistinct> distinctByUpdatedAt() {
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
@@ -1163,44 +1163,44 @@ extension WorkGroupQueryWhereDistinct
 }
 
 extension WorkGroupQueryProperty
-    on QueryBuilder<WorkGroup, WorkGroup, QQueryProperty> {
-  QueryBuilder<WorkGroup, int, QQueryOperations> idProperty() {
+    on QueryBuilder<Workgroup, Workgroup, QQueryProperty> {
+  QueryBuilder<Workgroup, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<WorkGroup, DateTime?, QQueryOperations> createdAtProperty() {
+  QueryBuilder<Workgroup, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<WorkGroup, String, QQueryOperations> nameEnProperty() {
+  QueryBuilder<Workgroup, String, QQueryOperations> nameEnProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nameEn');
     });
   }
 
-  QueryBuilder<WorkGroup, String, QQueryOperations> nameEsProperty() {
+  QueryBuilder<Workgroup, String, QQueryOperations> nameEsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nameEs');
     });
   }
 
-  QueryBuilder<WorkGroup, String, QQueryOperations> namePtProperty() {
+  QueryBuilder<Workgroup, String, QQueryOperations> namePtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'namePt');
     });
   }
 
-  QueryBuilder<WorkGroup, String, QQueryOperations> statusProperty() {
+  QueryBuilder<Workgroup, String, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
     });
   }
 
-  QueryBuilder<WorkGroup, DateTime?, QQueryOperations> updatedAtProperty() {
+  QueryBuilder<Workgroup, DateTime?, QQueryOperations> updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });
