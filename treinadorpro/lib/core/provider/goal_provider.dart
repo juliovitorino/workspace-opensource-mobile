@@ -1,4 +1,3 @@
-// remote datasource provider
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/datasources/goal_remote_datasource.dart';
 import 'package:treinadorpro/core/data/datasources/igoal_remote_datasource.dart';

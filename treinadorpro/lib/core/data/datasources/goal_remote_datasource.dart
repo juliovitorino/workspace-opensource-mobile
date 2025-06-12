@@ -8,6 +8,8 @@ class GoalRemoteDatasource implements IGoalRemoteDatasource{
   final ApiClient apiClient;
   final AppConfig config;
 
+  static const module = 'goal_remote_datasource';
+
   GoalRemoteDatasource(this.apiClient, this.config);
 
   @override
@@ -27,12 +29,12 @@ class GoalRemoteDatasource implements IGoalRemoteDatasource{
     final String url = "${config.apiBackendUrl}/v1/api/business/goal";
 
     if(config.isDebugMode) {
-      print('goal_remote_datasource :: call url = $url');
+      print('$module :: call url = $url');
     }
 
     final jsonResponse = await apiClient.get(url);
     if(config.isDebugMode) {
-      print("goal_remote_datasource :: jsonResponse = $jsonResponse");
+      print("$module :: jsonResponse = $jsonResponse");
     }
 
     final List<dynamic> modalityList = jsonResponse['objectResponse'];
