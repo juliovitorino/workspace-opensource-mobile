@@ -1,12 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/modality_model.dart';
 import 'package:treinadorpro/core/domain/repositories/imodality_repository.dart';
+import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
-class ModalityViewModel extends StateNotifier<AsyncValue<List<ModalityModel>>>{
+class ModalityViewModel extends IViewModel<List<ModalityModel>>{
 
   final IModalityRepository _repository;
 
-  ModalityViewModel(this._repository) : super(const AsyncValue.loading());
+  ModalityViewModel(this._repository) : super(_repository);
 
   Future<void> findAllActiveModalities() async {
     try {

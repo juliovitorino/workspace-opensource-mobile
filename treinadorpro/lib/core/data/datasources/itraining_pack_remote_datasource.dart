@@ -6,6 +6,7 @@ import '../models/page_result_response_model.dart';
 
 abstract class ITrainingPackRemoteDatasource extends IRemoteDatasource<TrainingPackModel, int> {
   Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String id, int page, int size);
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String id);
   Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String externalId);
 
 }

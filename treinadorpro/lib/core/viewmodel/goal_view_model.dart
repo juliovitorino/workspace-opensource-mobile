@@ -1,11 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/goal_model.dart';
 import 'package:treinadorpro/core/domain/repositories/igoal_repository.dart';
+import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
-class GoalViewModel extends StateNotifier<AsyncValue<List<GoalModel>>>{
+class GoalViewModel extends IViewModel<List<GoalModel>>{
 
   final IGoalRepository _goalRepository;
-  GoalViewModel(this._goalRepository) : super(const AsyncValue.loading());
+  GoalViewModel(this._goalRepository) : super(_goalRepository);
 
   static const String module = 'goal_view_list_model';
 

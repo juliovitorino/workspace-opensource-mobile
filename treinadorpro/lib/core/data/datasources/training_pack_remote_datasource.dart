@@ -31,8 +31,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   Future<PageResultResponseModel<
       TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid,
       int page, int size) async {
-    final String url = '${config
-        .apiBackendUrl}/v1/api/business/trainingpack?page=$page&size=$size&externalId=$uuid';
+    final String url = '${config.apiBackendUrl}/v1/api/business/trainingpack?page=$page&size=$size&externalId=$uuid';
 
     if (config.isDebugMode) {
       print('$module :: uuid = $uuid');
@@ -68,6 +67,26 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
     return studentsFromTrainerList
         .map((studentItem) => StudentsFromTrainerResponseModel.fromJson(studentItem))
+        .toList();
+  }
+
+  @override
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String externalId) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/trainingpack/$externalId";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    final jsonResponse = await apiClient.get(url);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final List<dynamic> trainingPackFromTrainerList = jsonResponse['objectResponse'];
+
+    return trainingPackFromTrainerList
+        .map((studentItem) => TrainingPackModel.fromJson(studentItem))
         .toList();
   }
 

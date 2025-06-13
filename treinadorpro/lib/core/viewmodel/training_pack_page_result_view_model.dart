@@ -2,16 +2,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/page_result_response_model.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/domain/repositories/itraining_pack_repository.dart';
+import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
 class TrainingPackPageResultViewModel
-    extends
-        StateNotifier<AsyncValue<PageResultResponseModel<TrainingPackModel>>> {
-  final ITrainingPackRespository _repository;
+    extends IViewModel<PageResultResponseModel<TrainingPackModel>> {
 
-  TrainingPackPageResultViewModel(this._repository)
-    : super(const AsyncValue.loading());
+  final ITrainingPackRepository _repository;
 
-  Future<PageResultResponseModel<TrainingPackModel>?>  findAllTrainingPackByPersonalExternalId( String uuid, int page, int size) async {
+  TrainingPackPageResultViewModel(this._repository) : super(_repository);
+
+  Future<PageResultResponseModel<TrainingPackModel>?>
+  findAllTrainingPackByPersonalExternalId(
+    String uuid,
+    int page,
+    int size,
+  ) async {
     try {
       print('training_pack_view_model :: uuid = $uuid');
       final previous = state.valueOrNull;

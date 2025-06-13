@@ -71,7 +71,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref
           .read(workgroupViewListModelProvider.notifier)
           .findAllActiveWorkgroups();
-      ref.read(trainingPackViewListModelProvider.notifier).findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier).findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
     });
   }
 
@@ -172,7 +172,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final exerciseState = ref.watch(exerciseViewModelProvider);
     final programState = ref.watch(programViewModelProvider);
     final workgroupState = ref.watch(workgroupViewListModelProvider);
-    final trainingPackState = ref.watch(trainingPackViewListModelProvider);
+    final trainingPackState = ref.watch(trainingPackStudentsFromTrainerViewListModelProvider);
 
     return Scaffold(
       appBar: AppBar(
