@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
+import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
@@ -30,17 +32,13 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final TextEditingController _objectiveController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
 
-  // TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
-
   String _gender = 'Masculino';
-  String _planType = 'Pacote Básico - 4 semanas';
 
   bool _isActionButtonStudentSelector = true;
   bool _isShowPersonalDataSection = false;
   bool _isShowExistingStudentSection = false;
   bool _isShowCardOldStudentSelected = false;
-
-  TrainingPack? _selectedPackage;
+  bool _isShowCardTrainingPack = false;
 
   final List<String> _days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   final List<String> _selectedDays = [];
@@ -53,17 +51,25 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   List<TextEditingController> _dateControllers = [];
 
   late final AppConfig config;
-  late StudentsFromTrainerResponseModel _student;
+  late StudentsFromTrainerResponseModel _studentSelected;
+  late TrainingPackModel _trainingPackSelected;
 
   @override
   void initState() {
     super.initState();
     config = ref.read(appConfigProvider);
+
     _planStartController.text = DateTime.now().toString().split(' ')[0];
     Future.microtask(() {
       ref
-          .read(trainingPackViewListModelProvider.notifier)
+          .read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
           .findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+
+      ref
+          .read((trainingPackFromTrainerViewListModelProvider.notifier))
+          .findAllActiveTrainingPackFromTrainer(
+            "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
+          );
     });
   }
 
@@ -77,15 +83,44 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       hintTextItem: 'Selecione um aluno',
       items: sortedStudentList,
       onChanged: (value) => setState(() {
-        _student = value!;
+        _studentSelected = value!;
         _isShowCardOldStudentSelected = true;
       }),
+      onClear: () => setState(() {
+        _isShowCardOldStudentSelected = false;
+      }),
+    );
+  }
+
+  Widget _buildTrainingPackSearchable(
+    List<TrainingPackModel> trainingPackList,
+  ) {
+    final sortedTrainingPackList = [...trainingPackList]
+      ..sort((a, b) => a.getName().compareTo(b.getName()));
+    return ProWidgetSearchableDropdown<TrainingPackModel>(
+      hintTextSearch: 'Pesquisar Pacote de treino...',
+      hintTextItem: 'Selecione um Pacote de Treino',
+      items: sortedTrainingPackList,
+      onChanged: (value) => setState(() {
+        print('valor da combo alterado');
+        _trainingPackSelected = value!;
+        _isShowCardTrainingPack = true;
+      }),
+      onClear: () => setState(() {
+        _isShowCardTrainingPack = false;
+      })
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final trainingPackState = ref.watch(trainingPackViewListModelProvider);
+    final trainingPackStudentsFromTrainerState = ref.watch(
+      trainingPackStudentsFromTrainerViewListModelProvider,
+    );
+
+    final trainingPackFromTrainerState = ref.watch(
+      trainingPackFromTrainerViewListModelProvider,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -104,57 +139,38 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //----------------------------
               // pack training section
+              //----------------------------
               SizedBox(height: 16),
               ProWidgetSectionTitle(title: 'Pacote Contratado'),
-              DropdownButtonFormField<String>(
-                value: _planType,
-                items: TrainingPack.trainingPacks
-                    .map(
-                      (p) => DropdownMenuItem(
-                        value: p.description,
-                        child: Text(p.description),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    _planType = value!;
-                    _selectedPackage = TrainingPack.trainingPacks.firstWhere(
-                      (pkg) => pkg.description == value,
-                      orElse: () => TrainingPack(
-                        description: '',
-                        durationDays: 0,
-                        weeklyFrequency: 0,
-                        price: 0,
-                        notes: '',
-                        externalId: '',
-                        personalUser: User.users[0],
-                        status: '',
-                      ),
-                    );
-                  });
-                },
+              trainingPackFromTrainerState.when(
+                data: (trainingPackList) => _buildTrainingPackSearchable(trainingPackList),
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
               ),
 
-              if (_selectedPackage != null)
+              //----------------------------
+              // Training Pack card info
+              //----------------------------
+              if (_isShowCardTrainingPack)
                 Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
                     title: Text(
-                      _selectedPackage!.description,
+                      _trainingPackSelected.description,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_selectedPackage!.modality!.namePt),
+                        Text(_trainingPackSelected.modality!.namePt),
                         Text(
-                          '${_selectedPackage!.durationDays} dias • ${_selectedPackage!.weeklyFrequency}x/semana',
+                          '${_trainingPackSelected.durationDays} dias • ${_trainingPackSelected.weeklyFrequency}x/semana',
                         ),
-                        Text(_selectedPackage!.notes),
+                        Text(_trainingPackSelected.notes),
                         Text(
-                          'Valor: R\$ ${_selectedPackage!.price.toStringAsFixed(2)}',
+                          'Valor: R\$ ${_trainingPackSelected.price.toStringAsFixed(2)}',
                           style: TextStyle(color: Colors.green[700]),
                         ),
                       ],
@@ -162,10 +178,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                   ),
                 ),
 
-              // END pack training section
               SizedBox(height: 16),
 
+              //-------------------------------
               // Action button student selector
+              //--------------------------------
               if (_isActionButtonStudentSelector)
                 Wrap(
                   spacing: 10,
@@ -192,83 +209,54 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                   ],
                 ),
 
-              // END Action button student selector
               SizedBox(height: 16),
 
               ProWidgetSectionTitle(title: 'Dados Pessoais'),
 
+              //---------------------------
               // Old Student Section
+              //---------------------------
               if (_isShowExistingStudentSection)
-                trainingPackState.when(
+                trainingPackStudentsFromTrainerState.when(
                   data: (studentList) => _buildStudentSearchable(studentList),
                   error: (e, _) => Center(child: Text('Error: $e')),
                   loading: () => Center(child: CircularProgressIndicator()),
                 ),
 
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Text('Aluno'),
-              //     DropdownButtonFormField<TrainerUser>(
-              //       items: TrainerUser.trainerUsers
-              //           .where(
-              //             (e) =>
-              //                 e.studentUser!.userProfile.contains('STUDENT'),
-              //           )
-              //           .map(
-              //             (item) => DropdownMenuItem(
-              //               value: item,
-              //               child: Text(item.studentUser!.name),
-              //             ),
-              //           )
-              //           .toList(),
-              //       onChanged: (value) => setState(() {
-              //         _trainerUser = value!;
-              //         _isShowCardOldStudentSelected = true;
-              //       }),
-              //     ),
-              //   ],
-              // ),
+              //--------------------------------------------
+              // Old student card info
+              //--------------------------------------------
               if (_isShowCardOldStudentSelected)
                 Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
                     title: Text(
-                      _student.name,
+                      _studentSelected.name,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_student.email),
-                        Text(_student.phone),
+                        Text(_studentSelected.email),
+                        Text(_studentSelected.phone),
                       ],
                     ),
                   ),
                 ),
+
+              //-----------------------------
               // personal data section
+              //-----------------------------
               if (_isShowPersonalDataSection)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTextField(
-                      _nameController,
-                      'Nome completo',
-                      required: true,
-                    ),
-                    _buildTextField(
-                      _dobController,
-                      'Data de nascimento (AAAA-MM-DD)',
-                      keyboardType: TextInputType.datetime,
-                    ),
-                    _buildTextField(
-                      _phoneController,
-                      'Telefone',
-                      keyboardType: TextInputType.phone,
-                      required: true,
-                    ),
-                    _buildTextField(_emailController, 'Email'),
+                    ProWidgetTextFormField(controller: _nameController, label: 'Nome Completo'),
+                    ProWidgetTextFormField(controller: _dobController, label: 'Data de nascimento (AAAA-MM-DD)', keyboardType: TextInputType.datetime),
+                    ProWidgetTextFormField(controller: _phoneController, label: 'Telefone', keyboardType: TextInputType.phone),
+                    ProWidgetTextFormField(controller: _emailController, label: 'Email', keyboardType: TextInputType.emailAddress),
                     SizedBox(height: 8),
+
                     Text('Sexo'),
                     DropdownButtonFormField<String>(
                       value: _gender,
@@ -284,20 +272,12 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
               SizedBox(height: 32),
 
+              //--------------------------------
               // training info section
+              //--------------------------------
               ProWidgetSectionTitle(title: 'Informações Sobre o Treino'),
-
-              _buildTextField(
-                _planStartController,
-                'Data de início (AAAA-MM-DD)',
-                keyboardType: TextInputType.datetime,
-              ),
-
-              _buildTextField(
-                _startTimeController,
-                'Hora de Início do Treino (HH:MI)',
-                keyboardType: TextInputType.datetime,
-              ),
+              ProWidgetTextFormField(controller: _planStartController, label: 'Data de início (AAAA-MM-DD)', keyboardType: TextInputType.datetime),
+              ProWidgetTextFormField(controller: _startTimeController, label: 'Hora de Início do Treino (HH:MI)', keyboardType: TextInputType.number),
 
               DropdownButtonFormField<String>(
                 value: _endTimeController,
@@ -336,14 +316,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               ),
 
               SizedBox(height: 16),
-              _buildTextField(
-                _objectiveController,
-                'Digite seu objetivo: Hipertrofia, emagrecimento, saúde, etc.',
-              ),
+              ProWidgetTextFormField(controller: _objectiveController, label: 'Digite seu objetivo: Hipertrofia, emagrecimento, saúde, etc.'),
 
-              // END training info section
-
+              //------------------
               // payment section
+              //------------------
               ProWidgetSectionTitle(title: 'Forma de Pagamento'),
 
               SizedBox(height: 8),
@@ -379,43 +356,49 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                   });
                 },
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _paymentCount,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: TextFormField(
-                      controller: _dateControllers[index],
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: 'Data Prevista ${index + 1}',
-                        suffixIcon: Icon(Icons.calendar_today),
+
+              //-------------------------------
+              // Instalment list section
+              //-------------------------------
+              if(_dateControllers.isNotEmpty)
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _paymentCount,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: TextFormField(
+                        controller: _dateControllers[index],
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Data Prevista ${index + 1}',
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        onTap: () async {
+                          final pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2100),
+                          );
+                          if (pickedDate != null) {
+                            setState(() {
+                              _paymentDates[index] = pickedDate;
+                              _dateControllers[index].text =
+                                  '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                            });
+                          }
+                        },
                       ),
-                      onTap: () async {
-                        final pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100),
-                        );
-                        if (pickedDate != null) {
-                          setState(() {
-                            _paymentDates[index] = pickedDate;
-                            _dateControllers[index].text =
-                                '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
-                          });
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
 
-              // END payment section
 
+              //------------------------------
               // Action button section
+              //------------------------------
               SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () {
@@ -448,40 +431,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                 child: Text('Cancelar'),
               ),
 
-              // END Action button section
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        title,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    TextEditingController controller,
-    String label, {
-    TextInputType keyboardType = TextInputType.text,
-    bool required = false,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(labelText: label),
-        validator: required
-            ? (value) =>
-                  (value == null || value.isEmpty) ? 'Campo obrigatório' : null
-            : null,
       ),
     );
   }

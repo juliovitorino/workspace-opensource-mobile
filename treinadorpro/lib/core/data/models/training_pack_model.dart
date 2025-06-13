@@ -1,11 +1,12 @@
 
+import 'package:treinadorpro/core/data/models/iname.dart';
 import 'package:treinadorpro/core/data/models/modality_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
 
 import '../../domain/entities/training_pack.dart';
 
-class TrainingPackModel extends TrainingPack {
+class TrainingPackModel extends TrainingPack implements IName{
   const TrainingPackModel({
     int? id,
     required String externalId,
@@ -74,5 +75,10 @@ class TrainingPackModel extends TrainingPack {
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
+  }
+
+  @override
+  String getName() {
+    return this.description;
   }
 }

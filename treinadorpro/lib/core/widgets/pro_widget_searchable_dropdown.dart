@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/data/models/iname.dart';
+import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_field_container.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 
@@ -9,6 +10,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
   final String? hintTextItem;
   final String? hintCustomTextInput;
   final Function(T?)? onChanged;
+  final Function()? onClear;
   final bool customTextInputAllowed;
 
   const ProWidgetSearchableDropdown({
@@ -19,6 +21,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
     this.customTextInputAllowed = false,
     this.hintTextItem = 'Selecione um item',
     this.hintCustomTextInput = 'Campo personalizado',
+    this.onClear,
   });
 
   @override
@@ -37,6 +40,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
   bool _isSeachableItem = false;
   bool _isShowCustomTextInput = false;
   bool _isShowItemToSelect = true;
+  bool _isShowCloseIcon = false;
 
   @override
   void initState() {
@@ -108,7 +112,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
             ],
           ),
 
-        // Item to select
+        // Item to select dropdown
         const SizedBox(height: 10),
         if(_isShowItemToSelect)
           Row(
@@ -122,6 +126,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                   setState(() {
                     _selectedItem = newValue;
                     _isSeachableItem = false;
+                    _isShowCloseIcon = true;
                     if (widget.onChanged != null) {
                       widget.onChanged!(newValue);
                     }
@@ -135,6 +140,8 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                 }).toList(),
               ),
             ),
+
+            // search icon
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () =>
@@ -144,6 +151,24 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                     _selectedItem = null;
                   }),
             ),
+
+            // clear icon
+            if(_isShowCloseIcon)
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () =>
+                    setState(() {
+                      _isSeachableItem = false;
+                      _searchTextEditingController.clear();
+                      _selectedItem = null;
+                      _isShowCloseIcon = false;
+                      if(widget.onClear != null){
+                        widget.onClear!();
+                      }
+                    }),
+              ),
+
+            // Edit icon
             if(widget.customTextInputAllowed)
               IconButton(
                   onPressed: () => setState(() {

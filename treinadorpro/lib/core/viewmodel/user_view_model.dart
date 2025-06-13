@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
+import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
 import '../data/models/user_model.dart';
 
-class UserViewModel extends StateNotifier<AsyncValue<UserModel>> {
+class UserViewModel extends IViewModel<UserModel> {
 
   final IUserRepository _repository;
 
-  UserViewModel(this._repository) : super(const AsyncValue.loading());
+  UserViewModel(this._repository) : super(_repository);
 
   Future<void> loadUser(int id) async {
     try {

@@ -1,11 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iexercise_repository.dart';
+import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
-class ExerciseViewModel extends StateNotifier<AsyncValue<List<ExerciseModel>>>{
+class ExerciseViewModel extends IViewModel<List<ExerciseModel>>{
 
   final IExerciseRepository _repository;
-  ExerciseViewModel(this._repository) : super(const AsyncValue.loading());
+  ExerciseViewModel(this._repository) : super(_repository);
 
   Future<void> findAllActiveExercises() async {
     try {

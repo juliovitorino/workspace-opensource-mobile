@@ -6,8 +6,9 @@ import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/domain/repositories/training_pack_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/http_api_client_provider.dart';
+import 'package:treinadorpro/core/viewmodel/training_pack_from_trainer_view_list_model.dart';
 import 'package:treinadorpro/core/viewmodel/training_pack_page_result_view_model.dart';
-import 'package:treinadorpro/core/viewmodel/training_pack_view_list_model.dart';
+import 'package:treinadorpro/core/viewmodel/training_pack_students_from_trainer_view_list_model.dart';
 
 import '../data/models/page_result_response_model.dart';
 
@@ -37,10 +38,15 @@ final trainingPackPageResultViewModelProvider =
       },
     );
 
-final trainingPackViewListModelProvider =
-    StateNotifierProvider<TrainingPackViewListModel, AsyncValue<List<StudentsFromTrainerResponseModel>>>((ref){
+final trainingPackStudentsFromTrainerViewListModelProvider =
+    StateNotifierProvider<TrainingPackStudentsFromTrainerViewListModel, AsyncValue<List<StudentsFromTrainerResponseModel>>>((ref){
       final repository = ref.read(trainingPackRepositoryProvider);
       print('trainingPackViewListModelProvider has been created');
 
-      return TrainingPackViewListModel(repository);
+      return TrainingPackStudentsFromTrainerViewListModel(repository);
     });
+
+final trainingPackFromTrainerViewListModelProvider = StateNotifierProvider<TrainingPackFromTrainerViewListModel, AsyncValue<List<TrainingPackModel>>>((ref){
+  final repository = ref.read(trainingPackRepositoryProvider);
+  return TrainingPackFromTrainerViewListModel(repository);
+});
