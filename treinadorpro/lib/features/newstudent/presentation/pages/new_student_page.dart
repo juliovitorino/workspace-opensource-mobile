@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
+import '../../../../core/data/models/students_from_trainer_response_model.dart';
 import '../../../../core/domain/entities/modality.dart';
 import '../../../../core/domain/entities/trainer_user.dart';
+import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
+import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
 
-class NewStudentPage extends StatefulWidget {
+class NewStudentPage extends ConsumerStatefulWidget {
   @override
-  State<NewStudentPage> createState() => _NewStudentPageState();
+  ConsumerState<NewStudentPage> createState() => _NewStudentPageState();
 }
 
-class _NewStudentPageState extends State<NewStudentPage> {
+class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -23,7 +30,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   final TextEditingController _objectiveController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
 
-  TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
+  // TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   String _gender = 'Masculino';
   String _planType = 'Pacote Básico - 4 semanas';
@@ -45,16 +52,51 @@ class _NewStudentPageState extends State<NewStudentPage> {
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
 
+  late final AppConfig config;
+  late StudentsFromTrainerResponseModel _student;
+
   @override
   void initState() {
     super.initState();
+    config = ref.read(appConfigProvider);
     _planStartController.text = DateTime.now().toString().split(' ')[0];
+    Future.microtask(() {
+      ref
+          .read(trainingPackViewListModelProvider.notifier)
+          .findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+    });
+  }
+
+  Widget _buildStudentSearchable(
+    List<StudentsFromTrainerResponseModel> studentList,
+  ) {
+    final sortedStudentList = [...studentList]
+      ..sort((a, b) => a.getName().compareTo(b.getName()));
+    return ProWidgetSearchableDropdown<StudentsFromTrainerResponseModel>(
+      hintTextSearch: 'Pesquisar Aluno...',
+      hintTextItem: 'Selecione um aluno',
+      items: sortedStudentList,
+      onChanged: (value) => setState(() {
+        _student = value!;
+        _isShowCardOldStudentSelected = true;
+      }),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final trainingPackState = ref.watch(trainingPackViewListModelProvider);
+
     return Scaffold(
-      appBar: AppBar(title: Text('Novo Contrato')),
+      appBar: AppBar(
+        title: Text('Novo Contrato'),
+        actions: [
+          ProWidgetInfoAlertDialog(
+            title: 'page',
+            text: 'new_student_page.dart',
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -78,20 +120,19 @@ class _NewStudentPageState extends State<NewStudentPage> {
                 onChanged: (String? value) {
                   setState(() {
                     _planType = value!;
-                    _selectedPackage = TrainingPack.trainingPacks
-                        .firstWhere(
-                          (pkg) => pkg.description == value,
-                          orElse: () => TrainingPack(
-                            description: '',
-                            durationDays: 0,
-                            weeklyFrequency: 0,
-                            price: 0,
-                            notes: '',
-                            externalId: '',
-                            personalUser: User.users[0],
-                            status: '',
-                          ),
-                        );
+                    _selectedPackage = TrainingPack.trainingPacks.firstWhere(
+                      (pkg) => pkg.description == value,
+                      orElse: () => TrainingPack(
+                        description: '',
+                        durationDays: 0,
+                        weeklyFrequency: 0,
+                        price: 0,
+                        notes: '',
+                        externalId: '',
+                        personalUser: User.users[0],
+                        status: '',
+                      ),
+                    );
                   });
                 },
               ),
@@ -158,45 +199,49 @@ class _NewStudentPageState extends State<NewStudentPage> {
 
               // Old Student Section
               if (_isShowExistingStudentSection)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Aluno'),
-                    DropdownButtonFormField<TrainerUser>(
-                      items: TrainerUser.trainerUsers
-                          .where(
-                            (e) =>
-                                e.studentUser!.userProfile.contains('STUDENT'),
-                          )
-                          .map(
-                            (item) => DropdownMenuItem(
-                              value: item,
-                              child: Text(item.studentUser!.name),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) =>
-                          setState(() {
-                            _trainerUser = value!;
-                            _isShowCardOldStudentSelected = true;
-                          } ),
-                    ),
-                  ],
+                trainingPackState.when(
+                  data: (studentList) => _buildStudentSearchable(studentList),
+                  error: (e, _) => Center(child: Text('Error: $e')),
+                  loading: () => Center(child: CircularProgressIndicator()),
                 ),
 
-              if(_isShowCardOldStudentSelected)
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Text('Aluno'),
+              //     DropdownButtonFormField<TrainerUser>(
+              //       items: TrainerUser.trainerUsers
+              //           .where(
+              //             (e) =>
+              //                 e.studentUser!.userProfile.contains('STUDENT'),
+              //           )
+              //           .map(
+              //             (item) => DropdownMenuItem(
+              //               value: item,
+              //               child: Text(item.studentUser!.name),
+              //             ),
+              //           )
+              //           .toList(),
+              //       onChanged: (value) => setState(() {
+              //         _trainerUser = value!;
+              //         _isShowCardOldStudentSelected = true;
+              //       }),
+              //     ),
+              //   ],
+              // ),
+              if (_isShowCardOldStudentSelected)
                 Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
                     title: Text(
-                      _trainerUser.studentUser!.name,
+                      _student.name,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_trainerUser.studentUser!.email),
-                        Text(_trainerUser.studentUser?.cellphone ?? ''),
+                        Text(_student.email),
+                        Text(_student.phone),
                       ],
                     ),
                   ),
