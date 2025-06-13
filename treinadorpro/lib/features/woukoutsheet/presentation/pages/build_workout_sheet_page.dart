@@ -4,6 +4,7 @@ import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/datasources/workgroup_provider.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
+import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
@@ -17,6 +18,7 @@ import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
 import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/provider/program_provider.dart';
+import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 
@@ -50,6 +52,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late Exercise _exercise; // = Exercise.exercises.first;
   late Program _program; // = Program.programs.first;
   late Workgroup _workGroup; // = Workgroup.workGroups.first;
+  late StudentsFromTrainerResponseModel _student;
+  
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
@@ -67,6 +71,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref
           .read(workgroupViewListModelProvider.notifier)
           .findAllActiveWorkgroups();
+      ref.read(trainingPackViewListModelProvider.notifier).findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
     });
   }
 
@@ -149,6 +154,17 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     );
   }
 
+  Widget _buildStudentSearchable(List<StudentsFromTrainerResponseModel> studentList) {
+    final sortedStudentList = [...studentList]
+      ..sort((a, b) => a.getName().compareTo(b.getName()));
+    return ProWidgetSearchableDropdown<StudentsFromTrainerResponseModel>(
+      hintTextSearch: 'Pesquisar Aluno...',
+      hintTextItem: 'Selecione um aluno',
+      items: sortedStudentList,
+      onChanged: (value) => setState(() => _student = value!),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final modalityState = ref.watch(modalityViewModelProvider);
@@ -156,6 +172,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final exerciseState = ref.watch(exerciseViewModelProvider);
     final programState = ref.watch(programViewModelProvider);
     final workgroupState = ref.watch(workgroupViewListModelProvider);
+    final trainingPackState = ref.watch(trainingPackViewListModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -174,21 +191,13 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               // student
               Text('Aluno'),
-              DropdownButtonFormField<TrainerUser>(
-                items: TrainerUser.trainerUsers
-                    .where(
-                      (e) => e.studentUser!.userProfile.contains('STUDENT'),
-                    )
-                    .map(
-                      (item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item.studentUser!.name),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) => setState(() => _trainerUser = value!),
+              trainingPackState.when(
+                data: (studentList) => _buildStudentSearchable(studentList),
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
               ),
 
               // Modality

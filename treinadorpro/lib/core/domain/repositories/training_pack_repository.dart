@@ -1,5 +1,6 @@
 import 'package:treinadorpro/core/data/datasources/itraining_pack_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/page_result_response_model.dart';
+import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/domain/repositories/itraining_pack_repository.dart';
 
@@ -8,6 +9,8 @@ class TrainingPackRepository implements ITrainingPackRespository {
   final ITrainingPackRemoteDatasource _trainingPackRemoteDatasource;
 
   TrainingPackRepository(this._trainingPackRemoteDatasource);
+
+  static String module = "training_pack_repository";
 
   @override
   Future<TrainingPackModel> findById(int id) {
@@ -23,9 +26,17 @@ class TrainingPackRepository implements ITrainingPackRespository {
 
   @override
   Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid, int page, int size) async {
-    print("training_pack_repository :: uuid = $uuid");
+    print("$module :: uuid = $uuid");
 
     return await _trainingPackRemoteDatasource.findAllTrainingPackByPersonalExternalId(uuid, page, size);
   }
+
+  @override
+  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String externalId) async {
+    print("$module :: externalID = $externalId");
+
+    return await _trainingPackRemoteDatasource.findAllStudentsFromTrainer(externalId);
+  }
+
 
 }
