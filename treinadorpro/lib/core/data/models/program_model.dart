@@ -44,7 +44,7 @@ class ProgramModel extends Program implements IName{
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'xeternalId': id,
+      'externalId': externalId,
       'namePt': namePt,
       'nameEs': nameEs,
       'nameEn': nameEn,
