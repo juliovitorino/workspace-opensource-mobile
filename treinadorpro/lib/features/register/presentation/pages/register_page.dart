@@ -137,9 +137,7 @@ class RegisterPage extends ConsumerWidget {
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height,
         ),
-        child: IntrinsicHeight(
-          child: _buildFormArea(state, context, config),
-        ),
+        child: _buildFormArea(state, context, config),
       ),
     );
   }
