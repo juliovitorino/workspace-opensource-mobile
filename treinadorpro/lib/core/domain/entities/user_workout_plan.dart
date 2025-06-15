@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:treinadorpro/core/domain/entities/user_pack_training.dart';
+import 'package:treinadorpro/core/domain/entities/contract.dart';
 import 'package:treinadorpro/core/domain/entities/exercise.dart';
 import 'package:treinadorpro/core/domain/entities/goal.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
@@ -13,7 +13,7 @@ class UserWorkoutPlan {
   final Id? id;
 
   @ignore
-  final UserPackTraining? userPackTrainingEntity;
+  final Contract? contract;
 
   @ignore
   final Modality? modality;
@@ -47,7 +47,7 @@ class UserWorkoutPlan {
 
   UserWorkoutPlan({
     this.id,
-    this.userPackTrainingEntity,
+    this.contract,
     this.modality,
     this.goal,
     this.program,
