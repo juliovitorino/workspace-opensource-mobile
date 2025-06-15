@@ -22,48 +22,53 @@ const ExerciseSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'imageUuid': PropertySchema(
+    r'externalId': PropertySchema(
       id: 1,
+      name: r'externalId',
+      type: IsarType.string,
+    ),
+    r'imageUuid': PropertySchema(
+      id: 2,
       name: r'imageUuid',
       type: IsarType.string,
     ),
     r'nameEn': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'nameEn',
       type: IsarType.string,
     ),
     r'nameEs': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'nameEs',
       type: IsarType.string,
     ),
     r'namePt': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'namePt',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'status',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'videoUrlEn': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'videoUrlEn',
       type: IsarType.string,
     ),
     r'videoUrlEs': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'videoUrlEs',
       type: IsarType.string,
     ),
     r'videoUrlPt': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'videoUrlPt',
       type: IsarType.string,
     )
@@ -88,6 +93,12 @@ int _exerciseEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.externalId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.imageUuid.length * 3;
   bytesCount += 3 + object.nameEn.length * 3;
   bytesCount += 3 + object.nameEs.length * 3;
@@ -126,15 +137,16 @@ void _exerciseSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeString(offsets[1], object.imageUuid);
-  writer.writeString(offsets[2], object.nameEn);
-  writer.writeString(offsets[3], object.nameEs);
-  writer.writeString(offsets[4], object.namePt);
-  writer.writeString(offsets[5], object.status);
-  writer.writeDateTime(offsets[6], object.updatedAt);
-  writer.writeString(offsets[7], object.videoUrlEn);
-  writer.writeString(offsets[8], object.videoUrlEs);
-  writer.writeString(offsets[9], object.videoUrlPt);
+  writer.writeString(offsets[1], object.externalId);
+  writer.writeString(offsets[2], object.imageUuid);
+  writer.writeString(offsets[3], object.nameEn);
+  writer.writeString(offsets[4], object.nameEs);
+  writer.writeString(offsets[5], object.namePt);
+  writer.writeString(offsets[6], object.status);
+  writer.writeDateTime(offsets[7], object.updatedAt);
+  writer.writeString(offsets[8], object.videoUrlEn);
+  writer.writeString(offsets[9], object.videoUrlEs);
+  writer.writeString(offsets[10], object.videoUrlPt);
 }
 
 Exercise _exerciseDeserialize(
@@ -145,16 +157,17 @@ Exercise _exerciseDeserialize(
 ) {
   final object = Exercise(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
+    externalId: reader.readStringOrNull(offsets[1]),
     id: id,
-    imageUuid: reader.readString(offsets[1]),
-    nameEn: reader.readString(offsets[2]),
-    nameEs: reader.readString(offsets[3]),
-    namePt: reader.readString(offsets[4]),
-    status: reader.readStringOrNull(offsets[5]),
-    updatedAt: reader.readDateTimeOrNull(offsets[6]),
-    videoUrlEn: reader.readStringOrNull(offsets[7]),
-    videoUrlEs: reader.readStringOrNull(offsets[8]),
-    videoUrlPt: reader.readStringOrNull(offsets[9]),
+    imageUuid: reader.readString(offsets[2]),
+    nameEn: reader.readString(offsets[3]),
+    nameEs: reader.readString(offsets[4]),
+    namePt: reader.readString(offsets[5]),
+    status: reader.readStringOrNull(offsets[6]),
+    updatedAt: reader.readDateTimeOrNull(offsets[7]),
+    videoUrlEn: reader.readStringOrNull(offsets[8]),
+    videoUrlEs: reader.readStringOrNull(offsets[9]),
+    videoUrlPt: reader.readStringOrNull(offsets[10]),
   );
   return object;
 }
@@ -169,7 +182,7 @@ P _exerciseDeserializeProp<P>(
     case 0:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
@@ -177,14 +190,16 @@ P _exerciseDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 7:
       return (reader.readStringOrNull(offset)) as P;
+    case 7:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -343,6 +358,154 @@ extension ExerciseQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'externalId',
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition>
+      externalIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'externalId',
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'externalId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'externalId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition> externalIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'externalId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterFilterCondition>
+      externalIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'externalId',
+        value: '',
       ));
     });
   }
@@ -1615,6 +1778,18 @@ extension ExerciseQuerySortBy on QueryBuilder<Exercise, Exercise, QSortBy> {
     });
   }
 
+  QueryBuilder<Exercise, Exercise, QAfterSortBy> sortByExternalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterSortBy> sortByExternalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Exercise, Exercise, QAfterSortBy> sortByImageUuid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageUuid', Sort.asc);
@@ -1735,6 +1910,18 @@ extension ExerciseQuerySortThenBy
   QueryBuilder<Exercise, Exercise, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterSortBy> thenByExternalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Exercise, Exercise, QAfterSortBy> thenByExternalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
@@ -1867,6 +2054,13 @@ extension ExerciseQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Exercise, Exercise, QDistinct> distinctByExternalId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'externalId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Exercise, Exercise, QDistinct> distinctByImageUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1941,6 +2135,12 @@ extension ExerciseQueryProperty
   QueryBuilder<Exercise, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<Exercise, String?, QQueryOperations> externalIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'externalId');
     });
   }
 

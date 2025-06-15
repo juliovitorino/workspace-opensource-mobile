@@ -6,10 +6,10 @@ import 'package:treinadorpro/core/domain/entities/user_workout_plan.dart';
 
 import 'modality.dart';
 
-part 'user_pack_training.g.dart';
+part 'contract.g.dart';
 
 @Collection()
-class UserPackTraining {
+class Contract {
   final Id? id;
   final String externalId;
 
@@ -27,7 +27,7 @@ class UserPackTraining {
   final String currency;
   final String startTime;
   final String duration;
-  final List<int> daysOfWeek;
+  final List<String> daysOfWeek;
 
   @ignore
   final List<UserWorkoutPlan>? userWorkoutPlanList;
@@ -36,7 +36,7 @@ class UserPackTraining {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const UserPackTraining({
+  const Contract({
     this.id,
     required this.externalId,
     this.packTrainingEntity,
@@ -53,8 +53,8 @@ class UserPackTraining {
     this.updatedAt,
   });
 
-  static final List<UserPackTraining> mockUserPackTrainings = [
-    UserPackTraining(
+  static final List<Contract> mockContracts = [
+    Contract(
       id: 1,
       externalId: '5c238d12-3f8b-4d95-aaff-123456789003',
       packTrainingEntity: TrainingPack.trainingPacks[0],
@@ -64,7 +64,7 @@ class UserPackTraining {
       currency: 'BRL',
       startTime: '07:00',
       duration: '60 minutos',
-      daysOfWeek: [1, 3, 5],
+      daysOfWeek: ['MON', 'WED', 'FRI'],
       status: 'A',
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

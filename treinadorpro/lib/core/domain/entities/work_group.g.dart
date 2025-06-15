@@ -9,65 +9,76 @@ part of 'work_group.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetWorkGroupCollection on Isar {
-  IsarCollection<Workgroup> get workGroups => this.collection();
+extension GetWorkgroupCollection on Isar {
+  IsarCollection<Workgroup> get workgroups => this.collection();
 }
 
-const WorkGroupSchema = CollectionSchema(
-  name: r'WorkGroup',
-  id: -6411429474298776963,
+const WorkgroupSchema = CollectionSchema(
+  name: r'Workgroup',
+  id: -2091597562051949473,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'nameEn': PropertySchema(
+    r'externalId': PropertySchema(
       id: 1,
+      name: r'externalId',
+      type: IsarType.string,
+    ),
+    r'nameEn': PropertySchema(
+      id: 2,
       name: r'nameEn',
       type: IsarType.string,
     ),
     r'nameEs': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'nameEs',
       type: IsarType.string,
     ),
     r'namePt': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'namePt',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'status',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
   },
-  estimateSize: _workGroupEstimateSize,
-  serialize: _workGroupSerialize,
-  deserialize: _workGroupDeserialize,
-  deserializeProp: _workGroupDeserializeProp,
+  estimateSize: _workgroupEstimateSize,
+  serialize: _workgroupSerialize,
+  deserialize: _workgroupDeserialize,
+  deserializeProp: _workgroupDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _workGroupGetId,
-  getLinks: _workGroupGetLinks,
-  attach: _workGroupAttach,
+  getId: _workgroupGetId,
+  getLinks: _workgroupGetLinks,
+  attach: _workgroupAttach,
   version: '3.1.0+1',
 );
 
-int _workGroupEstimateSize(
+int _workgroupEstimateSize(
   Workgroup object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.externalId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.nameEn.length * 3;
   bytesCount += 3 + object.nameEs.length * 3;
   bytesCount += 3 + object.namePt.length * 3;
@@ -75,21 +86,22 @@ int _workGroupEstimateSize(
   return bytesCount;
 }
 
-void _workGroupSerialize(
+void _workgroupSerialize(
   Workgroup object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeString(offsets[1], object.nameEn);
-  writer.writeString(offsets[2], object.nameEs);
-  writer.writeString(offsets[3], object.namePt);
-  writer.writeString(offsets[4], object.status);
-  writer.writeDateTime(offsets[5], object.updatedAt);
+  writer.writeString(offsets[1], object.externalId);
+  writer.writeString(offsets[2], object.nameEn);
+  writer.writeString(offsets[3], object.nameEs);
+  writer.writeString(offsets[4], object.namePt);
+  writer.writeString(offsets[5], object.status);
+  writer.writeDateTime(offsets[6], object.updatedAt);
 }
 
-Workgroup _workGroupDeserialize(
+Workgroup _workgroupDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
@@ -97,17 +109,18 @@ Workgroup _workGroupDeserialize(
 ) {
   final object = Workgroup(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
+    externalId: reader.readStringOrNull(offsets[1]),
     id: id,
-    nameEn: reader.readString(offsets[1]),
-    nameEs: reader.readString(offsets[2]),
-    namePt: reader.readString(offsets[3]),
-    status: reader.readString(offsets[4]),
-    updatedAt: reader.readDateTimeOrNull(offsets[5]),
+    nameEn: reader.readString(offsets[2]),
+    nameEs: reader.readString(offsets[3]),
+    namePt: reader.readString(offsets[4]),
+    status: reader.readString(offsets[5]),
+    updatedAt: reader.readDateTimeOrNull(offsets[6]),
   );
   return object;
 }
 
-P _workGroupDeserializeProp<P>(
+P _workgroupDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -117,7 +130,7 @@ P _workGroupDeserializeProp<P>(
     case 0:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
@@ -125,23 +138,25 @@ P _workGroupDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-Id _workGroupGetId(Workgroup object) {
+Id _workgroupGetId(Workgroup object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _workGroupGetLinks(Workgroup object) {
+List<IsarLinkBase<dynamic>> _workgroupGetLinks(Workgroup object) {
   return [];
 }
 
-void _workGroupAttach(IsarCollection<dynamic> col, Id id, Workgroup object) {}
+void _workgroupAttach(IsarCollection<dynamic> col, Id id, Workgroup object) {}
 
-extension WorkGroupQueryWhereSort
+extension WorkgroupQueryWhereSort
     on QueryBuilder<Workgroup, Workgroup, QWhere> {
   QueryBuilder<Workgroup, Workgroup, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
@@ -150,7 +165,7 @@ extension WorkGroupQueryWhereSort
   }
 }
 
-extension WorkGroupQueryWhere
+extension WorkgroupQueryWhere
     on QueryBuilder<Workgroup, Workgroup, QWhereClause> {
   QueryBuilder<Workgroup, Workgroup, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
@@ -218,7 +233,7 @@ extension WorkGroupQueryWhere
   }
 }
 
-extension WorkGroupQueryFilter
+extension WorkgroupQueryFilter
     on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {
   QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -287,6 +302,157 @@ extension WorkGroupQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'externalId',
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
+      externalIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'externalId',
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
+      externalIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'externalId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
+      externalIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'externalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition> externalIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'externalId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
+      externalIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'externalId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterFilterCondition>
+      externalIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'externalId',
+        value: '',
       ));
     });
   }
@@ -952,13 +1118,13 @@ extension WorkGroupQueryFilter
   }
 }
 
-extension WorkGroupQueryObject
+extension WorkgroupQueryObject
     on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {}
 
-extension WorkGroupQueryLinks
+extension WorkgroupQueryLinks
     on QueryBuilder<Workgroup, Workgroup, QFilterCondition> {}
 
-extension WorkGroupQuerySortBy on QueryBuilder<Workgroup, Workgroup, QSortBy> {
+extension WorkgroupQuerySortBy on QueryBuilder<Workgroup, Workgroup, QSortBy> {
   QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -968,6 +1134,18 @@ extension WorkGroupQuerySortBy on QueryBuilder<Workgroup, Workgroup, QSortBy> {
   QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByExternalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> sortByExternalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
@@ -1032,7 +1210,7 @@ extension WorkGroupQuerySortBy on QueryBuilder<Workgroup, Workgroup, QSortBy> {
   }
 }
 
-extension WorkGroupQuerySortThenBy
+extension WorkgroupQuerySortThenBy
     on QueryBuilder<Workgroup, Workgroup, QSortThenBy> {
   QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
@@ -1043,6 +1221,18 @@ extension WorkGroupQuerySortThenBy
   QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByExternalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QAfterSortBy> thenByExternalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
@@ -1119,11 +1309,18 @@ extension WorkGroupQuerySortThenBy
   }
 }
 
-extension WorkGroupQueryWhereDistinct
+extension WorkgroupQueryWhereDistinct
     on QueryBuilder<Workgroup, Workgroup, QDistinct> {
   QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
+    });
+  }
+
+  QueryBuilder<Workgroup, Workgroup, QDistinct> distinctByExternalId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'externalId', caseSensitive: caseSensitive);
     });
   }
 
@@ -1162,7 +1359,7 @@ extension WorkGroupQueryWhereDistinct
   }
 }
 
-extension WorkGroupQueryProperty
+extension WorkgroupQueryProperty
     on QueryBuilder<Workgroup, Workgroup, QQueryProperty> {
   QueryBuilder<Workgroup, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1173,6 +1370,12 @@ extension WorkGroupQueryProperty
   QueryBuilder<Workgroup, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<Workgroup, String?, QQueryOperations> externalIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'externalId');
     });
   }
 

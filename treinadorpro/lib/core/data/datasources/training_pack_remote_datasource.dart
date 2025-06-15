@@ -52,7 +52,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   @override
   Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(
       String externalId) async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/userpacktraining/$externalId";
+    final String url = "${config.apiBackendUrl}/v1/api/business/contract/$externalId";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_pack_training.dart';
+part of 'contract.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'user_pack_training.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetUserPackTrainingCollection on Isar {
-  IsarCollection<UserPackTraining> get userPackTrainings => this.collection();
+extension GetContractCollection on Isar {
+  IsarCollection<Contract> get contracts => this.collection();
 }
 
-const UserPackTrainingSchema = CollectionSchema(
-  name: r'UserPackTraining',
-  id: 6699332840213322847,
+const ContractSchema = CollectionSchema(
+  name: r'Contract',
+  id: 6075293080182411034,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,
@@ -63,22 +63,22 @@ const UserPackTrainingSchema = CollectionSchema(
       type: IsarType.dateTime,
     )
   },
-  estimateSize: _userPackTrainingEstimateSize,
-  serialize: _userPackTrainingSerialize,
-  deserialize: _userPackTrainingDeserialize,
-  deserializeProp: _userPackTrainingDeserializeProp,
+  estimateSize: _contractEstimateSize,
+  serialize: _contractSerialize,
+  deserialize: _contractDeserialize,
+  deserializeProp: _contractDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _userPackTrainingGetId,
-  getLinks: _userPackTrainingGetLinks,
-  attach: _userPackTrainingAttach,
+  getId: _contractGetId,
+  getLinks: _contractGetLinks,
+  attach: _contractAttach,
   version: '3.1.0+1',
 );
 
-int _userPackTrainingEstimateSize(
-  UserPackTraining object,
+int _contractEstimateSize(
+  Contract object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -93,8 +93,8 @@ int _userPackTrainingEstimateSize(
   return bytesCount;
 }
 
-void _userPackTrainingSerialize(
-  UserPackTraining object,
+void _contractSerialize(
+  Contract object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -110,13 +110,13 @@ void _userPackTrainingSerialize(
   writer.writeDateTime(offsets[8], object.updatedAt);
 }
 
-UserPackTraining _userPackTrainingDeserialize(
+Contract _contractDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = UserPackTraining(
+  final object = Contract(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
     currency: reader.readString(offsets[1]),
     daysOfWeek: reader.readLongList(offsets[2]) ?? [],
@@ -131,7 +131,7 @@ UserPackTraining _userPackTrainingDeserialize(
   return object;
 }
 
-P _userPackTrainingDeserializeProp<P>(
+P _contractDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -161,30 +161,26 @@ P _userPackTrainingDeserializeProp<P>(
   }
 }
 
-Id _userPackTrainingGetId(UserPackTraining object) {
+Id _contractGetId(Contract object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _userPackTrainingGetLinks(UserPackTraining object) {
+List<IsarLinkBase<dynamic>> _contractGetLinks(Contract object) {
   return [];
 }
 
-void _userPackTrainingAttach(
-    IsarCollection<dynamic> col, Id id, UserPackTraining object) {}
+void _contractAttach(IsarCollection<dynamic> col, Id id, Contract object) {}
 
-extension UserPackTrainingQueryWhereSort
-    on QueryBuilder<UserPackTraining, UserPackTraining, QWhere> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhere> anyId() {
+extension ContractQueryWhereSort on QueryBuilder<Contract, Contract, QWhere> {
+  QueryBuilder<Contract, Contract, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension UserPackTrainingQueryWhere
-    on QueryBuilder<UserPackTraining, UserPackTraining, QWhereClause> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhereClause> idEqualTo(
-      Id id) {
+extension ContractQueryWhere on QueryBuilder<Contract, Contract, QWhereClause> {
+  QueryBuilder<Contract, Contract, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -193,8 +189,7 @@ extension UserPackTrainingQueryWhere
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  QueryBuilder<Contract, Contract, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -216,8 +211,8 @@ extension UserPackTrainingQueryWhere
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  QueryBuilder<Contract, Contract, QAfterWhereClause> idGreaterThan(Id id,
+      {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -225,8 +220,8 @@ extension UserPackTrainingQueryWhere
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  QueryBuilder<Contract, Contract, QAfterWhereClause> idLessThan(Id id,
+      {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -234,7 +229,7 @@ extension UserPackTrainingQueryWhere
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterWhereClause> idBetween(
+  QueryBuilder<Contract, Contract, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -251,10 +246,9 @@ extension UserPackTrainingQueryWhere
   }
 }
 
-extension UserPackTrainingQueryFilter
-    on QueryBuilder<UserPackTraining, UserPackTraining, QFilterCondition> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtIsNull() {
+extension ContractQueryFilter
+    on QueryBuilder<Contract, Contract, QFilterCondition> {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'createdAt',
@@ -262,8 +256,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtIsNotNull() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'createdAt',
@@ -271,8 +264,8 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtEqualTo(DateTime? value) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtEqualTo(
+      DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -281,8 +274,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtGreaterThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -295,8 +287,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -309,8 +300,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      createdAtBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> createdAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -327,8 +317,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyEqualTo(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -341,8 +330,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -357,8 +345,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -373,8 +360,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -393,8 +379,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyStartsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -407,8 +392,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyEndsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -421,8 +405,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'currency',
@@ -432,8 +417,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'currency',
@@ -443,8 +429,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'currency',
@@ -453,8 +438,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      currencyIsNotEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> currencyIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'currency',
@@ -463,7 +447,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -473,7 +457,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementGreaterThan(
     int value, {
     bool include = false,
@@ -487,7 +471,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementLessThan(
     int value, {
     bool include = false,
@@ -501,7 +485,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementBetween(
     int lower,
     int upper, {
@@ -519,7 +503,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -532,8 +516,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      daysOfWeekIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> daysOfWeekIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'daysOfWeek',
@@ -545,7 +528,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -558,7 +541,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekLengthLessThan(
     int length, {
     bool include = false,
@@ -574,7 +557,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekLengthGreaterThan(
     int length, {
     bool include = false,
@@ -590,7 +573,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekLengthBetween(
     int lower,
     int upper, {
@@ -608,8 +591,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationEqualTo(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -622,8 +604,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -638,8 +619,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -654,8 +634,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -674,8 +653,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationStartsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -688,8 +666,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationEndsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -702,8 +679,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'duration',
@@ -713,8 +691,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'duration',
@@ -724,8 +703,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'duration',
@@ -734,8 +712,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      durationIsNotEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> durationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'duration',
@@ -744,8 +721,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdEqualTo(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -758,8 +734,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -774,8 +749,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -790,8 +764,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -810,8 +783,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdStartsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -824,8 +796,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdEndsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -838,8 +809,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'externalId',
@@ -849,8 +821,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'externalId',
@@ -860,8 +833,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      externalIdIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> externalIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'externalId',
@@ -870,7 +842,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       externalIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -880,7 +852,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -894,7 +866,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionGreaterThan(
     String value, {
     bool include = false,
@@ -910,7 +882,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionLessThan(
     String value, {
     bool include = false,
@@ -926,7 +898,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionBetween(
     String lower,
     String upper, {
@@ -946,7 +918,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -960,7 +932,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -974,7 +946,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -985,7 +957,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -996,7 +968,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1006,7 +978,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       goalDescriptionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1016,8 +988,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idIsNull() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -1025,8 +996,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idIsNotNull() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'id',
@@ -1034,8 +1004,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idEqualTo(Id? value) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -1044,8 +1013,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1058,8 +1026,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1072,8 +1039,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      idBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -1090,8 +1056,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeEqualTo(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1104,8 +1069,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1120,8 +1084,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1136,8 +1099,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1156,8 +1118,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeStartsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1170,8 +1131,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeEndsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1184,8 +1144,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'startTime',
@@ -1195,8 +1156,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'startTime',
@@ -1206,8 +1168,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      startTimeIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> startTimeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'startTime',
@@ -1216,7 +1177,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
       startTimeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1226,8 +1187,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusEqualTo(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1240,8 +1200,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1256,8 +1215,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1272,8 +1230,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1292,8 +1249,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusStartsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1306,8 +1262,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusEndsWith(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1320,8 +1275,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'status',
@@ -1331,8 +1287,9 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'status',
@@ -1342,8 +1299,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusIsEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'status',
@@ -1352,8 +1308,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      statusIsNotEmpty() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> statusIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'status',
@@ -1362,8 +1317,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtIsNull() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'updatedAt',
@@ -1371,8 +1325,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtIsNotNull() {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'updatedAt',
@@ -1380,8 +1333,8 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtEqualTo(DateTime? value) {
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtEqualTo(
+      DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'updatedAt',
@@ -1390,8 +1343,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtGreaterThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtGreaterThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -1404,8 +1356,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtLessThan(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -1418,8 +1369,7 @@ extension UserPackTrainingQueryFilter
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterFilterCondition>
-      updatedAtBetween(
+  QueryBuilder<Contract, Contract, QAfterFilterCondition> updatedAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -1437,384 +1387,342 @@ extension UserPackTrainingQueryFilter
   }
 }
 
-extension UserPackTrainingQueryObject
-    on QueryBuilder<UserPackTraining, UserPackTraining, QFilterCondition> {}
+extension ContractQueryObject
+    on QueryBuilder<Contract, Contract, QFilterCondition> {}
 
-extension UserPackTrainingQueryLinks
-    on QueryBuilder<UserPackTraining, UserPackTraining, QFilterCondition> {}
+extension ContractQueryLinks
+    on QueryBuilder<Contract, Contract, QFilterCondition> {}
 
-extension UserPackTrainingQuerySortBy
-    on QueryBuilder<UserPackTraining, UserPackTraining, QSortBy> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByCreatedAt() {
+extension ContractQuerySortBy on QueryBuilder<Contract, Contract, QSortBy> {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByCreatedAtDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByCurrency() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByCurrency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByCurrencyDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByCurrencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByDuration() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByDuration() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'duration', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByDurationDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByDurationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'duration', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByExternalId() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByExternalIdDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByGoalDescription() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByGoalDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'goalDescription', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByGoalDescriptionDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByGoalDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'goalDescription', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByStartTime() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByStartTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByStartTimeDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByStartTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByStatus() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByStatusDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByUpdatedAt() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      sortByUpdatedAtDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 }
 
-extension UserPackTrainingQuerySortThenBy
-    on QueryBuilder<UserPackTraining, UserPackTraining, QSortThenBy> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByCreatedAt() {
+extension ContractQuerySortThenBy
+    on QueryBuilder<Contract, Contract, QSortThenBy> {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByCreatedAtDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByCurrency() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByCurrency() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByCurrencyDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByCurrencyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currency', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByDuration() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByDuration() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'duration', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByDurationDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByDurationDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'duration', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByExternalId() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByExternalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByExternalIdDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByExternalIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'externalId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByGoalDescription() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByGoalDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'goalDescription', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByGoalDescriptionDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByGoalDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'goalDescription', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy> thenById() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByIdDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByStartTime() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByStartTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByStartTimeDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByStartTimeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'startTime', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByStatus() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByStatusDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByUpdatedAt() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QAfterSortBy>
-      thenByUpdatedAtDesc() {
+  QueryBuilder<Contract, Contract, QAfterSortBy> thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 }
 
-extension UserPackTrainingQueryWhereDistinct
-    on QueryBuilder<UserPackTraining, UserPackTraining, QDistinct> {
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByCreatedAt() {
+extension ContractQueryWhereDistinct
+    on QueryBuilder<Contract, Contract, QDistinct> {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByCurrency({bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByCurrency(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'currency', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByDaysOfWeek() {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByDaysOfWeek() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'daysOfWeek');
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByDuration({bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByDuration(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'duration', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByExternalId({bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByExternalId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'externalId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByGoalDescription({bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByGoalDescription(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'goalDescription',
           caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByStartTime({bool caseSensitive = true}) {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByStartTime(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'startTime', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct> distinctByStatus(
+  QueryBuilder<Contract, Contract, QDistinct> distinctByStatus(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserPackTraining, UserPackTraining, QDistinct>
-      distinctByUpdatedAt() {
+  QueryBuilder<Contract, Contract, QDistinct> distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
   }
 }
 
-extension UserPackTrainingQueryProperty
-    on QueryBuilder<UserPackTraining, UserPackTraining, QQueryProperty> {
-  QueryBuilder<UserPackTraining, int, QQueryOperations> idProperty() {
+extension ContractQueryProperty
+    on QueryBuilder<Contract, Contract, QQueryProperty> {
+  QueryBuilder<Contract, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<UserPackTraining, DateTime?, QQueryOperations>
-      createdAtProperty() {
+  QueryBuilder<Contract, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations> currencyProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> currencyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'currency');
     });
   }
 
-  QueryBuilder<UserPackTraining, List<int>, QQueryOperations>
-      daysOfWeekProperty() {
+  QueryBuilder<Contract, List<int>, QQueryOperations> daysOfWeekProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'daysOfWeek');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations> durationProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> durationProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'duration');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations>
-      externalIdProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> externalIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'externalId');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations>
-      goalDescriptionProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> goalDescriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'goalDescription');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations> startTimeProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> startTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'startTime');
     });
   }
 
-  QueryBuilder<UserPackTraining, String, QQueryOperations> statusProperty() {
+  QueryBuilder<Contract, String, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
     });
   }
 
-  QueryBuilder<UserPackTraining, DateTime?, QQueryOperations>
-      updatedAtProperty() {
+  QueryBuilder<Contract, DateTime?, QQueryOperations> updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });

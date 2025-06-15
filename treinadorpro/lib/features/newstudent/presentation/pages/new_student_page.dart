@@ -52,6 +52,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
+  List<TextEditingController> _amountControllers = [];
 
   late final AppConfig config;
   late StudentsFromTrainerResponseModel _studentSelected;
@@ -71,55 +72,54 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       ref
           .read((trainingPackFromTrainerViewListModelProvider.notifier))
           .findAllActiveTrainingPackFromTrainer(
-        "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
-      );
+            "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
+          );
     });
   }
 
   Widget _buildStudentSearchable(
-      List<StudentsFromTrainerResponseModel> studentList,) {
+    List<StudentsFromTrainerResponseModel> studentList,
+  ) {
     final sortedStudentList = [...studentList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
     return ProWidgetSearchableDropdown<StudentsFromTrainerResponseModel>(
       hintTextSearch: 'Pesquisar Aluno...',
       hintTextItem: 'Selecione um aluno',
       items: sortedStudentList,
-      onChanged: (value) =>
-          setState(() {
-            _studentSelected = value!;
-            _isShowCardOldStudentSelected = true;
-          }),
-      onClear: () =>
-          setState(() {
-            _isShowCardOldStudentSelected = false;
-          }),
+      onChanged: (value) => setState(() {
+        _studentSelected = value!;
+        _isShowCardOldStudentSelected = true;
+      }),
+      onClear: () => setState(() {
+        _isShowCardOldStudentSelected = false;
+      }),
     );
   }
 
   Widget _buildTrainingPackSearchable(
-      List<TrainingPackModel> trainingPackList,) {
+    List<TrainingPackModel> trainingPackList,
+  ) {
     final sortedTrainingPackList = [...trainingPackList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
     return ProWidgetSearchableDropdown<TrainingPackModel>(
-        hintTextSearch: 'Pesquisar Pacote de treino...',
-        hintTextItem: 'Selecione um Pacote de Treino',
-        items: sortedTrainingPackList,
-        onChanged: (value) =>
-            setState(() {
-              print('valor da combo alterado');
-              _trainingPackSelected = value!;
-              _isShowCardTrainingPack = true;
-            }),
-        onClear: () =>
-            setState(() {
-              _isShowCardTrainingPack = false;
-            })
+      hintTextSearch: 'Pesquisar Pacote de treino...',
+      hintTextItem: 'Selecione um Pacote de Treino',
+      items: sortedTrainingPackList,
+      onChanged: (value) => setState(() {
+        print('valor da combo alterado');
+        _trainingPackSelected = value!;
+        _isShowCardTrainingPack = true;
+      }),
+      onClear: () => setState(() {
+        _isShowCardTrainingPack = false;
+      }),
     );
   }
 
-
-  Future<void> _processFormListenerFromCubitStateChanged(BuildContext context,
-      HandlerState state) async {
+  Future<void> _processFormListenerFromCubitStateChanged(
+    BuildContext context,
+    HandlerState state,
+  ) async {
     if (state.errorMessage != null) {
       ScaffoldMessenger.of(
         context,
@@ -127,19 +127,21 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     } else if (!state.isLoading && state.errorMessage == null) {
       await showDialog(
         context: context,
-        builder: (_) =>
-            AlertDialog(title: Text('Sucesso'),
-                content: Text('Uma mensagem qq...')
-            ),
+        builder: (_) => AlertDialog(
+          title: Text('Sucesso'),
+          content: Text('Uma mensagem qq...'),
+        ),
       );
 
       // Navigator.popAndPushNamed(context, AppRoutes.validateCode);
-
     }
   }
 
-  Widget _buildFormArea(HandlerState state, BuildContext context,
-      AppConfig config) {
+  Widget _buildFormArea(
+    HandlerState state,
+    BuildContext context,
+    AppConfig config,
+  ) {
     final trainingPackStudentsFromTrainerState = ref.watch(
       trainingPackStudentsFromTrainerViewListModelProvider,
     );
@@ -183,14 +185,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                     children: [
                       Text(_trainingPackSelected.modality!.namePt),
                       Text(
-                        '${_trainingPackSelected
-                            .durationDays} dias • ${_trainingPackSelected
-                            .weeklyFrequency}x/semana',
+                        '${_trainingPackSelected.durationDays} dias • ${_trainingPackSelected.weeklyFrequency}x/semana',
                       ),
                       Text(_trainingPackSelected.notes),
                       Text(
-                        'Valor: R\$ ${_trainingPackSelected.price
-                            .toStringAsFixed(2)}',
+                        'Valor: R\$ ${_trainingPackSelected.price.toStringAsFixed(2)}',
                         style: TextStyle(color: Colors.green[700]),
                       ),
                     ],
@@ -209,22 +208,20 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                 runSpacing: 10,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () =>
-                        setState(() {
-                          _isActionButtonStudentSelector = false;
-                          _isShowExistingStudentSection = false;
-                          _isShowPersonalDataSection = true;
-                        }),
+                    onPressed: () => setState(() {
+                      _isActionButtonStudentSelector = false;
+                      _isShowExistingStudentSection = false;
+                      _isShowPersonalDataSection = true;
+                    }),
                     icon: Icon(Icons.person_add),
                     label: Text('Novo Aluno'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () =>
-                        setState(() {
-                          _isActionButtonStudentSelector = false;
-                          _isShowExistingStudentSection = true;
-                          _isShowPersonalDataSection = false;
-                        }),
+                    onPressed: () => setState(() {
+                      _isActionButtonStudentSelector = false;
+                      _isShowExistingStudentSection = true;
+                      _isShowPersonalDataSection = false;
+                    }),
                     icon: Icon(Icons.fitness_center),
                     label: Text('Meu Aluno Antigo'),
                   ),
@@ -274,25 +271,31 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ProWidgetTextFormField(
-                      controller: _nameController, label: 'Nome Completo'),
-                  ProWidgetTextFormField(controller: _dobController,
-                      label: 'Data de nascimento (AAAA-MM-DD)',
-                      keyboardType: TextInputType.datetime),
-                  ProWidgetTextFormField(controller: _phoneController,
-                      label: 'Telefone',
-                      keyboardType: TextInputType.phone),
-                  ProWidgetTextFormField(controller: _emailController,
-                      label: 'Email',
-                      keyboardType: TextInputType.emailAddress),
+                    controller: _nameController,
+                    label: 'Nome Completo',
+                  ),
+                  ProWidgetTextFormField(
+                    controller: _dobController,
+                    label: 'Data de nascimento (AAAA-MM-DD)',
+                    keyboardType: TextInputType.datetime,
+                  ),
+                  ProWidgetTextFormField(
+                    controller: _phoneController,
+                    label: 'Telefone',
+                    keyboardType: TextInputType.phone,
+                  ),
+                  ProWidgetTextFormField(
+                    controller: _emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
                   SizedBox(height: 8),
 
                   Text('Sexo'),
                   DropdownButtonFormField<String>(
                     value: _gender,
                     items: ['Masculino', 'Feminino', 'Outro']
-                        .map(
-                          (g) => DropdownMenuItem(value: g, child: Text(g)),
-                    )
+                        .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                         .toList(),
                     onChanged: (val) => setState(() => _gender = val!),
                   ),
@@ -305,18 +308,25 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             // training info section
             //--------------------------------
             ProWidgetSectionTitle(title: 'Informações Sobre o Treino'),
-            ProWidgetTextFormField(controller: _planStartController,
-                label: 'Data de início (AAAA-MM-DD)',
-                keyboardType: TextInputType.datetime),
-            ProWidgetTextFormField(controller: _startTimeController,
-                label: 'Hora de Início do Treino (HH:MI)',
-                keyboardType: TextInputType.number),
+            ProWidgetTextFormField(
+              controller: _planStartController,
+              label: 'Data de início (AAAA-MM-DD)',
+              keyboardType: TextInputType.datetime,
+            ),
+            ProWidgetTextFormField(
+              controller: _startTimeController,
+              label: 'Hora de Início do Treino (HH:MI)',
+              keyboardType: TextInputType.number,
+            ),
 
             DropdownButtonFormField<String>(
               value: _endTimeController,
-              items: ['30 minutos', '45 minutos', '1 hora', '2 horas']
-                  .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                  .toList(),
+              items: [
+                '30 minutos',
+                '45 minutos',
+                '1 hora',
+                '2 horas',
+              ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
               onChanged: (value) {
                 setState(() => _endTimeController = value!);
               },
@@ -349,8 +359,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             ),
 
             SizedBox(height: 16),
-            ProWidgetTextFormField(controller: _objectiveController,
-                label: 'Digite seu objetivo: Hipertrofia, emagrecimento, saúde, etc.'),
+            ProWidgetTextFormField(
+              controller: _objectiveController,
+              label:
+                  'Digite seu objetivo: Hipertrofia, emagrecimento, saúde, etc.',
+            ),
 
             //------------------
             // payment section
@@ -361,8 +374,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             Text('Número de pagamentos'),
             DropdownButtonFormField<String>(
               value: _paymentCountController,
-              items:
-              [
+              items: [
                 '1',
                 '2',
                 '3',
@@ -375,9 +387,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                 '10',
                 '11',
                 '12',
-              ]
-                  .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                  .toList(),
+              ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
               onChanged: (value) {
                 setState(() {
                   _paymentCountController = value!;
@@ -385,7 +395,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                   _paymentDates = List<DateTime?>.filled(_paymentCount, null);
                   _dateControllers = List.generate(
                     _paymentCount,
-                        (_) => TextEditingController(),
+                    (_) => TextEditingController(),
+                  );
+                  _amountControllers = List.generate(
+                    _paymentCount,
+                    (_) => TextEditingController(),
                   );
                 });
               },
@@ -394,7 +408,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             //-------------------------------
             // Instalment list section
             //-------------------------------
-            if(_dateControllers.isNotEmpty)
+            if (_dateControllers.isNotEmpty)
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -402,35 +416,46 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
-                    child: TextFormField(
-                      controller: _dateControllers[index],
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: 'Data Prevista ${index + 1}',
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
-                      onTap: () async {
-                        final pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2100),
-                        );
-                        if (pickedDate != null) {
-                          setState(() {
-                            _paymentDates[index] = pickedDate;
-                            _dateControllers[index].text =
-                            '${pickedDate.year}-${pickedDate.month.toString()
-                                .padLeft(2, '0')}-${pickedDate.day.toString()
-                                .padLeft(2, '0')}';
-                          });
-                        }
-                      },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _dateControllers[index],
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: 'Data Prevista ${index + 1}',
+                              suffixIcon: Icon(Icons.calendar_today),
+                            ),
+                            onTap: () async {
+                              final pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  _paymentDates[index] = pickedDate;
+                                  _dateControllers[index].text =
+                                      '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: ProWidgetTextFormField(
+                            controller: _amountControllers[index],
+                            label: 'Valor',
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
-
 
             //------------------------------
             // Action button section
@@ -444,9 +469,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               },
               icon: Icon(Icons.check_circle),
               label: Text('Salvar Contrato'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-              ),
+              style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
             ),
             SizedBox(height: 12),
             OutlinedButton.icon(
@@ -458,30 +481,27 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               },
               icon: Icon(Icons.calendar_today),
               label: Text('Montar Treino'),
-              style: OutlinedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-              ),
+              style: OutlinedButton.styleFrom(minimumSize: Size.fromHeight(50)),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text('Cancelar'),
             ),
-
           ],
         ),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext context, HandlerState state,
-      AppConfig config) {
+  Widget _buildForm(
+    BuildContext context,
+    HandlerState state,
+    AppConfig config,
+  ) {
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: MediaQuery
-              .of(context)
-              .size
-              .height,
+          minHeight: MediaQuery.of(context).size.height,
         ),
         child: _buildFormArea(state, context, config),
       ),
@@ -490,22 +510,24 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (_) => NewStudentCubit(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Novo Contrato'),
-            actions: [
-              ProWidgetInfoAlertDialog(
-                title: 'page',
-                text: 'new_student_page.dart',
-              ),
-            ],
-          ),
-          body: BlocConsumer<NewStudentCubit, HandlerState>(
-            listener: (context, state) => _processFormListenerFromCubitStateChanged(context, state),
-            builder: (context, state) => _buildForm(context, state, config),
-          ),
-        )
+    return BlocProvider(
+      create: (_) => NewStudentCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Novo Contrato'),
+          actions: [
+            ProWidgetInfoAlertDialog(
+              title: 'page',
+              text: 'new_student_page.dart',
+            ),
+          ],
+        ),
+        body: BlocConsumer<NewStudentCubit, HandlerState>(
+          listener: (context, state) =>
+              _processFormListenerFromCubitStateChanged(context, state),
+          builder: (context, state) => _buildForm(context, state, config),
+        ),
+      ),
     );
   }
 }
