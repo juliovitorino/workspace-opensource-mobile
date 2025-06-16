@@ -20,7 +20,12 @@ class HttpApiClient implements ApiClient {
 
   @override
   Future<Map<String,dynamic>> post(String url, {Map<String, String>? headers, Object? body}) async {
-    final response = await client.post(Uri.parse(url), headers: headers, body: body);
+    final mergedHeaders = {
+      'Content-Type': 'application/json',
+      ...?headers,
+    };
+
+    final response = await client.post(Uri.parse(url), headers: mergedHeaders, body: body);
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
@@ -29,7 +34,12 @@ class HttpApiClient implements ApiClient {
 
   @override
   Future<Map<String,dynamic>> put(String url, {Map<String, String>? headers, Object? body}) async {
-    final response = await client.put(Uri.parse(url), headers: headers, body: body);
+    final mergedHeaders = {
+      'Content-Type': 'application/json',
+      ...?headers,
+    };
+
+    final response = await client.put(Uri.parse(url), headers: mergedHeaders, body: body);
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
@@ -38,7 +48,12 @@ class HttpApiClient implements ApiClient {
 
   @override
   Future<Map<String,dynamic>> patch(String url, {Map<String, String>? headers, Object? body}) async {
-    final response = await client.patch(Uri.parse(url), headers: headers, body: body);
+    final mergedHeaders = {
+      'Content-Type': 'application/json',
+      ...?headers,
+    };
+
+    final response = await client.patch(Uri.parse(url), headers: mergedHeaders, body: body);
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }

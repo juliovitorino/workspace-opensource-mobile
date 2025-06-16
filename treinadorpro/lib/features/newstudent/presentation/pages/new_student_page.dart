@@ -7,9 +7,9 @@ import 'package:treinadorpro/core/data/models/instalment_request.dart';
 import 'package:treinadorpro/core/data/models/new_student_request.dart';
 import 'package:treinadorpro/core/data/models/training_info_request.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
-import 'package:treinadorpro/core/domain/entities/training_pack.dart';
-import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
@@ -18,8 +18,6 @@ import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_work
 import 'package:uuid/uuid_value.dart';
 
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
-import '../../../../core/domain/entities/modality.dart';
-import '../../../../core/domain/entities/trainer_user.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
@@ -38,7 +36,6 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _planStartController = TextEditingController();
   final TextEditingController _objectiveController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
 
   String _gender = 'Masculino';
 
@@ -48,18 +45,51 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   bool _isShowCardOldStudentSelected = false;
   bool _isShowCardTrainingPack = false;
 
-  final List<String> _days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  final List<String> trainingTimes = [
+    '05:00',
+    '06:00',
+    '07:00',
+    '08:00',
+    '09:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00',
+    '23:00',
+  ];
+  final List<String> _days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   final List<String> _selectedDays = [];
+  final List<String> _selectedDaysRequest = [];
+  final Map<String, String> _mapWeekdays = {
+    'Dom': 'SUN',
+    'Seg': 'MON',
+    'Ter': 'TUE',
+    'Qua': 'WED',
+    'Qui': 'THU',
+    'Sex': 'FRI',
+    'Sáb': 'SAT',
+  };
 
   int _paymentCount = 1;
   String _paymentCountController = '1';
-  String _endTimeController = '1 hora';
+  String _endTimeController = '01:00';
+  String _startTimeController = '08:00';
 
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
   List<TextEditingController> _amountControllers = [];
 
   late final AppConfig config;
+  late final IContractRespository _contractRespository;
   late StudentsFromTrainerResponseModel _studentSelected;
   late TrainingPackModel _trainingPackSelected;
 
@@ -67,6 +97,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   void initState() {
     super.initState();
     config = ref.read(appConfigProvider);
+    _contractRespository = ref.read(contractRepositoryProvider);
 
     _planStartController.text = DateTime.now().toString().split(' ')[0];
     Future.microtask(() {
@@ -123,20 +154,22 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
   void _saveContract(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final newStudent = NewStudentRequest(
-        name: _nameController.text,
-        gender: 'M',
-        birthday: DateTime.parse(_dobController.text),
-        phone: _phoneController.text,
-        email: _emailController.text,
-      );
-
+      var newStudent;
+      if (!_isStudentSelectedInitialized) {
+        newStudent = NewStudentRequest(
+          name: _nameController.text,
+          gender: 'M',
+          birthday: DateTime.parse(_dobController.text),
+          phone: _phoneController.text,
+          email: _emailController.text,
+        );
+      }
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
-        startTime: _startTimeController.text,
+        startTime: _startTimeController,
         duration: _endTimeController,
-        weekdays: _selectedDays,
+        weekdays: _selectedDaysRequest,
       );
 
       List<InstalmentRequest> instalments = [];
@@ -150,9 +183,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       }
 
       final request = CreateNewStudentContractRequest.getInstance(
-        UuidValue.fromString(_trainingPackSelected!.externalId),
-          UuidValue.fromString("39c0fd19-dbd2-4c74-8104-7105ca159c7b"),
-        _isStudentSelectedInitialized ?_studentSelected.externalId : null,
+        UuidValue.fromString(_trainingPackSelected.externalId),
+        UuidValue.fromString("39c0fd19-dbd2-4c74-8104-7105ca159c7b"),
+        _isStudentSelectedInitialized ? _studentSelected.externalId : null,
         newStudent,
         trainingInfo,
         instalments,
@@ -184,7 +217,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         context: context,
         builder: (_) => AlertDialog(
           title: Text('Sucesso'),
-          content: Text('Uma mensagem qq...'),
+          content: Text(state.objectResponse),
         ),
       );
 
@@ -368,19 +401,31 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               label: 'Data de início (AAAA-MM-DD)',
               keyboardType: TextInputType.datetime,
             ),
-            ProWidgetTextFormField(
-              controller: _startTimeController,
-              label: 'Hora de Início do Treino (HH:MI)',
-              keyboardType: TextInputType.number,
+
+            // ProWidgetTextFormField(
+            //   controller: _startTimeController,
+            //   label: 'Hora de Início do Treino (HH:MI)',
+            //   keyboardType: TextInputType.number,
+            // ),
+            Text('Hora de Início do Treino'),
+            DropdownButtonFormField<String>(
+              value: _startTimeController,
+              items: trainingTimes
+                  .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                  .toList(),
+              onChanged: (value) {
+                setState(() => _startTimeController = value!);
+              },
             ),
 
+            Text('Duração'),
             DropdownButtonFormField<String>(
               value: _endTimeController,
               items: [
-                '30 minutos',
-                '45 minutos',
-                '1 hora',
-                '2 horas',
+                '00:30',
+                '00:45',
+                '01:00',
+                '02:00',
               ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
               onChanged: (value) {
                 setState(() => _endTimeController = value!);
@@ -401,8 +446,10 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
                       setState(() {
                         if (selected) {
                           _selectedDays.add(day);
+                          _selectedDaysRequest.add(_mapWeekdays[day]!);
                         } else {
                           _selectedDays.remove(day);
+                          _selectedDaysRequest.remove(_mapWeekdays[day]!);
                         }
                       });
                     },
@@ -562,7 +609,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NewStudentCubit(),
+      create: (_) => NewStudentCubit(_contractRespository),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Novo Contrato'),
