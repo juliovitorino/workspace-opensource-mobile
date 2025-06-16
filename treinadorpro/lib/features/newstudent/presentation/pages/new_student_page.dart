@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
+import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
+import 'package:treinadorpro/core/data/models/instalment_request.dart';
+import 'package:treinadorpro/core/data/models/new_student_request.dart';
+import 'package:treinadorpro/core/data/models/training_info_request.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/domain/entities/training_pack.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
@@ -11,6 +15,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 import 'package:treinadorpro/features/newstudent/presentation/blocs/new_student_cubit.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
+import 'package:uuid/uuid_value.dart';
 
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
 import '../../../../core/domain/entities/modality.dart';
@@ -114,6 +119,56 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         _isShowCardTrainingPack = false;
       }),
     );
+  }
+
+  void _saveContract(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      final newStudent = NewStudentRequest(
+        name: _nameController.text,
+        gender: 'M',
+        birthday: DateTime.parse(_dobController.text),
+        phone: _phoneController.text,
+        email: _emailController.text,
+      );
+
+      final trainingInfo = TrainingInfoRequest(
+        goal: _objectiveController.text,
+        startDate: DateTime.parse(_planStartController.text),
+        startTime: _startTimeController.text,
+        duration: _endTimeController,
+        weekdays: _selectedDays,
+      );
+
+      List<InstalmentRequest> instalments = [];
+      for (int i = 0; i < _dateControllers.length; i++) {
+        instalments.add(
+          InstalmentRequest(
+            duedate: DateTime.parse(_dateControllers[i].text),
+            amount: double.parse(_amountControllers[i].text),
+          ),
+        );
+      }
+
+      final request = CreateNewStudentContractRequest.getInstance(
+        UuidValue.fromString(_trainingPackSelected!.externalId),
+          UuidValue.fromString("39c0fd19-dbd2-4c74-8104-7105ca159c7b"),
+        _isStudentSelectedInitialized ?_studentSelected.externalId : null,
+        newStudent,
+        trainingInfo,
+        instalments,
+      );
+
+      context.read<NewStudentCubit>().saveContract(request, config.apiKey);
+    }
+  }
+
+  bool get _isStudentSelectedInitialized {
+    try {
+      _studentSelected;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> _processFormListenerFromCubitStateChanged(
@@ -462,11 +517,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             //------------------------------
             SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // lógica de salvar aluno
-                }
-              },
+              onPressed: () => _saveContract(context),
               icon: Icon(Icons.check_circle),
               label: Text('Salvar Contrato'),
               style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
