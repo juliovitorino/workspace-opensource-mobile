@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/data/datasources/ExerciseRemoteDatasource.dart';
+import 'package:treinadorpro/core/data/datasources/exercise_remote_datasource.dart';
 import 'package:treinadorpro/core/data/datasources/iexercise_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/domain/repositories/exercise_repository.dart';

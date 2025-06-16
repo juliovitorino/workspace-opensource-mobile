@@ -30,7 +30,7 @@ const ContractSchema = CollectionSchema(
     r'daysOfWeek': PropertySchema(
       id: 2,
       name: r'daysOfWeek',
-      type: IsarType.longList,
+      type: IsarType.stringList,
     ),
     r'duration': PropertySchema(
       id: 3,
@@ -84,7 +84,13 @@ int _contractEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.currency.length * 3;
-  bytesCount += 3 + object.daysOfWeek.length * 8;
+  bytesCount += 3 + object.daysOfWeek.length * 3;
+  {
+    for (var i = 0; i < object.daysOfWeek.length; i++) {
+      final value = object.daysOfWeek[i];
+      bytesCount += value.length * 3;
+    }
+  }
   bytesCount += 3 + object.duration.length * 3;
   bytesCount += 3 + object.externalId.length * 3;
   bytesCount += 3 + object.goalDescription.length * 3;
@@ -101,7 +107,7 @@ void _contractSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeString(offsets[1], object.currency);
-  writer.writeLongList(offsets[2], object.daysOfWeek);
+  writer.writeStringList(offsets[2], object.daysOfWeek);
   writer.writeString(offsets[3], object.duration);
   writer.writeString(offsets[4], object.externalId);
   writer.writeString(offsets[5], object.goalDescription);
@@ -119,7 +125,7 @@ Contract _contractDeserialize(
   final object = Contract(
     createdAt: reader.readDateTimeOrNull(offsets[0]),
     currency: reader.readString(offsets[1]),
-    daysOfWeek: reader.readLongList(offsets[2]) ?? [],
+    daysOfWeek: reader.readStringList(offsets[2]) ?? [],
     duration: reader.readString(offsets[3]),
     externalId: reader.readString(offsets[4]),
     goalDescription: reader.readString(offsets[5]),
@@ -143,7 +149,7 @@ P _contractDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
@@ -448,49 +454,58 @@ extension ContractQueryFilter
   }
 
   QueryBuilder<Contract, Contract, QAfterFilterCondition>
-      daysOfWeekElementEqualTo(int value) {
+      daysOfWeekElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'daysOfWeek',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementGreaterThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'daysOfWeek',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementLessThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'daysOfWeek',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Contract, Contract, QAfterFilterCondition>
       daysOfWeekElementBetween(
-    int lower,
-    int upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -499,6 +514,77 @@ extension ContractQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'daysOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'daysOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'daysOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'daysOfWeek',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'daysOfWeek',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Contract, Contract, QAfterFilterCondition>
+      daysOfWeekElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'daysOfWeek',
+        value: '',
       ));
     });
   }
@@ -1686,7 +1772,7 @@ extension ContractQueryProperty
     });
   }
 
-  QueryBuilder<Contract, List<int>, QQueryOperations> daysOfWeekProperty() {
+  QueryBuilder<Contract, List<String>, QQueryOperations> daysOfWeekProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'daysOfWeek');
     });

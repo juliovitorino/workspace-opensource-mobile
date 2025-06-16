@@ -1,19 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
+import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 
 class NewStudentCubit extends Cubit<HandlerState>{
-  NewStudentCubit() : super(HandlerState());
+  final IContractRespository _repository;
+  NewStudentCubit(this._repository) : super(HandlerState());
 
-  Future<void> register(String name, String email, String password, String apiKey) async {
+  Future<void> saveContract(CreateNewStudentContractRequest request, String apiKey) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
-    // se tiver mais alguma regra de negócio de camada de visão pode colocar aqui
-    await Future.delayed(const Duration(seconds: 3)); // Simula API - chamada do meu backend
+    // print(jsonEncode(request.toJson()));
+    print(JsonEncoder.withIndent('   ').convert(request.toJson()));
 
-    if (email.contains('@')) {
-      emit(state.copyWith(isLoading: false)); // Sucesso
-    } else {
-      emit(state.copyWith(isLoading: false, errorMessage: 'Email inválido'));
-    }
+    final externalId = await _repository.save(request);
+    emit(state.copyWith(isLoading: false, objectResponse: externalId));
+
   }
 }
