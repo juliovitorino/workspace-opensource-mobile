@@ -3,15 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
+import 'package:treinadorpro/core/data/models/iname.dart';
 import 'package:treinadorpro/core/data/models/instalment_request.dart';
 import 'package:treinadorpro/core/data/models/new_student_request.dart';
 import 'package:treinadorpro/core/data/models/training_info_request.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
+import 'package:treinadorpro/core/data/models/training_time_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_dropdown_label.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_switch.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 import 'package:treinadorpro/features/newstudent/presentation/blocs/new_student_cubit.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
@@ -44,8 +49,10 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   bool _isShowExistingStudentSection = false;
   bool _isShowCardOldStudentSelected = false;
   bool _isShowCardTrainingPack = false;
+  bool _isCustomTime = false;
 
   final List<String> trainingTimes = [
+    'Sem definição',
     '05:00',
     '06:00',
     '07:00',
@@ -84,6 +91,29 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   String _endTimeController = '01:00';
   String _startTimeController = '08:00';
 
+  final List<TrainingTimeModel> _trainingTimeModel = [
+    TrainingTimeModel('- x -'),
+    TrainingTimeModel('05:00'),
+    TrainingTimeModel('06:00'),
+    TrainingTimeModel('07:00'),
+    TrainingTimeModel('08:00'),
+    TrainingTimeModel('09:00'),
+    TrainingTimeModel('10:00'),
+    TrainingTimeModel('11:00'),
+    TrainingTimeModel('12:00'),
+    TrainingTimeModel('13:00'),
+    TrainingTimeModel('14:00'),
+    TrainingTimeModel('15:00'),
+    TrainingTimeModel('16:00'),
+    TrainingTimeModel('17:00'),
+    TrainingTimeModel('18:00'),
+    TrainingTimeModel('19:00'),
+    TrainingTimeModel('20:00'),
+    TrainingTimeModel('21:00'),
+    TrainingTimeModel('22:00'),
+    TrainingTimeModel('23:00'),
+  ];
+
   List<DateTime?> _paymentDates = [];
   List<TextEditingController> _dateControllers = [];
   List<TextEditingController> _amountControllers = [];
@@ -93,11 +123,27 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   late StudentsFromTrainerResponseModel _studentSelected;
   late TrainingPackModel _trainingPackSelected;
 
+  late TrainingTimeModel _mondayController;
+  late TrainingTimeModel _tuesdayController;
+  late TrainingTimeModel _wednesdayController;
+  late TrainingTimeModel _thursdayController;
+  late TrainingTimeModel _fridayController;
+  late TrainingTimeModel _saturdayController;
+  late TrainingTimeModel _sundayController;
+
   @override
   void initState() {
     super.initState();
     config = ref.read(appConfigProvider);
     _contractRespository = ref.read(contractRepositoryProvider);
+
+    _mondayController = _trainingTimeModel.first;
+    _tuesdayController = _trainingTimeModel.first;
+    _wednesdayController = _trainingTimeModel.first;
+    _thursdayController = _trainingTimeModel.first;
+    _fridayController = _trainingTimeModel.first;
+    _saturdayController = _trainingTimeModel.first;
+    _sundayController = _trainingTimeModel.first;
 
     _planStartController.text = DateTime.now().toString().split(' ')[0];
     Future.microtask(() {
@@ -167,9 +213,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
-        startTime: _startTimeController,
+        // startTime: _startTimeController,
         duration: _endTimeController,
-        weekdays: _selectedDaysRequest,
+        // weekdays: _selectedDaysRequest,
       );
 
       List<InstalmentRequest> instalments = [];
@@ -402,22 +448,6 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               keyboardType: TextInputType.datetime,
             ),
 
-            // ProWidgetTextFormField(
-            //   controller: _startTimeController,
-            //   label: 'Hora de Início do Treino (HH:MI)',
-            //   keyboardType: TextInputType.number,
-            // ),
-            Text('Hora de Início do Treino'),
-            DropdownButtonFormField<String>(
-              value: _startTimeController,
-              items: trainingTimes
-                  .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                  .toList(),
-              onChanged: (value) {
-                setState(() => _startTimeController = value!);
-              },
-            ),
-
             Text('Duração'),
             DropdownButtonFormField<String>(
               value: _endTimeController,
@@ -432,33 +462,93 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               },
             ),
 
-            Text('Dias da semana para treinar'),
-            Wrap(
-              spacing: 8.0,
-              children: _days.map((day) {
-                final isSelected = _selectedDays.contains(day);
-                return SizedBox(
-                  height: 45,
-                  child: FilterChip(
-                    label: Text(day),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        if (selected) {
-                          _selectedDays.add(day);
-                          _selectedDaysRequest.add(_mapWeekdays[day]!);
-                        } else {
-                          _selectedDays.remove(day);
-                          _selectedDaysRequest.remove(_mapWeekdays[day]!);
-                        }
-                      });
-                    },
-                    selectedColor: Colors.blue.shade300,
-                    checkmarkColor: Colors.white,
-                  ),
-                );
-              }).toList(),
+            // Switch for custom schedule
+            SizedBox(height: 16),
+            ProWidgetSwitch(
+              text: 'Horário Personalizado Para Este Aluno',
+              value: _isCustomTime,
+              onChanged: (value) => setState(() => _isCustomTime = value),
             ),
+
+            if (!_isCustomTime)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Hora de Início do Treino padrão'),
+                  DropdownButtonFormField<String>(
+                    value: _startTimeController,
+                    items: trainingTimes
+                        .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() => _startTimeController = value!);
+                    },
+                  ),
+                  Text('Dias da semana para treinar'),
+                  Wrap(
+                    spacing: 8.0,
+                    children: _days.map((day) {
+                      final isSelected = _selectedDays.contains(day);
+                      return SizedBox(
+                        height: 45,
+                        child: FilterChip(
+                          label: Text(day),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                _selectedDays.add(day);
+                                _selectedDaysRequest.add(_mapWeekdays[day]!);
+                              } else {
+                                _selectedDays.remove(day);
+                                _selectedDaysRequest.remove(_mapWeekdays[day]!);
+                              }
+                            });
+                          },
+                          selectedColor: Colors.blue.shade300,
+                          checkmarkColor: Colors.white,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+
+            // Custom Schedule
+            if (_isCustomTime)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _mondayController, items: _trainingTimeModel, label: 'Segunda-feira', onChanged: (value) => setState(() => _mondayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _tuesdayController, items: _trainingTimeModel, label: 'Terça-feira', onChanged: (value) => setState(() => _tuesdayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _wednesdayController, items: _trainingTimeModel, label: 'Quarta-feira', onChanged: (value) => setState(() => _wednesdayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _thursdayController, items: _trainingTimeModel, label: 'Quinta-feira', onChanged: (value) => setState(() => _thursdayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _fridayController, items: _trainingTimeModel, label: 'Sexta-feira', onChanged: (value) => setState(() => _fridayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _saturdayController, items: _trainingTimeModel, label: 'Sábado', onChanged: (value) => setState(() => _saturdayController = value!)),
+                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _sundayController, items: _trainingTimeModel, label: 'Domingo', onChanged: (value) => setState(() => _sundayController = value!)),
+
+                  // Row(
+                  //   children: [
+                  //     Text('Segunda'),
+                  //     SizedBox(width: 50),
+                  //     Expanded(
+                  //       child: DropdownButtonFormField<String>(
+                  //         value: _mondayController,
+                  //         items: trainingTimes
+                  //             .map(
+                  //               (g) =>
+                  //                   DropdownMenuItem(value: g, child: Text(g)),
+                  //             )
+                  //             .toList(),
+                  //         onChanged: (value) {
+                  //           setState(() => _mondayController = value!);
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
 
             SizedBox(height: 16),
             ProWidgetTextFormField(
