@@ -159,6 +159,56 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     });
   }
 
+  Widget _buildCustomSchedule() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _mondayController,
+          items: _trainingTimeModel,
+          label: 'Segunda-feira',
+          onChanged: (value) => setState(() => _mondayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _tuesdayController,
+          items: _trainingTimeModel,
+          label: 'Terça-feira',
+          onChanged: (value) => setState(() => _tuesdayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _wednesdayController,
+          items: _trainingTimeModel,
+          label: 'Quarta-feira',
+          onChanged: (value) => setState(() => _wednesdayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _thursdayController,
+          items: _trainingTimeModel,
+          label: 'Quinta-feira',
+          onChanged: (value) => setState(() => _thursdayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _fridayController,
+          items: _trainingTimeModel,
+          label: 'Sexta-feira',
+          onChanged: (value) => setState(() => _fridayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _saturdayController,
+          items: _trainingTimeModel,
+          label: 'Sábado',
+          onChanged: (value) => setState(() => _saturdayController = value!),
+        ),
+        ProWidgetDropdownLabel<TrainingTimeModel>(
+          value: _sundayController,
+          items: _trainingTimeModel,
+          label: 'Domingo',
+          onChanged: (value) => setState(() => _sundayController = value!),
+        ),
+      ],
+    );
+  }
+
   Widget _buildStudentSearchable(
     List<StudentsFromTrainerResponseModel> studentList,
   ) {
@@ -210,12 +260,26 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
           email: _emailController.text,
         );
       }
+
+      final bool isMonSelected = _selectedDaysRequest.contains("MON");
+      final bool isTueSelected = _selectedDaysRequest.contains("TUE");
+      final bool isWedSelected = _selectedDaysRequest.contains("WED");
+      final bool isThuSelected = _selectedDaysRequest.contains("THU");
+      final bool isFriSelected = _selectedDaysRequest.contains("FRI");
+      final bool isSatSelected = _selectedDaysRequest.contains("SAT");
+      final bool isSunSelected = _selectedDaysRequest.contains("SUN");
+
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
-        // startTime: _startTimeController,
+        monday: _isCustomTime ? _mondayController.trainingTime : isMonSelected ? _startTimeController : null,
+        tuesday: _isCustomTime ? _tuesdayController.trainingTime : isTueSelected ? _startTimeController : null,
+        wednesday: _isCustomTime ? _wednesdayController.trainingTime : isWedSelected ? _startTimeController : null,
+        thursday: _isCustomTime ? _thursdayController.trainingTime : isThuSelected ? _startTimeController : null,
+        friday: _isCustomTime ? _fridayController.trainingTime : isFriSelected ? _startTimeController : null,
+        saturday: _isCustomTime ? _saturdayController.trainingTime : isSatSelected ? _startTimeController : null,
+        sunday: _isCustomTime ? _sundayController.trainingTime : isSunSelected ? _startTimeController : null,
         duration: _endTimeController,
-        // weekdays: _selectedDaysRequest,
       );
 
       List<InstalmentRequest> instalments = [];
@@ -516,39 +580,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
             // Custom Schedule
             if (_isCustomTime)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _mondayController, items: _trainingTimeModel, label: 'Segunda-feira', onChanged: (value) => setState(() => _mondayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _tuesdayController, items: _trainingTimeModel, label: 'Terça-feira', onChanged: (value) => setState(() => _tuesdayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _wednesdayController, items: _trainingTimeModel, label: 'Quarta-feira', onChanged: (value) => setState(() => _wednesdayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _thursdayController, items: _trainingTimeModel, label: 'Quinta-feira', onChanged: (value) => setState(() => _thursdayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _fridayController, items: _trainingTimeModel, label: 'Sexta-feira', onChanged: (value) => setState(() => _fridayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _saturdayController, items: _trainingTimeModel, label: 'Sábado', onChanged: (value) => setState(() => _saturdayController = value!)),
-                  ProWidgetDropdownLabel<TrainingTimeModel>(value: _sundayController, items: _trainingTimeModel, label: 'Domingo', onChanged: (value) => setState(() => _sundayController = value!)),
-
-                  // Row(
-                  //   children: [
-                  //     Text('Segunda'),
-                  //     SizedBox(width: 50),
-                  //     Expanded(
-                  //       child: DropdownButtonFormField<String>(
-                  //         value: _mondayController,
-                  //         items: trainingTimes
-                  //             .map(
-                  //               (g) =>
-                  //                   DropdownMenuItem(value: g, child: Text(g)),
-                  //             )
-                  //             .toList(),
-                  //         onChanged: (value) {
-                  //           setState(() => _mondayController = value!);
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ],
-              ),
+              _buildCustomSchedule(),
 
             SizedBox(height: 16),
             ProWidgetTextFormField(

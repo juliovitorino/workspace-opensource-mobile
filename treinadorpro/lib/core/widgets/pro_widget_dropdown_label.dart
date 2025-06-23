@@ -9,33 +9,42 @@ class ProWidgetDropdownLabel<T extends IName> extends StatelessWidget {
 
   const ProWidgetDropdownLabel({
     super.key,
+    required this.label,
     required this.value,
     required this.items,
     this.onChanged,
-    required this.label,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label),
-        SizedBox(width: 100),
-        Expanded(
-          // fit: FlexFit.loose,
-          child: DropdownButtonFormField<T>(
-            value: value,
-            items: items
-                .map(
-                  (g) => DropdownMenuItem(value: g, child: Text(g.getName())),
-                )
-                .toList(),
-            onChanged: onChanged,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120, // Largura fixa para alinhar com os outros labels
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 16),
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: DropdownButtonFormField<T>(
+              value: value,
+              items: items
+                  .map(
+                    (g) => DropdownMenuItem(
+                  value: g,
+                  child: Text(g.getName()),
+                ),
+              )
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
