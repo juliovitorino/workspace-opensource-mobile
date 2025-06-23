@@ -8,16 +8,26 @@ part 'training_info_request.g.dart';
 class TrainingInfoRequest {
   final String? goal;
   final DateTime? startDate;
-  final String? startTime;
+  final String? monday;
+  final String? tuesday;
+  final String? wednesday;
+  final String? thursday;
+  final String? friday;
+  final String? saturday;
+  final String? sunday;
   final String? duration;
-  final List<String>? weekdays;
 
   TrainingInfoRequest({
     this.goal,
     this.startDate,
-    this.startTime,
+    this.monday,
+    this.tuesday,
+    this.wednesday,
+    this.thursday,
+    this.friday,
+    this.saturday,
+    this.sunday,
     this.duration,
-    this.weekdays,
   });
 
   factory TrainingInfoRequest.fromJson(Map<String, dynamic> json) => _$TrainingInfoRequestFromJson(json);

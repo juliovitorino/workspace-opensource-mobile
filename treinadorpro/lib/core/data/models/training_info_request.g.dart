@@ -12,11 +12,14 @@ TrainingInfoRequest _$TrainingInfoRequestFromJson(Map<String, dynamic> json) =>
       startDate: json['startDate'] == null
           ? null
           : DateTime.parse(json['startDate'] as String),
-      startTime: json['startTime'] as String?,
+      monday: json['monday'] as String?,
+      tuesday: json['tuesday'] as String?,
+      wednesday: json['wednesday'] as String?,
+      thursday: json['thursday'] as String?,
+      friday: json['friday'] as String?,
+      saturday: json['saturday'] as String?,
+      sunday: json['sunday'] as String?,
       duration: json['duration'] as String?,
-      weekdays: (json['weekdays'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
     );
 
 Map<String, dynamic> _$TrainingInfoRequestToJson(
@@ -24,7 +27,12 @@ Map<String, dynamic> _$TrainingInfoRequestToJson(
     <String, dynamic>{
       'goal': instance.goal,
       'startDate': instance.startDate?.toIso8601String(),
-      'startTime': instance.startTime,
+      'monday': instance.monday,
+      'tuesday': instance.tuesday,
+      'wednesday': instance.wednesday,
+      'thursday': instance.thursday,
+      'friday': instance.friday,
+      'saturday': instance.saturday,
+      'sunday': instance.sunday,
       'duration': instance.duration,
-      'weekdays': instance.weekdays,
     };

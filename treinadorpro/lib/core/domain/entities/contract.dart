@@ -25,9 +25,15 @@ class Contract {
   final Decimal? price;
 
   final String currency;
-  final String startTime;
+  final String? monday;
+  final String? tuesday;
+  final String? wednesday;
+  final String? thursday;
+  final String? friday;
+  final String? saturday;
+  final String? sunday;
   final String duration;
-  final List<String> daysOfWeek;
+  // final List<String> daysOfWeek;
 
   @ignore
   final List<UserWorkoutPlan>? userWorkoutPlanList;
@@ -44,9 +50,14 @@ class Contract {
     required this.goalDescription,
     this.price,
     required this.currency,
-    required this.startTime,
+    required this.monday,
+    this.tuesday,
+    this.wednesday,
+    this.thursday,
+    this.friday,
+    this.saturday,
+    this.sunday,
     required this.duration,
-    required this.daysOfWeek,
     this.userWorkoutPlanList,
     required this.status,
     this.createdAt,
@@ -62,9 +73,10 @@ class Contract {
       goalDescription: 'Ganhar massa muscular',
       price: Decimal.parse('299.90'),
       currency: 'BRL',
-      startTime: '07:00',
+      monday: '07:00',
+      tuesday: '07:00',
+      wednesday: '07:00',
       duration: '60 minutos',
-      daysOfWeek: ['MON', 'WED', 'FRI'],
       status: 'A',
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
