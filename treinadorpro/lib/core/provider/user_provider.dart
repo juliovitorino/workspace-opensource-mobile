@@ -3,7 +3,7 @@ import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart'
 import 'package:treinadorpro/core/data/datasources/user_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
-import 'package:treinadorpro/core/domain/repositories/userRepository.dart';
+import 'package:treinadorpro/core/domain/repositories/user_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/viewmodel/user_view_model.dart';
 

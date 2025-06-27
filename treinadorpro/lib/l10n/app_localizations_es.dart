@@ -48,6 +48,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get formRegisterEmailBlank => 'El correo electrónico es obligatorio';
 
   @override
+  String get formRegisterPhone => 'Teléfono';
+
+  @override
+  String get formRegisterPhoneBlank => 'Teléfone es obligatorio';
+
+  @override
   String get formRegisterPassword => 'Contraseña';
 
   @override

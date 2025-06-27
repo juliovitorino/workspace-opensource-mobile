@@ -13,6 +13,8 @@
   "formRegisterNameBlank" : "Nome é obrigatório",
   "formRegisterEmail" : "Email",
   "formRegisterEmailBlank" : "Email é obrigatório",
+  "formRegisterPhone" : "Telefone",
+  "formRegisterPhoneBlank" : "Telefone é obrigatório",
   "formRegisterPassword" : "Senha",
   "formRegisterPasswordBlank" : "A senha deve ter pelo menos 6 caracteres",
   "formRegisterPasswordChecker" : "Contra-senha",

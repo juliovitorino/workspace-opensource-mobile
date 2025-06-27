@@ -4,12 +4,14 @@ class ProWidgetTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final TextInputType? keyboardType;
+  final FormFieldValidator<String>? validator;
 
   const ProWidgetTextFormField({
     super.key,
     required this.controller,
     required this.label,
     this.keyboardType = TextInputType.text,
+    this.validator,
   });
 
   @override
@@ -20,6 +22,7 @@ class ProWidgetTextFormField extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(labelText: label),
+        validator: validator,
       ),
     );
   }

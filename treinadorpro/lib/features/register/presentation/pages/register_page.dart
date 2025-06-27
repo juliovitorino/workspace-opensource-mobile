@@ -3,14 +3,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/data/models/plan_template_model.dart';
+import 'package:treinadorpro/core/data/requests/register_response.dart';
+import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/plan_template_provider.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
+import 'package:treinadorpro/core/viewmodel/plan_template_list_view_model.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../core/states/handler_state.dart';
 import '../blocs/register_state.dart';
 
-class RegisterPage extends ConsumerWidget {
+class RegisterPage extends ConsumerStatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends ConsumerState<RegisterPage> {
+
+  late AppConfig config;
+  late PlanTemplateModel? _planSelected;
+  late IUserRepository _userRepository;
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -18,8 +38,21 @@ class RegisterPage extends ConsumerWidget {
   final _passwordController = TextEditingController();
   final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
+  final _phoneController = TextEditingController();
 
-  RegisterPage({super.key});
+  bool _isShowPlanCardDetail = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    config = ref.read(appConfigProvider);
+    _userRepository = ref.read(userRepositoryProvider);
+    Future.microtask((){
+      ref.read(planTemplateListViewModelProvider.notifier).findAllActivePlan();
+    });
+  }
 
   String? passwordChecker(BuildContext context, String pwd1, String pwd2) {
     if( pwd1 != pwd2) {
@@ -40,6 +73,48 @@ class RegisterPage extends ConsumerWidget {
     );
   }
 
+  Widget _buildPlanCardDetail() {
+    return               Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        title: Text(
+          _planSelected!.description,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('R\$${_planSelected!.price - _planSelected!.amountDiscount}'),
+            Text(_planSelected!.paymentFrequency)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlanList(List<PlanTemplateModel> planList){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20),
+        Text('Selecione seu plano'),
+        ProWidgetSearchableDropdown(
+          hintTextSearch: 'Pesquisar por um plano...',
+          hintTextItem: 'Selecione um plano',
+          items: planList,
+          onChanged: (value) => setState(() {
+            _planSelected = value!;
+            _isShowPlanCardDetail = true;
+          }),
+          onClear: () => setState(() {
+            _isShowPlanCardDetail = false;
+            _planSelected = null;
+          }),
+        ),
+      ],
+    );
+  }
+
   Widget _buildInputFormFieldEmail(BuildContext context) {
     return TextFormField(
       controller: _emailController,
@@ -54,16 +129,16 @@ class RegisterPage extends ConsumerWidget {
       controller: _passwordController,
       decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterPassword, suffixIcon: Icon(Icons.visibility)),
       validator: (v) =>
-          v!.length < 6 ? AppLocalizations.of(context)?.formRegisterPasswordBlank : null,
+      v!.length < 6 ? AppLocalizations.of(context)?.formRegisterPasswordBlank : null,
     );
   }
 
   Widget _buildInputFormFieldPasswordCheck(BuildContext context) {
     return TextFormField(
-      obscureText: true,
-      controller: _passwordCheckController,
-      decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterPasswordChecker, suffixIcon: Icon(Icons.visibility)),
-      validator: (v) => passwordChecker(context, v!, _passwordController.text)
+        obscureText: true,
+        controller: _passwordCheckController,
+        decoration: InputDecoration(labelText: AppLocalizations.of(context)?.formRegisterPasswordChecker, suffixIcon: Icon(Icons.visibility)),
+        validator: (v) => passwordChecker(context, v!, _passwordController.text)
     );
   }
 
@@ -80,10 +155,14 @@ class RegisterPage extends ConsumerWidget {
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           context.read<RegisterCubit>().register(
-            _nameController.text,
-            _emailController.text,
-            _passwordController.text,
-            config.apiKey
+              _nameController.text,
+              _emailController.text,
+              _phoneController.text,
+              _birthdayController.text,
+              _passwordController.text,
+              _passwordCheckController.text,
+              _planSelected!.externalId,
+              config.apiKey
           );
         }
       },
@@ -91,6 +170,9 @@ class RegisterPage extends ConsumerWidget {
   }
 
   Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config){
+
+    final planTemplateState = ref.watch(planTemplateListViewModelProvider);
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -99,9 +181,16 @@ class RegisterPage extends ConsumerWidget {
           children: [
             _buildInputFormFieldName(context),
             _buildInputFormFieldEmail(context),
+            ProWidgetTextFormField(controller: _phoneController, label:AppLocalizations.of(context)!.formRegisterPhone, validator: (v) => v!.isEmpty ? AppLocalizations.of(context)?.formRegisterPhoneBlank : null,),
             _buildInputFormFieldPassword(context),
             _buildInputFormFieldPasswordCheck(context),
             _buildInputFormFieldBirthday(context),
+            planTemplateState.when(
+                data: (planTemplateList) => _buildPlanList(planTemplateList),
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => CircularProgressIndicator()),
+            if(_isShowPlanCardDetail)
+              _buildPlanCardDetail(),
 
             const SizedBox(height: 20),
             state.isLoading
@@ -119,11 +208,13 @@ class RegisterPage extends ConsumerWidget {
         context,
       ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
     } else if (!state.isLoading && state.errorMessage == null) {
+      RegisterResponse registerResponse = state.objectResponse;
+
       await showDialog(
         context: context,
         builder: (_) =>
-        AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
-        content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
+            AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
+              content: Text(registerResponse.externalUserId)),
       );
 
       Navigator.popAndPushNamed(context, AppRoutes.validateCode);
@@ -143,18 +234,24 @@ class RegisterPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final AppConfig config = ref.watch(appConfigProvider);
 
     return BlocProvider(
-      create: (_) => RegisterCubit(),
+      create: (_) => RegisterCubit(_userRepository),
       child: Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle)),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle), actions: [
+          ProWidgetInfoAlertDialog(
+            title: 'page',
+            text: 'register_page.dart',
+          )]),
         body: BlocConsumer<RegisterCubit, HandlerState>(
-          listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildForm(context, state, config)
+            listener: (context, state) => _processFormListener(context, state),
+            builder: (context, state) => _buildForm(context, state, config)
         ),
       ),
     );
   }
+
 }
+
