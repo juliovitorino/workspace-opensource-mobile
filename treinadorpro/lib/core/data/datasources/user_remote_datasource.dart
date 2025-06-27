@@ -62,4 +62,26 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
     return RegisterResponse.fromJson(objectResponse);
   }
 
+  @override
+  Future<bool> validateCode(String apiKey, String trainerExternalId, String code) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/user/trainer/validate/$trainerExternalId/$code";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      // 'Authorization': 'Bearer token123',
+      'X-API-KEY': apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    return jsonResponse['objectResponse'];
+  }
+
 }

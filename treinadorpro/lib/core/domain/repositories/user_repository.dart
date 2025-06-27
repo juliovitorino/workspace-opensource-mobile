@@ -27,4 +27,9 @@ class UserRepository implements IUserRepository {
   Future<RegisterResponse> register(RegisterRequest request) async {
     return await _userRemoteDatasource.register(request);
   }
+
+  @override
+  Future<bool> validateCode(String apiKey, String trainerExternalId, String code) async {
+    return await _userRemoteDatasource.validateCode(apiKey, trainerExternalId, code);
+  }
 }

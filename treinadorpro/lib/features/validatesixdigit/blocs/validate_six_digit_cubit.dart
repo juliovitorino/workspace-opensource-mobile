@@ -1,19 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 
 class ValidateSixDigitCubit extends Cubit<HandlerState> {
-  ValidateSixDigitCubit() : super(HandlerState());
+  final IUserRepository _repository;
 
-  Future<void> validate(String code, String apiKey) async {
+  ValidateSixDigitCubit(this._repository) : super(HandlerState());
+
+  Future<void> validate(String code, String apiKey, String trainerExternalId) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
-    // se tiver mais alguma regra de negócio de camada de visão pode colocar aqui
-    await Future.delayed(const Duration(seconds: 3)); // Simula API - chamada do meu backend
+    final bool response = await _repository.validateCode(apiKey, trainerExternalId, code);
 
-    if (RegExp(r'^\d{6}$').hasMatch(code)) {
+    if (response) {
       emit(state.copyWith(isLoading: false)); // Sucesso
     } else {
-      emit(state.copyWith(isLoading: false, errorMessage: 'O código deve somente conter 6 números'));
+      emit(state.copyWith(isLoading: false, errorMessage: 'Houve alguma falha'));
     }
   }
 }

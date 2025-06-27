@@ -6,5 +6,6 @@ import '../requests/register_response.dart';
 
 abstract class IUserRemoteDataSource extends IRemoteDatasource<UserModel, int>{
   Future<RegisterResponse> register(RegisterRequest request);
+  Future<bool> validateCode(String apiKey, String trainerExternalId, String code);
 
 }
