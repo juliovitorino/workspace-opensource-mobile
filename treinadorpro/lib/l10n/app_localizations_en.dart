@@ -48,6 +48,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get formRegisterEmailBlank => 'Email is required';
 
   @override
+  String get formRegisterPhone => 'Phone';
+
+  @override
+  String get formRegisterPhoneBlank => 'Phone is required';
+
+  @override
   String get formRegisterPassword => 'Password';
 
   @override

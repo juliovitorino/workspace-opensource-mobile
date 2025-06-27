@@ -4,12 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/plan_template_model.dart';
+import 'package:treinadorpro/core/data/requests/register_response.dart';
+import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/plan_template_provider.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/core/viewmodel/plan_template_list_view_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import '../../../../core/states/handler_state.dart';
@@ -26,6 +30,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   late AppConfig config;
   late PlanTemplateModel? _planSelected;
+  late IUserRepository _userRepository;
 
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -33,6 +38,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _passwordController = TextEditingController();
   final _passwordCheckController = TextEditingController();
   final _birthdayController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   bool _isShowPlanCardDetail = false;
 
@@ -42,6 +48,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     super.initState();
 
     config = ref.read(appConfigProvider);
+    _userRepository = ref.read(userRepositoryProvider);
     Future.microtask((){
       ref.read(planTemplateListViewModelProvider.notifier).findAllActivePlan();
     });
@@ -150,7 +157,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           context.read<RegisterCubit>().register(
               _nameController.text,
               _emailController.text,
+              _phoneController.text,
+              _birthdayController.text,
               _passwordController.text,
+              _passwordCheckController.text,
+              _planSelected!.externalId,
               config.apiKey
           );
         }
@@ -170,6 +181,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           children: [
             _buildInputFormFieldName(context),
             _buildInputFormFieldEmail(context),
+            ProWidgetTextFormField(controller: _phoneController, label:AppLocalizations.of(context)!.formRegisterPhone, validator: (v) => v!.isEmpty ? AppLocalizations.of(context)?.formRegisterPhoneBlank : null,),
             _buildInputFormFieldPassword(context),
             _buildInputFormFieldPasswordCheck(context),
             _buildInputFormFieldBirthday(context),
@@ -196,11 +208,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         context,
       ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
     } else if (!state.isLoading && state.errorMessage == null) {
+      RegisterResponse registerResponse = state.objectResponse;
+
       await showDialog(
         context: context,
         builder: (_) =>
             AlertDialog(title: Text(AppLocalizations.of(context)!.sucessTitle),
-              content: Text(AppLocalizations.of(context)!.formRegisterSuccessMessage),),
+              content: Text(registerResponse.externalUserId)),
       );
 
       Navigator.popAndPushNamed(context, AppRoutes.validateCode);
@@ -224,7 +238,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final AppConfig config = ref.watch(appConfigProvider);
 
     return BlocProvider(
-      create: (_) => RegisterCubit(),
+      create: (_) => RegisterCubit(_userRepository),
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context)!.formRegisterTitle), actions: [
           ProWidgetInfoAlertDialog(

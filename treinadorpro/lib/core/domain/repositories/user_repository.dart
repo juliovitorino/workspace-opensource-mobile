@@ -1,5 +1,7 @@
 import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/data/requests/register_request.dart';
+import 'package:treinadorpro/core/data/requests/register_response.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 
 class UserRepository implements IUserRepository {
@@ -19,5 +21,10 @@ class UserRepository implements IUserRepository {
 
     final user = await _userRemoteDatasource.fetchByUUID(uuid);
     return user;
+  }
+
+  @override
+  Future<RegisterResponse> register(RegisterRequest request) async {
+    return await _userRemoteDatasource.register(request);
   }
 }

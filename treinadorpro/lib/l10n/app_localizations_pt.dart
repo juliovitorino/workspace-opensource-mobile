@@ -48,6 +48,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get formRegisterEmailBlank => 'Email é obrigatório';
 
   @override
+  String get formRegisterPhone => 'Telefone';
+
+  @override
+  String get formRegisterPhoneBlank => 'Telefone é obrigatório';
+
+  @override
   String get formRegisterPassword => 'Senha';
 
   @override

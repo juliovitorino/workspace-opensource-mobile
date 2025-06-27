@@ -178,6 +178,18 @@ abstract class AppLocalizations {
   /// **'Email is required'**
   String get formRegisterEmailBlank;
 
+  /// No description provided for @formRegisterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get formRegisterPhone;
+
+  /// No description provided for @formRegisterPhoneBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone is required'**
+  String get formRegisterPhoneBlank;
+
   /// No description provided for @formRegisterPassword.
   ///
   /// In en, this message translates to:

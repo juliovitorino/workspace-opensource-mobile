@@ -13,6 +13,8 @@
   "formRegisterNameBlank" : "Name is required",
   "formRegisterEmail" : "Email",
   "formRegisterEmailBlank" : "Email is required",
+  "formRegisterPhone" : "Phone",
+  "formRegisterPhoneBlank" : "Phone is required",
   "formRegisterPassword" : "Password",
   "formRegisterPasswordBlank" : "The password should be 6 character at least",
   "formRegisterPasswordChecker" : "Password Re-type",
