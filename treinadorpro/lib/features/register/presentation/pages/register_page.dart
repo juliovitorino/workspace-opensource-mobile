@@ -217,7 +217,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               content: Text(registerResponse.externalUserId)),
       );
 
-      Navigator.popAndPushNamed(context, AppRoutes.validateCode);
+      Navigator.popAndPushNamed(context, AppRoutes.validateCode, arguments: registerResponse);
 
     }
   }
