@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class ProWidgetInfoAlertDialog extends StatelessWidget {
   final String title;
   final String text;
+  final IconData? icon;
 
-  const ProWidgetInfoAlertDialog({super.key, required this.title, required this.text});
+  const ProWidgetInfoAlertDialog({super.key, required this.title, required this.text, this.icon = Icons.info});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class ProWidgetInfoAlertDialog extends StatelessWidget {
           },
         );
       },
-      icon: Icon(Icons.info),
+      icon: Icon(icon),
     );
   }
 }

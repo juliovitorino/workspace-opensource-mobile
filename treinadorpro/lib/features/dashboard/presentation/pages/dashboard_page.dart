@@ -12,6 +12,7 @@ import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_work
 
 import '../../../../core/constants/styles.dart';
 import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
+import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -20,10 +21,21 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String token = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AppName'),
         actions: [
+          ProWidgetInfoAlertDialog(
+            title: 'token',
+            text: token,
+            icon: Icons.lock,
+          ),
+          ProWidgetInfoAlertDialog(
+            title: 'page',
+            text: 'dashboard_page.dart',
+          ),
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
