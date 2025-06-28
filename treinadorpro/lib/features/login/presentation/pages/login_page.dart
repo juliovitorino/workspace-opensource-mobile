@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_entity_local_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state_cubit.dart';
 
 import '../../../../config/app_config.dart';
@@ -32,11 +34,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _passwordController = TextEditingController();
 
   late AppConfig config;
+  late IUserRepository _userRepository;
 
   @override
   void initState(){
     super.initState();
     config = ref.read(appConfigProvider);
+    _userRepository = ref.read(userRepositoryProvider);
   }
 
   Future<void> _processFormListener(BuildContext context, HandlerState state) async {
@@ -53,8 +57,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
       );
 
-      await _userEntityLocalStorage.save(User.currentUser);
-      Navigator.popAndPushNamed(context, AppRoutes.dashboard);
+      // await _userEntityLocalStorage.save(User.currentUser);
+      Navigator.popAndPushNamed(context, AppRoutes.dashboard, arguments: state.objectResponse);
 
     }
   }
@@ -114,8 +118,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
 
+    _emailController.text = 'julio.vitorino@gmail.com';
+    _passwordController.text = '123456';
+
     return BlocProvider(
-      create: (_) => LoginStateCubit(),
+      create: (_) => LoginStateCubit(_userRepository),
       child: Scaffold(
         body: BlocConsumer<LoginStateCubit, HandlerState>(
           listener: (context, state) => _processFormListener(context, state),

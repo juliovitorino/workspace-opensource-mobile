@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/data/requests/login_request.dart';
 import 'package:treinadorpro/core/data/requests/register_request.dart';
 import 'package:treinadorpro/core/data/requests/register_response.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
@@ -83,5 +84,28 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     return jsonResponse['objectResponse'];
   }
+
+  @override
+  Future<String> login(String apiKey, LoginRequest loginRequest)  async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/user/login";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      // 'Authorization': 'Bearer token123',
+      'X-API-KEY': apiKey
+    };
+
+    final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(loginRequest.toJson()));
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    return jsonResponse['objectResponse'];
+  }
+
 
 }

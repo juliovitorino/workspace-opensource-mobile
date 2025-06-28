@@ -1,5 +1,6 @@
 import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/data/requests/login_request.dart';
 import 'package:treinadorpro/core/data/requests/register_request.dart';
 import 'package:treinadorpro/core/data/requests/register_response.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
@@ -31,5 +32,10 @@ class UserRepository implements IUserRepository {
   @override
   Future<bool> validateCode(String apiKey, String trainerExternalId, String code) async {
     return await _userRemoteDatasource.validateCode(apiKey, trainerExternalId, code);
+  }
+
+  @override
+  Future<String> login(String apiKey, LoginRequest loginRequest) async {
+    return await _userRemoteDatasource.login(apiKey, loginRequest);
   }
 }
