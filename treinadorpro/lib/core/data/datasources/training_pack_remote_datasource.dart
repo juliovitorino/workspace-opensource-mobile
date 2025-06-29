@@ -38,7 +38,13 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
       print('call url = $url');
     }
 
-    final jsonResponse = await apiClient.get(url);
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");
     }
@@ -58,7 +64,13 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
       print('$module :: call url = $url');
     }
 
-    final jsonResponse = await apiClient.get(url);
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");
     }
@@ -78,7 +90,13 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
       print('$module :: call url = $url');
     }
 
-    final jsonResponse = await apiClient.get(url);
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");
     }

@@ -63,22 +63,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
-  Widget _buildLoginButton(BuildContext context, AppConfig config) {
+  Widget _buildLoginButton(BuildContext context) {
     return ProWidgetRoundedButton(
       text: 'ENTRAR',
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           context.read<LoginStateCubit>().processLogin(
               _emailController.text,
-              _passwordController.text,
-              config.apiKey
+              _passwordController.text
           );
         }
       },
     );
   }
 
-  Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config) {
+  Widget _buildFormArea(HandlerState state, BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Padding(
@@ -96,7 +95,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             const SizedBox(height: 20),
             state.isLoading
                 ? const CircularProgressIndicator()
-                : _buildLoginButton(context, config),
+                : _buildLoginButton(context),
             ProWidgetSocialButtonRow(),
           ],
         ),
@@ -104,13 +103,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  Widget _buildForm(BuildContext context, HandlerState state, AppConfig config) {
+  Widget _buildForm(BuildContext context, HandlerState state) {
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height,
         ),
-        child: _buildFormArea(state, context, config),
+        child: _buildFormArea(state, context),
       ),
     );
   }
@@ -126,7 +125,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       child: Scaffold(
         body: BlocConsumer<LoginStateCubit, HandlerState>(
           listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildForm(context, state, config),
+          builder: (context, state) => _buildForm(context, state),
         ),
       ),
     );

@@ -9,10 +9,10 @@ class LoginStateCubit extends Cubit<HandlerState> {
 
   LoginStateCubit(this._repository) : super(HandlerState());
 
-  Future<void> processLogin(String email, String password, String apiKey) async {
+  Future<void> processLogin(String email, String password) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
-    final String token = await _repository.login(apiKey, LoginRequest(email, password));
+    final String token = await _repository.login(LoginRequest(email, password));
     emit(state.copyWith(isLoading: false, objectResponse: token)); // Sucesso
       // emit(state.copyWith(isLoading: false, errorMessage: 'Email inválido'));
   }

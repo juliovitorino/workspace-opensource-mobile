@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'register_request.g.dart';
 
@@ -12,7 +11,6 @@ class RegisterRequest {
   final String passwd;
   final String passwdCheck;
   final String plan;
-  final String apiKey;
 
   RegisterRequest(
     this.name,
@@ -22,7 +20,6 @@ class RegisterRequest {
     this.passwd,
     this.passwdCheck,
     this.plan,
-    this.apiKey,
   );
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>

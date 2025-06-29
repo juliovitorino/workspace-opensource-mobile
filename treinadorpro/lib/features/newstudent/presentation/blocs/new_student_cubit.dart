@@ -9,7 +9,7 @@ class NewStudentCubit extends Cubit<HandlerState>{
   final IContractRespository _repository;
   NewStudentCubit(this._repository) : super(HandlerState());
 
-  Future<void> saveContract(CreateNewStudentContractRequest request, String apiKey) async {
+  Future<void> saveContract(CreateNewStudentContractRequest request) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     // print(jsonEncode(request.toJson()));

@@ -15,7 +15,6 @@ RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
       json['passwd'] as String,
       json['passwdCheck'] as String,
       json['plan'] as String,
-      json['apiKey'] as String,
     );
 
 Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
@@ -27,5 +26,4 @@ Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
       'passwd': instance.passwd,
       'passwdCheck': instance.passwdCheck,
       'plan': instance.plan,
-      'apiKey': instance.apiKey,
     };

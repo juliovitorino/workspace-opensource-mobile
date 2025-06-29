@@ -51,14 +51,13 @@ class _ValidateSixDigitPageState extends ConsumerState<ValidateSixDigitPage> {
     }
   }
 
-  Widget _buildValidateButton(BuildContext context, AppConfig config) {
+  Widget _buildValidateButton(BuildContext context) {
     return ProWidgetRoundedButton(
       text: 'VALIDAR',
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           context.read<ValidateSixDigitCubit>().validate(
             _codeController.text,
-            config.apiKey,
             _registerResponse.externalUserId,
           );
         }
@@ -76,8 +75,7 @@ class _ValidateSixDigitPageState extends ConsumerState<ValidateSixDigitPage> {
 
   Widget _buildFormArea(
     HandlerState state,
-    BuildContext context,
-    AppConfig config,
+    BuildContext context
   ) {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -91,20 +89,20 @@ class _ValidateSixDigitPageState extends ConsumerState<ValidateSixDigitPage> {
             const SizedBox(height: 20),
             state.isLoading
                 ? const CircularProgressIndicator()
-                : _buildValidateButton(context, config),
+                : _buildValidateButton(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext context, state, AppConfig config) {
+  Widget _buildForm(BuildContext context, state) {
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height,
         ),
-        child: IntrinsicHeight(child: _buildFormArea(state, context, config)),
+        child: IntrinsicHeight(child: _buildFormArea(state, context)),
       ),
     );
   }
@@ -126,7 +124,7 @@ class _ValidateSixDigitPageState extends ConsumerState<ValidateSixDigitPage> {
         appBar: AppBar(title: Text('Validar Código')),
         body: BlocConsumer<ValidateSixDigitCubit, HandlerState>(
           listener: (context, state) => _processFormListener(context, state),
-          builder: (context, state) => _buildForm(context, state, config),
+          builder: (context, state) => _buildForm(context, state),
         ),
       ),
     );

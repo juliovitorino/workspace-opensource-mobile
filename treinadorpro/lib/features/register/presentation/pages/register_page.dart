@@ -149,7 +149,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
-  Widget _buildRegisterButton(BuildContext context, AppConfig config) {
+  Widget _buildRegisterButton(BuildContext context) {
     return ProWidgetRoundedButton(
       text: AppLocalizations.of(context)!.formRegisterButton,
       onPressed: () {
@@ -161,15 +161,14 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               _birthdayController.text,
               _passwordController.text,
               _passwordCheckController.text,
-              _planSelected!.externalId,
-              config.apiKey
+              _planSelected!.externalId
           );
         }
       },
     );
   }
 
-  Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config){
+  Widget _buildFormArea(HandlerState state, BuildContext context){
 
     final planTemplateState = ref.watch(planTemplateListViewModelProvider);
 
@@ -195,7 +194,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             const SizedBox(height: 20),
             state.isLoading
                 ? const CircularProgressIndicator()
-                : _buildRegisterButton(context, config)
+                : _buildRegisterButton(context)
           ],
         ),
       ),
@@ -222,13 +221,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     }
   }
 
-  Widget _buildForm(BuildContext context, HandlerState state, AppConfig config){
+  Widget _buildForm(BuildContext context, HandlerState state){
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height,
         ),
-        child: _buildFormArea(state, context, config),
+        child: _buildFormArea(state, context),
       ),
     );
   }
@@ -247,7 +246,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           )]),
         body: BlocConsumer<RegisterCubit, HandlerState>(
             listener: (context, state) => _processFormListener(context, state),
-            builder: (context, state) => _buildForm(context, state, config)
+            builder: (context, state) => _buildForm(context, state)
         ),
       ),
     );

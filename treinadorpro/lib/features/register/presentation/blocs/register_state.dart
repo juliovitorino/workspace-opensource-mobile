@@ -18,8 +18,7 @@ class RegisterCubit extends Cubit<HandlerState> {
     String birthday,
     String passwd,
     String passwdCheck,
-    String plan,
-    String apiKey,
+    String plan
   ) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
@@ -31,7 +30,6 @@ class RegisterCubit extends Cubit<HandlerState> {
       passwd,
       passwdCheck,
       plan,
-      apiKey,
     );
 
     // print(jsonEncode(request.toJson()));

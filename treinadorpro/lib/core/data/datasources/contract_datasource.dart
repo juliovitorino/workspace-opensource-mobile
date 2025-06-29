@@ -34,7 +34,13 @@ class ContractDatasource implements IContractDatasource {
       print('$module :: call url = $url');
     }
 
-    final jsonResponse = await apiClient.post(url, body: jsonEncode(request.toJson()));
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(request.toJson()));
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");
     }
