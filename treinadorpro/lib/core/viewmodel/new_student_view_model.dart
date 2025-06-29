@@ -9,11 +9,11 @@ class NewStudentViewModel extends IViewModel<String>{
 
   static const String module = 'new_student_view_model';
 
-  Future<void> saveContract(CreateNewStudentContractRequest request) async {
+  Future<void> saveContract(String token, CreateNewStudentContractRequest request) async {
     try {
       print('$module :: ok');
       state = const AsyncValue.loading();
-      final externalId = await _repository.save(request);
+      final externalId = await _repository.save(token,request);
       state = AsyncValue.data(externalId);
 
     } catch (e, st){

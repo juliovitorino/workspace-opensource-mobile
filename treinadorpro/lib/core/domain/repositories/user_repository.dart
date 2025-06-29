@@ -11,16 +11,16 @@ class UserRepository implements IUserRepository {
   UserRepository(this._userRemoteDatasource);
 
   @override
-  Future<UserModel> findById(int id) async {
-    final user = await _userRemoteDatasource.fetchById(id);
+  Future<UserModel> findById(String token, int id) async {
+    final user = await _userRemoteDatasource.fetchById(token,id);
     return user;
   }
 
   @override
-  Future<UserModel> findByUUID(String uuid) async {
+  Future<UserModel> findByUUID(String token, String uuid) async {
     print('user_repository :: uuid = $uuid');
 
-    final user = await _userRemoteDatasource.fetchByUUID(uuid);
+    final user = await _userRemoteDatasource.fetchByUUID(token,uuid);
     return user;
   }
 

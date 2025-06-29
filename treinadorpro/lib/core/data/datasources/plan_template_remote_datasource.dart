@@ -14,20 +14,20 @@ class PlanTemplateRemoteDatasource implements IPlanTemplateRemoteDatasource{
   PlanTemplateRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<PlanTemplateModel> fetchById(int id) {
+  Future<PlanTemplateModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<PlanTemplateModel> fetchByUUID(String id) {
+  Future<PlanTemplateModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
   Future<List<PlanTemplateModel>> findAllActivePlan() async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/plan/active";
+    final String url = "${config.apiBackendUrl}/v1/api/business/public/plan/active";
 
     if(config.isDebugMode) {
       print('$module :: call url = $url');
@@ -35,7 +35,6 @@ class PlanTemplateRemoteDatasource implements IPlanTemplateRemoteDatasource{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
       'X-API-KEY': config.apiKey
     };
 

@@ -8,20 +8,20 @@ class ProgramRepository implements IProgramRepository{
   ProgramRepository(this._programRemoteDatasource);
 
   @override
-  Future<List<ProgramModel>> findAllActivePrograms() async {
+  Future<List<ProgramModel>> findAllActivePrograms(String token) async {
     print('program_repository :: ok');
-    return await _programRemoteDatasource.findAllActivePrograms();
+    return await _programRemoteDatasource.findAllActivePrograms(token);
   }
 
 
   @override
-  Future<ProgramModel> findById(int id) {
+  Future<ProgramModel> findById(String token, int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<ProgramModel> findByUUID(String id) {
+  Future<ProgramModel> findByUUID(String token, String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }

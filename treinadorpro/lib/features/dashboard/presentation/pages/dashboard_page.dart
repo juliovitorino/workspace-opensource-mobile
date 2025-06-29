@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
@@ -41,7 +42,7 @@ class DashboardPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => TrainerProfilePageDetail()),
+                MaterialPageRoute(builder: (_) => TrainerProfilePageDetail(token)),
               );
             },
           ),
@@ -151,7 +152,7 @@ class DashboardPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => NewStudentPage()),
+                      MaterialPageRoute(builder: (_) => NewStudentPage(token)),
                     );
                   },
                   icon: Icon(Icons.person_add),
@@ -162,7 +163,7 @@ class DashboardPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => BuildWorkoutSheetPage(),
+                        builder: (_) => BuildWorkoutSheetPage(token),
                       ),
                     );
                   },

@@ -10,19 +10,19 @@ class WorkgroupRepository implements IWorkgroupRepository{
   static const module = 'workgoup_repository';
 
   @override
-  Future<List<WorkgroupModel>> findAllActiveWorkgroups() async {
+  Future<List<WorkgroupModel>> findAllActiveWorkgroups(String token) async {
     print('$module :: ok');
-    return await _workgroupRemoteDatasource.findAllActiveWorkgroups();
+    return await _workgroupRemoteDatasource.findAllActiveWorkgroups(token);
   }
 
   @override
-  Future<WorkgroupModel> findById(int id) {
+  Future<WorkgroupModel> findById(String token, int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<WorkgroupModel> findByUUID(String id) {
+  Future<WorkgroupModel> findByUUID(String token, String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }

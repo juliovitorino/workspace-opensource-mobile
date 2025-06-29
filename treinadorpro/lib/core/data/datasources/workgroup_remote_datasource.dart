@@ -12,19 +12,19 @@ class WorkgroupRemoteDatasource implements IWorkgroupRemoteDatasource{
   WorkgroupRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<WorkgroupModel> fetchById(int id) {
+  Future<WorkgroupModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<WorkgroupModel> fetchByUUID(String id) {
+  Future<WorkgroupModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<WorkgroupModel>> findAllActiveWorkgroups() async {
+  Future<List<WorkgroupModel>> findAllActiveWorkgroups(String token ) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/wg";
 
     if(config.isDebugMode) {
@@ -33,7 +33,7 @@ class WorkgroupRemoteDatasource implements IWorkgroupRemoteDatasource{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

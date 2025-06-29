@@ -5,9 +5,9 @@ import '../../data/models/page_result_response_model.dart';
 import '../../data/models/students_from_trainer_response_model.dart';
 
 abstract class ITrainingPackRepository extends Repository<TrainingPackModel, int>{
-  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String id, int page, int size);
-  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String externalId);
-  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String externalId);
+  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String token, String id, int page, int size);
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String token, String externalId);
+  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String token, String externalId);
 
 
 }

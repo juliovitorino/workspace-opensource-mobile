@@ -10,7 +10,8 @@ import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 
 class TrainerProfilePageDetail extends ConsumerStatefulWidget {
-  const TrainerProfilePageDetail({super.key});
+  final String token;
+  const TrainerProfilePageDetail(this.token, {super.key});
 
   @override
   ConsumerState<TrainerProfilePageDetail> createState() => _TrainerProfilePageDetailState();
@@ -29,13 +30,14 @@ class _TrainerProfilePageDetailState extends ConsumerState<TrainerProfilePageDet
     super.initState();
     config = ref.read(appConfigProvider);
     Future.microtask(() {
-        ref.read(userViewModelProvider.notifier).findUserByUUID('39c0fd19-dbd2-4c74-8104-7105ca159c7b'); //mocked
+        ref.read(userViewModelProvider.notifier).findUserByUUID(widget.token,'39c0fd19-dbd2-4c74-8104-7105ca159c7b'); //mocked
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userViewModelProvider);
+    // _token = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(

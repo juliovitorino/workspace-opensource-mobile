@@ -13,19 +13,19 @@ class GoalRemoteDatasource implements IGoalRemoteDatasource{
   GoalRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<GoalModel> fetchById(int id) {
+  Future<GoalModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<GoalModel> fetchByUUID(String id) {
+  Future<GoalModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<GoalModel>> findAllActiveGoals() async {
+  Future<List<GoalModel>> findAllActiveGoals(String token) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/goal";
 
     if(config.isDebugMode) {
@@ -34,7 +34,7 @@ class GoalRemoteDatasource implements IGoalRemoteDatasource{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 
