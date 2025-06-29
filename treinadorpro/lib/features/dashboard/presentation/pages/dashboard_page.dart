@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
+import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
@@ -12,22 +15,49 @@ import 'package:treinadorpro/features/trainingpackage/presentation/pages/trainin
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 
 import '../../../../core/constants/styles.dart';
-import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/infrastructure/localstorage/token_storage_service.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../overduestudent/presentation/pages/payments_overdue_page.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends ConsumerStatefulWidget {
+  const DashboardPage({super.key});
 
-  final _userEntityLocalStorage = UserEntityLocalStorageServiceIsar();
+  @override
+  ConsumerState<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends ConsumerState<DashboardPage> {
+
+  String token = "";
+  String? token_st = "";
+  final StorageService<String> _tokenStorage = TokenStorageService();
+  final StorageService<UserModel> _trainerStorage = TrainerUserStorageService();
+
+  Future<String?> getToken() => _tokenStorage.get();
+
+  @override
+  void initState() {
+    Future.microtask(() async {
+      token = ModalRoute.of(context)!.settings.arguments as String;
+      token_st = await getToken();
+      ref.read(userViewModelProvider.notifier).getLoggedUser(token);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String token = ModalRoute.of(context)!.settings.arguments as String;
+    final _userState = ref.watch(userViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('AppName'),
         actions: [
+          ProWidgetInfoAlertDialog(
+            title: 'token st',
+            text: token_st!,
+            icon: Icons.lock,
+          ),
           ProWidgetInfoAlertDialog(
             title: 'token',
             text: token,
@@ -61,16 +91,16 @@ class DashboardPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            FutureBuilder(future: _userEntityLocalStorage.getById(99999), builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text('Carregando...');
-              } else if (snapshot.hasData && snapshot.data != null) {
-                return Text('Bem-vindo, ${snapshot.data!.name} 👋',
-                  style: kWelcomeUserMessageTextStyle);
-              } else {
-                return const Text('Usuário não encontrado');
-              }
-            }),
+            _userState.when(
+                data: (user) {
+                  _trainerStorage.save(user);
+                  return Text('Bem-vindo, ${user.name} 👋',
+                      style: kWelcomeUserMessageTextStyle);
+                },
+                error: (e,_) => Center(child: Text("Erro: $e"),),
+                loading: () => Center(child: CircularProgressIndicator(),)
+            ),
+
             SizedBox(height: 8),
             Text('📅 Hoje: Sexta-feira, 31 de Maio'),
             SizedBox(height: 16),
@@ -181,3 +211,5 @@ class DashboardPage extends StatelessWidget {
     );
   }
 }
+
+

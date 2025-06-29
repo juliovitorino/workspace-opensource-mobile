@@ -33,6 +33,17 @@ class UserViewModel extends IViewModel<UserModel> {
 
   }
 
+  Future<void> getLoggedUser(String token) async {
+    try {
+      print('user_view_model :: token = $token');
+      state = const AsyncValue.loading();
+      final user = await _repository.getLoggedUser(token);
+      state = AsyncValue.data(user);
+    } catch(e, st) {
+      state = AsyncValue.error(e, st);
+    }
+
+  }
 
 
 }

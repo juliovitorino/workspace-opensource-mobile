@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/domain/entities/user.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
-import 'package:treinadorpro/core/infrastructure/localstorage/user_entity_local_storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state_cubit.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/infrastructure/localstorage/user_entity_local_storage_service_isar.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_brand_image.dart';
 import '../../../../core/widgets/pro_widget_rounded_button.dart';
@@ -27,11 +28,12 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final IUserEntityLocalStorageService _userEntityLocalStorage = UserEntityLocalStorageServiceIsar();
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final StorageService<String> _tokenStorage = TokenStorageService();
 
   late AppConfig config;
   late IUserRepository _userRepository;
@@ -58,6 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       );
 
       // await _userEntityLocalStorage.save(User.currentUser);
+      await _tokenStorage.save(state.objectResponse);
       Navigator.popAndPushNamed(context, AppRoutes.dashboard, arguments: state.objectResponse);
 
     }

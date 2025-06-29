@@ -38,4 +38,9 @@ class UserRepository implements IUserRepository {
   Future<String> login(LoginRequest loginRequest) async {
     return await _userRemoteDatasource.login(loginRequest);
   }
+
+  @override
+  Future<UserModel> getLoggedUser(String token) async {
+    return await _userRemoteDatasource.getLoggedUser(token);
+  }
 }
