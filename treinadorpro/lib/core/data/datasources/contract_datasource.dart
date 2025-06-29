@@ -15,19 +15,19 @@ class ContractDatasource implements IContractDatasource {
   static const module = 'new_student_remote_datasource';
 
   @override
-  Future<ExternalIdResponseModel> fetchById(int id) {
+  Future<ExternalIdResponseModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExternalIdResponseModel> fetchByUUID(String id) {
+  Future<ExternalIdResponseModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<String> save(CreateNewStudentContractRequest request) async {
+  Future<String> save(String token, CreateNewStudentContractRequest request) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/contract";
 
     if (config.isDebugMode) {
@@ -36,7 +36,7 @@ class ContractDatasource implements IContractDatasource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

@@ -11,19 +11,19 @@ class ModalityRemoteDatasource implements IModalityRemoteDatasource{
   ModalityRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<ModalityModel> fetchById(int id) {
+  Future<ModalityModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ModalityModel> fetchByUUID(String id) {
+  Future<ModalityModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ModalityModel>> findAllActiveModalities() async {
+  Future<List<ModalityModel>> findAllActiveModalities(String token) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/modality";
 
     if(config.isDebugMode) {
@@ -32,7 +32,7 @@ class ModalityRemoteDatasource implements IModalityRemoteDatasource{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

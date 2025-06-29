@@ -6,13 +6,13 @@ import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
 class TrainingPackPageResultViewModel
     extends IViewModel<PageResultResponseModel<TrainingPackModel>> {
-
   final ITrainingPackRepository _repository;
 
   TrainingPackPageResultViewModel(this._repository) : super(_repository);
 
   Future<PageResultResponseModel<TrainingPackModel>?>
   findAllTrainingPackByPersonalExternalId(
+    String token,
     String uuid,
     int page,
     int size,
@@ -24,7 +24,7 @@ class TrainingPackPageResultViewModel
 
       state = const AsyncValue.loading();
       final pageResponse = await _repository
-          .findAllTrainingPackByPersonalExternalId(uuid, page, size);
+          .findAllTrainingPackByPersonalExternalId(token, uuid, page, size);
 
       final List<TrainingPackModel> combined = [
         if (previous != null && page > 1) ...previous.content,

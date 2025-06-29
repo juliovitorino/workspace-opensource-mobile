@@ -23,6 +23,7 @@ class TrainingPackagePage extends ConsumerStatefulWidget {
 
 class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
   late final AppConfig config;
+  late String _token;
 
   List<TrainingPack>? packTrainingEntityList;
 
@@ -59,7 +60,7 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
   Future<PageResultResponseModel<TrainingPackModel>?> _loadPage() async {
     final response = await ref
         .read(trainingPackPageResultViewModelProvider.notifier)
-        .findAllTrainingPackByPersonalExternalId(
+        .findAllTrainingPackByPersonalExternalId(_token,
           '39c0fd19-dbd2-4c74-8104-7105ca159c7b',
           _currentPage,
           _pageSize,
@@ -92,6 +93,8 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
     final trainingPackPageResultState = ref.watch(
       trainingPackPageResultViewModelProvider,
     );
+
+    _token = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: Text('Pacotes de Treino'),

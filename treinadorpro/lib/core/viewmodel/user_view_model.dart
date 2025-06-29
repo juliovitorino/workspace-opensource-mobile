@@ -10,10 +10,10 @@ class UserViewModel extends IViewModel<UserModel> {
 
   UserViewModel(this._repository) : super(_repository);
 
-  Future<void> loadUser(int id) async {
+  Future<void> loadUser(String token, int id) async {
     try {
       state = const AsyncValue.loading();
-      final user = await _repository.findById(id);
+      final user = await _repository.findById(token,id);
       state = AsyncValue.data(user);
     } catch(e, st) {
       state = AsyncValue.error(e, st);
@@ -21,11 +21,11 @@ class UserViewModel extends IViewModel<UserModel> {
 
   }
 
-  Future<void> findUserByUUID(String uuid) async {
+  Future<void> findUserByUUID(String token, String uuid) async {
     try {
       print('user_view_model :: uuid = $uuid');
       state = const AsyncValue.loading();
-      final user = await _repository.findByUUID(uuid);
+      final user = await _repository.findByUUID(token,uuid);
       state = AsyncValue.data(user);
     } catch(e, st) {
       state = AsyncValue.error(e, st);

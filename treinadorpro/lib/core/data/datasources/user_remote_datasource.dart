@@ -18,11 +18,11 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   static const module = 'user_remote_datasource';
 
   @override
-  Future<UserModel> fetchById(int id) async {
+  Future<UserModel> fetchById(String token, int id) async {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 
@@ -31,7 +31,7 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<UserModel> fetchByUUID(String uuid) async {
+  Future<UserModel> fetchByUUID(String token, String uuid) async {
     final String url = '${config.apiBackendUrl}/v1/api/business/user/trainer/$uuid';
 
     if(config.isDebugMode) {
@@ -41,7 +41,7 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

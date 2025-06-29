@@ -16,20 +16,20 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
 
   @override
-  Future<TrainingPackModel> fetchById(int id) async {
+  Future<TrainingPackModel> fetchById(String token, int id) async {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<TrainingPackModel> fetchByUUID(String uuid) async {
+  Future<TrainingPackModel> fetchByUUID(String token, String uuid) async {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
   Future<PageResultResponseModel<
-      TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid,
+      TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String token, String uuid,
       int page, int size) async {
     final String url = '${config.apiBackendUrl}/v1/api/business/trainingpack?page=$page&size=$size&externalId=$uuid';
 
@@ -40,7 +40,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 
@@ -56,7 +56,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   }
 
   @override
-  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(
+  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String token,
       String externalId) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/contract/$externalId";
 
@@ -66,7 +66,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 
@@ -83,7 +83,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   }
 
   @override
-  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String externalId) async {
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String token, String externalId) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/trainingpack/$externalId";
 
     if (config.isDebugMode) {
@@ -92,7 +92,7 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

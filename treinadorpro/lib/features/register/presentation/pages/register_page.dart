@@ -9,7 +9,6 @@ import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/plan_template_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
-import 'package:treinadorpro/core/viewmodel/plan_template_list_view_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_rounded_button.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';

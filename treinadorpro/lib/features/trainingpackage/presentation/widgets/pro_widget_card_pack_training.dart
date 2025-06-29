@@ -36,16 +36,16 @@ class ProWidgetCardPackTraining extends StatelessWidget {
 
           Wrap(
             children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => NewStudentPage()),
-                  );
-                },
-                icon: Icon(Icons.person_add),
-                label: Text('Novo Aluno'),
-              ),
+              // ElevatedButton.icon(
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (_) => NewStudentPage()),
+              //     );
+              //   },
+              //   icon: Icon(Icons.person_add),
+              //   label: Text('Novo Aluno'),
+              // ),
 
               SizedBox(width: 8, height: 40),
               ElevatedButton.icon(

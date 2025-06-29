@@ -10,20 +10,20 @@ class ProgramRemoteDatasource implements IProgramRemoteDatasource {
   ProgramRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<ProgramModel> fetchById(int id) {
+  Future<ProgramModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ProgramModel> fetchByUUID(String id) {
+  Future<ProgramModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
 
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ProgramModel>> findAllActivePrograms() async {
+  Future<List<ProgramModel>> findAllActivePrograms(String token) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/program";
 
     if (config.isDebugMode) {
@@ -32,7 +32,7 @@ class ProgramRemoteDatasource implements IProgramRemoteDatasource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 

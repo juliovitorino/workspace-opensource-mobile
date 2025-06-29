@@ -9,6 +9,7 @@ import 'package:treinadorpro/l10n/app_localizations.dart';
 
 import 'config/app_config.dart';
 import 'core/constants/app_routes.dart';
+import 'features/trainerprofile/presentation/pages/trainer_profile_page_detail.dart';
 import 'features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
 
@@ -59,7 +60,7 @@ class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
         AppRoutes.validateCode: (context) => ValidateSixDigitPage(),
         AppRoutes.login: (context) => LoginPage(),
         AppRoutes.welcome: (context) => WelcomeScreen(),
-        AppRoutes.dashboard: (context) => DashboardPage()
+        AppRoutes.dashboard: (context) => DashboardPage(),
       },
     );  }
 }

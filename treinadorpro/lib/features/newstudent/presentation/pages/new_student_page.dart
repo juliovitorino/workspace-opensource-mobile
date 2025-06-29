@@ -28,6 +28,9 @@ import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
 
 class NewStudentPage extends ConsumerStatefulWidget {
+  final String token;
+  NewStudentPage(this.token);
+  
   @override
   ConsumerState<NewStudentPage> createState() => _NewStudentPageState();
 }
@@ -149,11 +152,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     Future.microtask(() {
       ref
           .read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
-          .findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+          .findAllStudentsFromTrainer(widget.token,"39c0fd19-dbd2-4c74-8104-7105ca159c7b");
 
       ref
           .read((trainingPackFromTrainerViewListModelProvider.notifier))
-          .findAllActiveTrainingPackFromTrainer(
+          .findAllActiveTrainingPackFromTrainer(widget.token,
             "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
           );
     });
@@ -301,7 +304,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         instalments,
       );
 
-      context.read<NewStudentCubit>().saveContract(request);
+      context.read<NewStudentCubit>().saveContract(widget.token,request);
     }
   }
 
@@ -696,7 +699,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage()),
+                  MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage(widget.token)),
                 );
               },
               icon: Icon(Icons.calendar_today),

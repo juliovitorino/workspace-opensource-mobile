@@ -11,19 +11,19 @@ class ExerciseRemoteDatasource implements IExerciseRemoteDatasource{
   ExerciseRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<ExerciseModel> fetchById(int id) {
+  Future<ExerciseModel> fetchById(String token, int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExerciseModel> fetchByUUID(String id) {
+  Future<ExerciseModel> fetchByUUID(String token, String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ExerciseModel>> findAllActiveExercises() async {
+  Future<List<ExerciseModel>> findAllActiveExercises(String token) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/exercise";
 
     if(config.isDebugMode) {
@@ -32,7 +32,7 @@ class ExerciseRemoteDatasource implements IExerciseRemoteDatasource{
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer token123',
+      'Authorization': 'Bearer $token',
       'X-API-KEY': config.apiKey
     };
 
