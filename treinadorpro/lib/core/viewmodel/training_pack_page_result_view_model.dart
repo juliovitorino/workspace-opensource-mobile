@@ -12,7 +12,6 @@ class TrainingPackPageResultViewModel
 
   Future<PageResultResponseModel<TrainingPackModel>?>
   findAllTrainingPackByPersonalExternalId(
-    String token,
     String uuid,
     int page,
     int size,
@@ -24,7 +23,7 @@ class TrainingPackPageResultViewModel
 
       state = const AsyncValue.loading();
       final pageResponse = await _repository
-          .findAllTrainingPackByPersonalExternalId(token, uuid, page, size);
+          .findAllTrainingPackByPersonalExternalId(uuid, page, size);
 
       final List<TrainingPackModel> combined = [
         if (previous != null && page > 1) ...previous.content,

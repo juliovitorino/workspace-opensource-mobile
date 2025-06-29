@@ -8,6 +8,9 @@ import 'package:treinadorpro/core/data/requests/register_request.dart';
 import 'package:treinadorpro/core/data/requests/register_response.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
+
 class UserRemoteDatasource implements IUserRemoteDataSource {
 
   final ApiClient apiClient;
@@ -15,10 +18,14 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
   UserRemoteDatasource(this.apiClient, this.config);
 
+  final StorageService<String> _tokenStorage = TokenStorageService();
+
   static const module = 'user_remote_datasource';
 
   @override
-  Future<UserModel> fetchById(String token, int id) async {
+  Future<UserModel> fetchById(int id) async {
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -31,13 +38,15 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<UserModel> fetchByUUID(String token, String uuid) async {
+  Future<UserModel> fetchByUUID(String uuid) async {
     final String url = '${config.apiBackendUrl}/v1/api/business/user/trainer/$uuid';
 
     if(config.isDebugMode) {
       print('$module :: uuid = $uuid');
       print('call url = $url');
     }
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -118,13 +127,15 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<UserModel> getLoggedUser(String token) async {
+  Future<UserModel> getLoggedUser() async {
     final String url = '${config.apiBackendUrl}/v1/api/business/user/trainer/logged';
 
     if(config.isDebugMode) {
       print('$module');
       print('call url = $url');
     }
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

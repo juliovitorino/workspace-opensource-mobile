@@ -3,28 +3,35 @@ import 'package:treinadorpro/core/data/datasources/iexercise_remote_datasource.d
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
+
 class ExerciseRemoteDatasource implements IExerciseRemoteDatasource{
 
   final ApiClient apiClient;
   final AppConfig config;
 
+  final StorageService<String> _tokenStorage = TokenStorageService();
+
   ExerciseRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<ExerciseModel> fetchById(String token, int id) {
+  Future<ExerciseModel> fetchById(int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExerciseModel> fetchByUUID(String token, String id) {
+  Future<ExerciseModel> fetchByUUID(String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ExerciseModel>> findAllActiveExercises(String token) async {
+  Future<List<ExerciseModel>> findAllActiveExercises() async {
     final String url = "${config.apiBackendUrl}/v1/api/business/exercise";
+
+    String? token = await _tokenStorage.get();
 
     if(config.isDebugMode) {
       print('exercise_remote_datasource :: call url = $url');

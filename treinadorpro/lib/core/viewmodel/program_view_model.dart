@@ -8,11 +8,11 @@ class ProgramViewModel extends IViewModel<List<ProgramModel>>{
   final IProgramRepository _programRepository;
   ProgramViewModel(this._programRepository) : super(_programRepository);
 
-  Future<void> findAllActivePrograms(String token) async {
+  Future<void> findAllActivePrograms() async {
     try {
       print('goal_view_model :: ok');
       state = const AsyncValue.loading();
-      final modalitiesList = await _programRepository.findAllActivePrograms(token);
+      final modalitiesList = await _programRepository.findAllActivePrograms();
       state = AsyncValue.data(modalitiesList);
 
     } catch (e, st){

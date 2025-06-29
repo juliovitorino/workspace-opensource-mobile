@@ -8,11 +8,11 @@ class ExerciseViewModel extends IViewModel<List<ExerciseModel>>{
   final IExerciseRepository _repository;
   ExerciseViewModel(this._repository) : super(_repository);
 
-  Future<void> findAllActiveExercises(String token) async {
+  Future<void> findAllActiveExercises() async {
     try {
       print('exercise_view_model :: ok');
       state = const AsyncValue.loading();
-      final modalitiesList = await _repository.findAllActiveExercises(token);
+      final modalitiesList = await _repository.findAllActiveExercises();
       state = AsyncValue.data(modalitiesList);
 
     } catch (e, st){

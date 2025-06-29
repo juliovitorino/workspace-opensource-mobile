@@ -13,36 +13,36 @@ class TrainingPackRepository implements ITrainingPackRepository {
   static String module = "training_pack_repository";
 
   @override
-  Future<TrainingPackModel> findById(String token, int id) {
+  Future<TrainingPackModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<TrainingPackModel> findByUUID(String token, String id) {
+  Future<TrainingPackModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String token, String uuid, int page, int size) async {
+  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid, int page, int size) async {
     print("$module :: uuid = $uuid");
 
-    return await _trainingPackRemoteDatasource.findAllTrainingPackByPersonalExternalId(token, uuid, page, size);
+    return await _trainingPackRemoteDatasource.findAllTrainingPackByPersonalExternalId(uuid, page, size);
   }
 
   @override
-  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String token, String externalId) async {
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String externalId) async {
     print("$module :: uuid = $externalId");
 
-    return await _trainingPackRemoteDatasource.findAllTrainingPackByTrainerExternalId(token,externalId);
+    return await _trainingPackRemoteDatasource.findAllTrainingPackByTrainerExternalId(externalId);
   }
 
   @override
-  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String token, String externalId) async {
+  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String externalId) async {
     print("$module :: externalID = $externalId");
 
-    return await _trainingPackRemoteDatasource.findAllStudentsFromTrainer(token,externalId);
+    return await _trainingPackRemoteDatasource.findAllStudentsFromTrainer(externalId);
   }
 
 

@@ -9,13 +9,13 @@ class NewStudentCubit extends Cubit<HandlerState>{
   final IContractRespository _repository;
   NewStudentCubit(this._repository) : super(HandlerState());
 
-  Future<void> saveContract(String token, CreateNewStudentContractRequest request) async {
+  Future<void> saveContract(CreateNewStudentContractRequest request) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     // print(jsonEncode(request.toJson()));
     print(JsonEncoder.withIndent('   ').convert(request.toJson()));
 
-    final externalId = await _repository.save(token,request);
+    final externalId = await _repository.save(request);
     emit(state.copyWith(isLoading: false, objectResponse: externalId));
 
   }

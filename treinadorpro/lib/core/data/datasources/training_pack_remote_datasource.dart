@@ -5,31 +5,35 @@ import 'package:treinadorpro/core/data/models/students_from_trainer_response_mod
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
+
 class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
 
   final ApiClient apiClient;
   final AppConfig config;
 
   TrainingPackRemoteDatasource(this.apiClient, this.config);
+
+  final StorageService<String> _tokenStorage = TokenStorageService();
+
   static const module = 'training_pack_remote_datasource';
 
-
-
   @override
-  Future<TrainingPackModel> fetchById(String token, int id) async {
+  Future<TrainingPackModel> fetchById(int id) async {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<TrainingPackModel> fetchByUUID(String token, String uuid) async {
+  Future<TrainingPackModel> fetchByUUID(String uuid) async {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
   Future<PageResultResponseModel<
-      TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String token, String uuid,
+      TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid,
       int page, int size) async {
     final String url = '${config.apiBackendUrl}/v1/api/business/trainingpack?page=$page&size=$size&externalId=$uuid';
 
@@ -37,6 +41,8 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
       print('$module :: uuid = $uuid');
       print('call url = $url');
     }
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -56,13 +62,15 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   }
 
   @override
-  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String token,
+  Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(
       String externalId) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/contract/$externalId";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
     }
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -83,12 +91,14 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
   }
 
   @override
-  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String token, String externalId) async {
+  Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String externalId) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/trainingpack/$externalId";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
     }
+
+    String? token = await _tokenStorage.get();
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',

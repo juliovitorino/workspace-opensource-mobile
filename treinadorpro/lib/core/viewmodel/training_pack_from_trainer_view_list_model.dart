@@ -9,11 +9,11 @@ class TrainingPackFromTrainerViewListModel extends IViewModel<List<TrainingPackM
   TrainingPackFromTrainerViewListModel(this._repository):super(_repository);
 
 
-  Future<void> findAllActiveTrainingPackFromTrainer(String token, String externalId) async {
+  Future<void> findAllActiveTrainingPackFromTrainer(String externalId) async {
     try {
       print('goal_view_model :: ok');
       state = const AsyncValue.loading();
-      final list = await _repository.findAllTrainingPackByTrainerExternalId(token,externalId);
+      final list = await _repository.findAllTrainingPackByTrainerExternalId(externalId);
       state = AsyncValue.data(list);
 
     } catch (e, st){

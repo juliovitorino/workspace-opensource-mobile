@@ -10,11 +10,11 @@ class TrainingPackStudentsFromTrainerViewListModel extends IViewModel<List<Stude
 
   static const String module = 'training_pack_view_list_model';
 
-  Future<void> findAllStudentsFromTrainer(String token, String externalId) async {
+  Future<void> findAllStudentsFromTrainer(String externalId) async {
     try {
       print('$module :: ok');
       state = const AsyncValue.loading();
-      final studentsList = await _trainingPackRespository.findAllStudentsFromTrainer(token,externalId);
+      final studentsList = await _trainingPackRespository.findAllStudentsFromTrainer(externalId);
       state = AsyncValue.data(studentsList);
 
     } catch (e, st){

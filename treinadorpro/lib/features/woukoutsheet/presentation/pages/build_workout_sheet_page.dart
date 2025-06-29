@@ -27,8 +27,7 @@ import '../../../../core/data/models/modality_model.dart';
 import '../../../../core/provider/modality_provider.dart';
 
 class BuildWorkoutSheetPage extends ConsumerStatefulWidget {
-  final String token;
-  const BuildWorkoutSheetPage(this.token, {super.key});
+  const BuildWorkoutSheetPage({super.key});
 
   @override
   ConsumerState<BuildWorkoutSheetPage> createState() =>
@@ -65,14 +64,14 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     super.initState();
     config = ref.read(appConfigProvider);
     Future.microtask(() {
-      ref.read(modalityViewModelProvider.notifier).findAllActiveModalities(widget.token);
-      ref.read(goalViewModelProvider.notifier).findAllActiveGoals(widget.token);
-      ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises(widget.token);
-      ref.read(programViewModelProvider.notifier).findAllActivePrograms(widget.token);
+      ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
+      ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
+      ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
+      ref.read(programViewModelProvider.notifier).findAllActivePrograms();
       ref
           .read(workgroupViewListModelProvider.notifier)
-          .findAllActiveWorkgroups(widget.token);
-      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier).findAllStudentsFromTrainer(widget.token,"39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+          .findAllActiveWorkgroups();
+      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier).findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
     });
   }
 
