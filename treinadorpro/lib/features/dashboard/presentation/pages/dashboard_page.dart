@@ -30,7 +30,6 @@ class DashboardPage extends ConsumerStatefulWidget {
 class _DashboardPageState extends ConsumerState<DashboardPage> {
 
   String token = "";
-  String? token_st = "";
   final StorageService<String> _tokenStorage = TokenStorageService();
   final StorageService<UserModel> _trainerStorage = TrainerUserStorageService();
 
@@ -39,9 +38,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   void initState() {
     Future.microtask(() async {
-      token = ModalRoute.of(context)!.settings.arguments as String;
-      token_st = await getToken();
-      ref.read(userViewModelProvider.notifier).getLoggedUser(token);
+      token = (await getToken())!;
+      ref.read(userViewModelProvider.notifier).getLoggedUser();
     });
   }
 
@@ -53,11 +51,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       appBar: AppBar(
         title: Text('AppName'),
         actions: [
-          ProWidgetInfoAlertDialog(
-            title: 'token st',
-            text: token_st!,
-            icon: Icons.lock,
-          ),
           ProWidgetInfoAlertDialog(
             title: 'token',
             text: token,
@@ -182,7 +175,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => NewStudentPage(token)),
+                      MaterialPageRoute(builder: (_) => NewStudentPage()),
                     );
                   },
                   icon: Icon(Icons.person_add),
@@ -193,7 +186,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => BuildWorkoutSheetPage(token),
+                        builder: (_) => BuildWorkoutSheetPage(),
                       ),
                     );
                   },

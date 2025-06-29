@@ -14,13 +14,13 @@ class PlanTemplateRepository implements IPlanTemplateRepository{
   }
 
   @override
-  Future<PlanTemplateModel> findById(String token, int id) {
+  Future<PlanTemplateModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<PlanTemplateModel> findByUUID(String token, String id) {
+  Future<PlanTemplateModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }

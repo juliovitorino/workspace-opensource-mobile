@@ -10,11 +10,11 @@ class GoalViewModel extends IViewModel<List<GoalModel>>{
 
   static const String module = 'goal_view_list_model';
 
-  Future<void> findAllActiveGoals(String token) async {
+  Future<void> findAllActiveGoals() async {
     try {
       print('$module :: ok');
       state = const AsyncValue.loading();
-      final modalitiesList = await _goalRepository.findAllActiveGoals(token);
+      final modalitiesList = await _goalRepository.findAllActiveGoals();
       state = AsyncValue.data(modalitiesList);
 
     } catch (e, st){

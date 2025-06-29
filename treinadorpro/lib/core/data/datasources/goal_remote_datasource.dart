@@ -3,30 +3,37 @@ import 'package:treinadorpro/core/data/datasources/igoal_remote_datasource.dart'
 import 'package:treinadorpro/core/data/models/goal_model.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
+
 class GoalRemoteDatasource implements IGoalRemoteDatasource{
 
   final ApiClient apiClient;
   final AppConfig config;
+
+  final StorageService<String> _tokenStorage = TokenStorageService();
 
   static const module = 'goal_remote_datasource';
 
   GoalRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<GoalModel> fetchById(String token, int id) {
+  Future<GoalModel> fetchById(int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<GoalModel> fetchByUUID(String token, String id) {
+  Future<GoalModel> fetchByUUID(String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<GoalModel>> findAllActiveGoals(String token) async {
+  Future<List<GoalModel>> findAllActiveGoals() async {
     final String url = "${config.apiBackendUrl}/v1/api/business/goal";
+
+    String? token = await _tokenStorage.get();
 
     if(config.isDebugMode) {
       print('$module :: call url = $url');

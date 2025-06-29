@@ -8,19 +8,19 @@ class ExerciseRepository implements IExerciseRepository{
   ExerciseRepository(this._exerciseRemoteDatasource);
 
   @override
-  Future<List<ExerciseModel>> findAllActiveExercises(String token) async {
+  Future<List<ExerciseModel>> findAllActiveExercises() async {
     print('exercise_repository :: ok');
-    return await _exerciseRemoteDatasource.findAllActiveExercises(token);
+    return await _exerciseRemoteDatasource.findAllActiveExercises();
   }
 
   @override
-  Future<ExerciseModel> findById(String token, int id) {
+  Future<ExerciseModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExerciseModel> findByUUID(String token, String id) {
+  Future<ExerciseModel> findByUUID(String id) {
     // TODO: implement findAllActiveExercises
     throw UnimplementedError();
   }

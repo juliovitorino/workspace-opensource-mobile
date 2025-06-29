@@ -9,20 +9,20 @@ class ContractRepository implements IContractRespository{
   ContractRepository(this.datasource);
 
   @override
-  Future<ExternalIdResponseModel> findById(String token, int id) {
+  Future<ExternalIdResponseModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExternalIdResponseModel> findByUUID(String token, String id) {
+  Future<ExternalIdResponseModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<String> save(String token, CreateNewStudentContractRequest request) async {
-    return await datasource.save(token,request);
+  Future<String> save(CreateNewStudentContractRequest request) async {
+    return await datasource.save(request);
   }
 
 }

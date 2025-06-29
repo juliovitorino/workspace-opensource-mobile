@@ -8,21 +8,21 @@ class GoalRepository implements IGoalRepository{
   GoalRepository(this._goalRemoteDatasource);
 
   @override
-  Future<GoalModel> findById(String token, int id) {
+  Future<GoalModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<GoalModel> findByUUID(String token, String id) {
+  Future<GoalModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<GoalModel>> findAllActiveGoals(String token) async {
+  Future<List<GoalModel>> findAllActiveGoals() async {
     print('goal_repository :: ok');
-    return await _goalRemoteDatasource.findAllActiveGoals(token);
+    return await _goalRemoteDatasource.findAllActiveGoals();
   }
 
 }

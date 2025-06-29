@@ -9,11 +9,11 @@ class WorkgroupViewListModel extends StateNotifier<AsyncValue<List<WorkgroupMode
 
   static const String module = 'workgroup_view_list_model';
 
-  Future<void> findAllActiveWorkgroups(String token) async {
+  Future<void> findAllActiveWorkgroups() async {
     try {
       print('$module :: ok');
       state = const AsyncValue.loading();
-      final workgroupsList = await _workgroupRepository.findAllActiveWorkgroups(token);
+      final workgroupsList = await _workgroupRepository.findAllActiveWorkgroups();
       state = AsyncValue.data(workgroupsList);
 
     } catch (e, st){

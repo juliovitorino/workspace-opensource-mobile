@@ -2,6 +2,9 @@ import 'package:treinadorpro/core/data/datasources/iworkgroup_remote_datasource.
 import 'package:treinadorpro/core/data/datasources/iworkgroup_repository.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
+
 class WorkgroupRepository implements IWorkgroupRepository{
 
   final IWorkgroupRemoteDatasource _workgroupRemoteDatasource;
@@ -10,19 +13,19 @@ class WorkgroupRepository implements IWorkgroupRepository{
   static const module = 'workgoup_repository';
 
   @override
-  Future<List<WorkgroupModel>> findAllActiveWorkgroups(String token) async {
+  Future<List<WorkgroupModel>> findAllActiveWorkgroups() async {
     print('$module :: ok');
-    return await _workgroupRemoteDatasource.findAllActiveWorkgroups(token);
+    return await _workgroupRemoteDatasource.findAllActiveWorkgroups();
   }
 
   @override
-  Future<WorkgroupModel> findById(String token, int id) {
+  Future<WorkgroupModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<WorkgroupModel> findByUUID(String token, String id) {
+  Future<WorkgroupModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }

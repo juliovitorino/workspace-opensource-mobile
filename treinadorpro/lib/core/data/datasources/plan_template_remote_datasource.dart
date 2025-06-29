@@ -2,6 +2,8 @@ import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/plan_template_model.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import '../../infrastructure/localstorage/storage_service.dart';
+import '../../infrastructure/localstorage/token_storage_service.dart';
 import 'iplan_template_remote_datasource.dart';
 
 class PlanTemplateRemoteDatasource implements IPlanTemplateRemoteDatasource{
@@ -14,13 +16,13 @@ class PlanTemplateRemoteDatasource implements IPlanTemplateRemoteDatasource{
   PlanTemplateRemoteDatasource(this.apiClient, this.config);
 
   @override
-  Future<PlanTemplateModel> fetchById(String token, int id) {
+  Future<PlanTemplateModel> fetchById(int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<PlanTemplateModel> fetchByUUID(String token, String id) {
+  Future<PlanTemplateModel> fetchByUUID(String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }

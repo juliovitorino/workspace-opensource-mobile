@@ -9,11 +9,11 @@ class ModalityViewModel extends IViewModel<List<ModalityModel>>{
 
   ModalityViewModel(this._repository) : super(_repository);
 
-  Future<void> findAllActiveModalities(String token) async {
+  Future<void> findAllActiveModalities() async {
     try {
       print('modality_view_model :: ok');
       state = const AsyncValue.loading();
-      final modalitiesList = await _repository.findAllActiveModalities(token);
+      final modalitiesList = await _repository.findAllActiveModalities();
       state = AsyncValue.data(modalitiesList);
 
     } catch (e, st){

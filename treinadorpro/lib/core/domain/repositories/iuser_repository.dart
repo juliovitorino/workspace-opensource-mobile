@@ -9,6 +9,6 @@ abstract class IUserRepository extends Repository<UserModel, int> {
   Future<RegisterResponse> register(RegisterRequest request);
   Future<bool> validateCode(String trainerExternalId, String code);
   Future<String> login(LoginRequest loginRequest);
-  Future<UserModel> getLoggedUser(String token);
+  Future<UserModel> getLoggedUser();
 
 }

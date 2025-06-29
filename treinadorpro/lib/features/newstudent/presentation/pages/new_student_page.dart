@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
-import 'package:treinadorpro/core/data/models/iname.dart';
 import 'package:treinadorpro/core/data/models/instalment_request.dart';
 import 'package:treinadorpro/core/data/models/new_student_request.dart';
 import 'package:treinadorpro/core/data/models/training_info_request.dart';
@@ -13,8 +12,6 @@ import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart'
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_dropdown_label.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_switch.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
@@ -24,13 +21,14 @@ import 'package:uuid/uuid_value.dart';
 
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
 import '../../../../core/states/handler_state.dart';
+import '../../../../core/widgets/pro_widget_dropdown_label.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
 
 class NewStudentPage extends ConsumerStatefulWidget {
-  final String token;
-  NewStudentPage(this.token);
-  
+
+  const NewStudentPage({super.key});
+
   @override
   ConsumerState<NewStudentPage> createState() => _NewStudentPageState();
 }
@@ -152,11 +150,13 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     Future.microtask(() {
       ref
           .read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
-          .findAllStudentsFromTrainer(widget.token,"39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+          .findAllStudentsFromTrainer(
+            "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
+          );
 
       ref
           .read((trainingPackFromTrainerViewListModelProvider.notifier))
-          .findAllActiveTrainingPackFromTrainer(widget.token,
+          .findAllActiveTrainingPackFromTrainer(
             "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
           );
     });
@@ -275,13 +275,41 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
-        monday: _isCustomTime ? _mondayController.trainingTime : isMonSelected ? _startTimeController : null,
-        tuesday: _isCustomTime ? _tuesdayController.trainingTime : isTueSelected ? _startTimeController : null,
-        wednesday: _isCustomTime ? _wednesdayController.trainingTime : isWedSelected ? _startTimeController : null,
-        thursday: _isCustomTime ? _thursdayController.trainingTime : isThuSelected ? _startTimeController : null,
-        friday: _isCustomTime ? _fridayController.trainingTime : isFriSelected ? _startTimeController : null,
-        saturday: _isCustomTime ? _saturdayController.trainingTime : isSatSelected ? _startTimeController : null,
-        sunday: _isCustomTime ? _sundayController.trainingTime : isSunSelected ? _startTimeController : null,
+        monday: _isCustomTime
+            ? _mondayController.trainingTime
+            : isMonSelected
+            ? _startTimeController
+            : null,
+        tuesday: _isCustomTime
+            ? _tuesdayController.trainingTime
+            : isTueSelected
+            ? _startTimeController
+            : null,
+        wednesday: _isCustomTime
+            ? _wednesdayController.trainingTime
+            : isWedSelected
+            ? _startTimeController
+            : null,
+        thursday: _isCustomTime
+            ? _thursdayController.trainingTime
+            : isThuSelected
+            ? _startTimeController
+            : null,
+        friday: _isCustomTime
+            ? _fridayController.trainingTime
+            : isFriSelected
+            ? _startTimeController
+            : null,
+        saturday: _isCustomTime
+            ? _saturdayController.trainingTime
+            : isSatSelected
+            ? _startTimeController
+            : null,
+        sunday: _isCustomTime
+            ? _sundayController.trainingTime
+            : isSunSelected
+            ? _startTimeController
+            : null,
         duration: _endTimeController,
       );
 
@@ -304,7 +332,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         instalments,
       );
 
-      context.read<NewStudentCubit>().saveContract(widget.token,request);
+      context.read<NewStudentCubit>().saveContract(request);
     }
   }
 
@@ -582,8 +610,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               ),
 
             // Custom Schedule
-            if (_isCustomTime)
-              _buildCustomSchedule(),
+            if (_isCustomTime) _buildCustomSchedule(),
 
             SizedBox(height: 16),
             ProWidgetTextFormField(
@@ -699,7 +726,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage(widget.token)),
+                  MaterialPageRoute(
+                    builder: (_) => BuildWorkoutSheetPage(),
+                  ),
                 );
               },
               icon: Icon(Icons.calendar_today),

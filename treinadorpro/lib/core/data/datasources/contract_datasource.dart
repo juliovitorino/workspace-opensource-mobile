@@ -4,31 +4,37 @@ import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/datasources/icontract_datasource.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
 
 class ContractDatasource implements IContractDatasource {
   final ApiClient apiClient;
   final AppConfig config;
 
+  late StorageService<String> _tokenStorage = TokenStorageService();
+
   ContractDatasource(this.apiClient, this.config);
 
   static const module = 'new_student_remote_datasource';
 
   @override
-  Future<ExternalIdResponseModel> fetchById(String token, int id) {
+  Future<ExternalIdResponseModel> fetchById(int id) {
     // TODO: implement fetchById
     throw UnimplementedError();
   }
 
   @override
-  Future<ExternalIdResponseModel> fetchByUUID(String token, String id) {
+  Future<ExternalIdResponseModel> fetchByUUID(String id) {
     // TODO: implement fetchByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<String> save(String token, CreateNewStudentContractRequest request) async {
+  Future<String> save(CreateNewStudentContractRequest request) async {
     final String url = "${config.apiBackendUrl}/v1/api/business/contract";
+
+    final String? token = await _tokenStorage.get();
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');

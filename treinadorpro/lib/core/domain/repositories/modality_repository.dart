@@ -9,22 +9,22 @@ class ModalityRepository implements IModalityRepository{
   ModalityRepository(this._modalityRemoteDatasource);
 
   @override
-  Future<ModalityModel> findById(String token, int id) {
+  Future<ModalityModel> findById(int id) {
     // TODO: implement findById
     throw UnimplementedError();
   }
 
   @override
-  Future<ModalityModel> findByUUID(String token, String id) {
+  Future<ModalityModel> findByUUID(String id) {
     // TODO: implement findByUUID
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ModalityModel>> findAllActiveModalities(String token) async {
+  Future<List<ModalityModel>> findAllActiveModalities() async {
     print('modality_repository :: ok');
 
-    return await _modalityRemoteDatasource.findAllActiveModalities(token);
+    return await _modalityRemoteDatasource.findAllActiveModalities();
   }
 
 }
