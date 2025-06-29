@@ -7,10 +7,10 @@ class ValidateSixDigitCubit extends Cubit<HandlerState> {
 
   ValidateSixDigitCubit(this._repository) : super(HandlerState());
 
-  Future<void> validate(String code, String apiKey, String trainerExternalId) async {
+  Future<void> validate(String code, String trainerExternalId) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
-    final bool response = await _repository.validateCode(apiKey, trainerExternalId, code);
+    final bool response = await _repository.validateCode(trainerExternalId, code);
 
     if (response) {
       emit(state.copyWith(isLoading: false)); // Sucesso

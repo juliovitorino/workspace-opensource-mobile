@@ -301,7 +301,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         instalments,
       );
 
-      context.read<NewStudentCubit>().saveContract(request, config.apiKey);
+      context.read<NewStudentCubit>().saveContract(request);
     }
   }
 

@@ -19,7 +19,14 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
   @override
   Future<UserModel> fetchById(int id) async {
-    final response = await apiClient.get('https://jsonplaceholder.typicode.com/users/$id');
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
+
+    final response = await apiClient.get('https://jsonplaceholder.typicode.com/users/$id', headers: headers);
     return UserModel.fromJson(response);
   }
 
@@ -32,16 +39,22 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
       print('call url = $url');
     }
 
-      final response = await apiClient.get(url);
-      if(config.isDebugMode) print("$module :: response = $response");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer token123',
+      'X-API-KEY': config.apiKey
+    };
 
-      final userJson = response['objectResponse'];
-      return UserModel.fromJson(userJson);
+    final response = await apiClient.get(url, headers: headers);
+    if(config.isDebugMode) print("$module :: response = $response");
+
+    final userJson = response['objectResponse'];
+    return UserModel.fromJson(userJson);
   }
 
   @override
   Future<RegisterResponse> register(RegisterRequest request) async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/user/register";
+    final String url = "${config.apiBackendUrl}/v1/api/business/public/user/register";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
@@ -49,8 +62,7 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      // 'Authorization': 'Bearer token123',
-      'X-API-KEY': request.apiKey
+      'X-API-KEY': config.apiKey
     };
 
     final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(request.toJson()));
@@ -64,8 +76,8 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<bool> validateCode(String apiKey, String trainerExternalId, String code) async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/user/trainer/validate/$trainerExternalId/$code";
+  Future<bool> validateCode(String trainerExternalId, String code) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/public/user/trainer/validate/$trainerExternalId/$code";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
@@ -73,8 +85,7 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      // 'Authorization': 'Bearer token123',
-      'X-API-KEY': apiKey
+      'X-API-KEY': config.apiKey
     };
 
     final jsonResponse = await apiClient.get(url, headers: headers);
@@ -86,8 +97,8 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
-  Future<String> login(String apiKey, LoginRequest loginRequest)  async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/user/login";
+  Future<String> login(LoginRequest loginRequest)  async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/public/user/login";
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
@@ -95,8 +106,7 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      // 'Authorization': 'Bearer token123',
-      'X-API-KEY': apiKey
+      'X-API-KEY': config.apiKey
     };
 
     final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(loginRequest.toJson()));
@@ -106,6 +116,5 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
 
     return jsonResponse['objectResponse'];
   }
-
 
 }

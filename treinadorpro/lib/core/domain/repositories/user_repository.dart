@@ -30,12 +30,12 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<bool> validateCode(String apiKey, String trainerExternalId, String code) async {
-    return await _userRemoteDatasource.validateCode(apiKey, trainerExternalId, code);
+  Future<bool> validateCode(String trainerExternalId, String code) async {
+    return await _userRemoteDatasource.validateCode(trainerExternalId, code);
   }
 
   @override
-  Future<String> login(String apiKey, LoginRequest loginRequest) async {
-    return await _userRemoteDatasource.login(apiKey, loginRequest);
+  Future<String> login(LoginRequest loginRequest) async {
+    return await _userRemoteDatasource.login(loginRequest);
   }
 }
