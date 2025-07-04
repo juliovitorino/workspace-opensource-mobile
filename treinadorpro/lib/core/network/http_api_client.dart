@@ -15,7 +15,14 @@ class HttpApiClient implements ApiClient {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
-    throw Exception('Erro ao fazer GET: ${response.statusCode}');
+
+    if(response.statusCode >= 400 && response.statusCode < 500){
+      final responseBody = jsonDecode(response.body);
+      final message = responseBody['message'] ?? 'Unknown error';
+      throw Exception(message);
+    }
+
+    throw Exception('Error on GET: ${response.statusCode}');
   }
 
   @override
@@ -29,7 +36,14 @@ class HttpApiClient implements ApiClient {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
-    throw Exception('Erro ao fazer POST: ${response.statusCode}');
+
+    if(response.statusCode >= 400 && response.statusCode < 500){
+      final responseBody = jsonDecode(response.body);
+      final message = responseBody['message'] ?? 'Unknown error';
+      throw Exception(message);
+    }
+
+    throw Exception('Error on POST: ${response.statusCode}');
   }
 
   @override
@@ -43,7 +57,14 @@ class HttpApiClient implements ApiClient {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
-    throw Exception('Erro ao fazer PUT: ${response.statusCode}');
+
+    if(response.statusCode >= 400 && response.statusCode < 500){
+      final responseBody = jsonDecode(response.body);
+      final message = responseBody['message'] ?? 'Unknown error';
+      throw Exception(message);
+    }
+
+    throw Exception('Error on PUT: ${response.statusCode}');
   }
 
   @override
@@ -57,7 +78,14 @@ class HttpApiClient implements ApiClient {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
-    throw Exception('Erro ao fazer PATCH: ${response.statusCode}');
+
+    if(response.statusCode >= 400 && response.statusCode < 500){
+      final responseBody = jsonDecode(response.body);
+      final message = responseBody['message'] ?? 'Unknown error';
+      throw Exception(message);
+    }
+
+    throw Exception('Error on PATCH: ${response.statusCode}');
   }
 
   @override
@@ -66,6 +94,13 @@ class HttpApiClient implements ApiClient {
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     }
-    throw Exception('Erro ao fazer DELETE: ${response.statusCode}');
+
+    if(response.statusCode >= 400 && response.statusCode < 500){
+      final responseBody = jsonDecode(response.body);
+      final message = responseBody['message'] ?? 'Unknown error';
+      throw Exception(message);
+    }
+
+    throw Exception('Error on DELETE: ${response.statusCode}');
   }
 }
