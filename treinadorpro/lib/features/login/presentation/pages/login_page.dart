@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
-import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state_cubit.dart';
@@ -59,7 +57,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
       );
 
-      // await _userEntityLocalStorage.save(User.currentUser);
       await _tokenStorage.save(state.objectResponse);
       Navigator.popAndPushNamed(context, AppRoutes.dashboard, arguments: state.objectResponse);
 

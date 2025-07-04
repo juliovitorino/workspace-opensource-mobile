@@ -5,7 +5,7 @@ class HandlerState<T> {
 
   HandlerState( {this.objectResponse, this.isLoading = false, this.errorMessage});
 
-  HandlerState<T> copyWith({bool? isLoading, String? errorMessage, T? objectResponse}) {
+  HandlerState<T> sendToListener({bool? isLoading, String? errorMessage, T? objectResponse}) {
     return HandlerState(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,

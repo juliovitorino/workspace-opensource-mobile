@@ -20,7 +20,7 @@ class RegisterCubit extends Cubit<HandlerState> {
     String passwdCheck,
     String plan
   ) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    emit(state.sendToListener(isLoading: true, errorMessage: null));
 
     final registerRequest = RegisterRequest(
       name,
@@ -36,7 +36,7 @@ class RegisterCubit extends Cubit<HandlerState> {
     print(JsonEncoder.withIndent('   ').convert(registerRequest.toJson()));
 
     final response = await _repository.register(registerRequest);
-    emit(state.copyWith(isLoading: false, objectResponse: response));
+    emit(state.sendToListener(isLoading: false, objectResponse: response));
 
   }
 }
