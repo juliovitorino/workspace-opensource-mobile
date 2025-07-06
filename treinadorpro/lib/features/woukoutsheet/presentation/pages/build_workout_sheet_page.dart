@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/data/datasources/workgroup_provider.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
 import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
@@ -14,6 +15,7 @@ import 'package:treinadorpro/core/domain/entities/goal.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
 import 'package:treinadorpro/core/provider/goal_provider.dart';
@@ -24,6 +26,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 
 import '../../../../core/data/models/goal_model.dart';
 import '../../../../core/data/models/modality_model.dart';
+import '../../../../core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import '../../../../core/provider/modality_provider.dart';
 
 class BuildWorkoutSheetPage extends ConsumerStatefulWidget {
@@ -53,6 +56,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late Program _program; // = Program.programs.first;
   late Workgroup _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
+  late StorageService<UserModel> _trainerStorageService;
+  late UserModel _userModel;
   
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
@@ -63,7 +68,11 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   void initState() {
     super.initState();
     config = ref.read(appConfigProvider);
-    Future.microtask(() {
+    _trainerStorageService = TrainerUserStorageService();
+
+    Future.microtask(() async {
+
+      _userModel = (await _trainerStorageService.get())!;
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
       ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
@@ -71,7 +80,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref
           .read(workgroupViewListModelProvider.notifier)
           .findAllActiveWorkgroups();
-      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier).findAllStudentsFromTrainer("39c0fd19-dbd2-4c74-8104-7105ca159c7b");
+      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
+          .findAllStudentsFromTrainer(_userModel.uuidId);
     });
   }
 
