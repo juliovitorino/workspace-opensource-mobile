@@ -3,6 +3,9 @@ import 'package:treinadorpro/core/data/requests/login_request.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 
+import '../../../../core/data/models/exception_api_model.dart';
+import '../../../../core/network/api_exception.dart';
+
 class LoginStateCubit extends Cubit<HandlerState> {
 
   final IUserRepository _repository;
@@ -16,9 +19,32 @@ class LoginStateCubit extends Cubit<HandlerState> {
       final String token = await _repository.login(LoginRequest(email, password));
       emit(state.sendToListener(isLoading: false, objectResponse: token)); // Sucesso
     } catch (e) {
-      emit(state.sendToListener(isLoading: false, errorMessage: e.toString()));
-    }
+      if (e is ApiException) {
+        try {
+          final exception = ExceptionApiModel.fromJson({
+            'statusCode': e.statusCode,
+            'message': e.body['message'] ?? 'Unknown error',
+            'msgcode': e.body['msgcode'] ?? '',
+          });
 
+          emit(state.sendToListener(
+              isLoading: false,
+              errorMessage: exception.message,
+              objectResponse: exception
+          ));
+        } catch (_) {
+          emit(state.sendToListener(
+            isLoading: false,
+            errorMessage: 'Error processing API response',
+          ));
+        }
+      } else {
+        emit(state.sendToListener(
+          isLoading: false,
+          errorMessage: 'Unexpected error: ${e.toString()}',
+        ));
+      }
+    }
   }
 
 }

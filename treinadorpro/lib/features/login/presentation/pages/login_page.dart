@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/exception_api_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
@@ -45,6 +46,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _processFormListener(BuildContext context, HandlerState state) async {
     if (state.errorMessage != null) {
+      final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
+      print("statusCode = ${exceptionApiModel.statusCode}");
+      print("msgcode = ${exceptionApiModel.msgcode}");
+      print("message = ${exceptionApiModel.message}");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
