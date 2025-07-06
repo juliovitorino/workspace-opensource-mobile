@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:treinadorpro/core/network/api_client.dart';
 
+import 'api_exception.dart';
+
 
 class HttpApiClient implements ApiClient {
   final http.Client client;
@@ -16,10 +18,9 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
-    if(response.statusCode >= 400 && response.statusCode < 500){
+    if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['message'] ?? 'Unknown error';
-      throw Exception(message);
+      throw ApiException(response.statusCode, responseBody);
     }
 
     throw Exception('Error on GET: ${response.statusCode}');
@@ -37,10 +38,9 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
-    if(response.statusCode >= 400 && response.statusCode < 500){
+    if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['message'] ?? 'Unknown error';
-      throw Exception(message);
+      throw ApiException(response.statusCode, responseBody);
     }
 
     throw Exception('Error on POST: ${response.statusCode}');
@@ -58,10 +58,9 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
-    if(response.statusCode >= 400 && response.statusCode < 500){
+    if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['message'] ?? 'Unknown error';
-      throw Exception(message);
+      throw ApiException(response.statusCode, responseBody);
     }
 
     throw Exception('Error on PUT: ${response.statusCode}');
@@ -79,10 +78,9 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
-    if(response.statusCode >= 400 && response.statusCode < 500){
+    if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['message'] ?? 'Unknown error';
-      throw Exception(message);
+      throw ApiException(response.statusCode, responseBody);
     }
 
     throw Exception('Error on PATCH: ${response.statusCode}');
@@ -95,10 +93,9 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
-    if(response.statusCode >= 400 && response.statusCode < 500){
+    if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
-      final message = responseBody['message'] ?? 'Unknown error';
-      throw Exception(message);
+      throw ApiException(response.statusCode, responseBody);
     }
 
     throw Exception('Error on DELETE: ${response.statusCode}');

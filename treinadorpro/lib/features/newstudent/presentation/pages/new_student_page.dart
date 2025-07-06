@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/data/models/training_info_request.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/data/models/training_time_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
@@ -19,14 +20,16 @@ import 'package:treinadorpro/features/newstudent/presentation/blocs/new_student_
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 import 'package:uuid/uuid_value.dart';
 
+import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
+import '../../../../core/data/models/user_model.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_dropdown_label.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
 
 class NewStudentPage extends ConsumerStatefulWidget {
-
   const NewStudentPage({super.key});
 
   @override
@@ -123,6 +126,8 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   late final IContractRespository _contractRespository;
   late StudentsFromTrainerResponseModel _studentSelected;
   late TrainingPackModel _trainingPackSelected;
+  late StorageService<UserModel> _trainerStorageService;
+  late UserModel _userModel;
 
   late TrainingTimeModel _mondayController;
   late TrainingTimeModel _tuesdayController;
@@ -146,19 +151,18 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     _saturdayController = _trainingTimeModel.first;
     _sundayController = _trainingTimeModel.first;
 
+    _trainerStorageService = TrainerUserStorageService();
+
     _planStartController.text = DateTime.now().toString().split(' ')[0];
-    Future.microtask(() {
+    Future.microtask(() async {
+      _userModel = (await _trainerStorageService.get())!;
       ref
           .read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
-          .findAllStudentsFromTrainer(
-            "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
-          );
+          .findAllStudentsFromTrainer(_userModel.uuidId);
 
       ref
           .read((trainingPackFromTrainerViewListModelProvider.notifier))
-          .findAllActiveTrainingPackFromTrainer(
-            "39c0fd19-dbd2-4c74-8104-7105ca159c7b",
-          );
+          .findAllActiveTrainingPackFromTrainer(_userModel.uuidId);
     });
   }
 
@@ -325,7 +329,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
       final request = CreateNewStudentContractRequest.getInstance(
         UuidValue.fromString(_trainingPackSelected.externalId),
-        UuidValue.fromString("39c0fd19-dbd2-4c74-8104-7105ca159c7b"),
+        UuidValue.fromString(_userModel.uuidId),
         _isStudentSelectedInitialized ? _studentSelected.externalId : null,
         newStudent,
         trainingInfo,
@@ -350,6 +354,12 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     HandlerState state,
   ) async {
     if (state.errorMessage != null) {
+      final ExceptionApiModel exceptionApiModel =
+          state.objectResponse as ExceptionApiModel;
+      print("statusCode = ${exceptionApiModel.statusCode}");
+      print("msgcode = ${exceptionApiModel.msgcode}");
+      print("message = ${exceptionApiModel.message}");
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
@@ -726,9 +736,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => BuildWorkoutSheetPage(),
-                  ),
+                  MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage()),
                 );
               },
               icon: Icon(Icons.calendar_today),
