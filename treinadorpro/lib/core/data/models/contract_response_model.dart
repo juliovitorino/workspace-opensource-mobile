@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
+import 'package:treinadorpro/core/data/models/user_model.dart';
 
 part 'contract_response_model.g.dart';
 
@@ -7,6 +8,7 @@ part 'contract_response_model.g.dart';
 class ContractResponseModel {
   final String externalId;
   final TrainingPackModel trainingPack;
+  final UserModel studentUser;
   final String description;
   final double price;
   final String currency;
@@ -25,6 +27,7 @@ class ContractResponseModel {
   ContractResponseModel({
     required this.externalId,
     required this.trainingPack,
+    required this.studentUser,
     required this.description,
     required this.price,
     required this.currency,

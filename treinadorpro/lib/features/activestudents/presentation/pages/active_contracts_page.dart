@@ -100,12 +100,13 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         title: Text(
-          'Objetivo: ${contract.description}',
+          contract.studentUser.name,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Objetivo: ${contract.description}'),
             Text('${contract.currency} ${contract.price}'),
             Text('Pacote: ${contract.trainingPack.description}'),
             Text('Modalidade: ${contract.trainingPack.modality?.namePt}'),

@@ -12,6 +12,8 @@ ContractResponseModel _$ContractResponseModelFromJson(
       externalId: json['externalId'] as String,
       trainingPack: TrainingPackModel.fromJson(
           json['trainingPack'] as Map<String, dynamic>),
+      studentUser:
+          UserModel.fromJson(json['studentUser'] as Map<String, dynamic>),
       description: json['description'] as String,
       price: (json['price'] as num).toDouble(),
       currency: json['currency'] as String,
@@ -33,6 +35,7 @@ Map<String, dynamic> _$ContractResponseModelToJson(
     <String, dynamic>{
       'externalId': instance.externalId,
       'trainingPack': instance.trainingPack,
+      'studentUser': instance.studentUser,
       'description': instance.description,
       'price': instance.price,
       'currency': instance.currency,
