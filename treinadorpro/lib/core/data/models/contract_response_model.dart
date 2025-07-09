@@ -1,10 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 
 part 'contract_response_model.g.dart';
 
 @JsonSerializable()
 class ContractResponseModel {
   final String externalId;
+  final TrainingPackModel trainingPack;
   final String description;
   final double price;
   final String currency;
@@ -22,6 +24,7 @@ class ContractResponseModel {
 
   ContractResponseModel({
     required this.externalId,
+    required this.trainingPack,
     required this.description,
     required this.price,
     required this.currency,

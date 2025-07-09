@@ -107,7 +107,13 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('${contract.currency} ${contract.price}'),
+            Text('Pacote: ${contract.trainingPack.description}'),
+            Text('Modalidade: ${contract.trainingPack.modality?.namePt}'),
+            SizedBox(width: 8, height: 10),
+
             _buildDays(contract),
+            SizedBox(width: 8, height: 10),
+
             Text('Contratado em ${contract.createdAt}'),
             SizedBox(width: 8, height: 10),
 
