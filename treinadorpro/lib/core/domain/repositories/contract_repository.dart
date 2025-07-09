@@ -1,4 +1,6 @@
 import 'package:treinadorpro/core/data/datasources/icontract_datasource.dart';
+import 'package:treinadorpro/core/data/models/api_generic_response.dart';
+import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
@@ -23,6 +25,11 @@ class ContractRepository implements IContractRespository{
   @override
   Future<String> save(CreateNewStudentContractRequest request) async {
     return await datasource.save(request);
+  }
+
+  @override
+  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllActiveContracts() async {
+    return await datasource.findAllActiveContracts();
   }
 
 }

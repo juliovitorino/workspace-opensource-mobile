@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
+import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
@@ -146,7 +147,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => ActiveStudentsPage()),
+                  MaterialPageRoute(builder: (_) => ActiveContractsPage()),
                 );
               },
             ),
