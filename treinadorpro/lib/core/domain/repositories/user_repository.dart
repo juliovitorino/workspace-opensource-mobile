@@ -1,4 +1,6 @@
 import 'package:treinadorpro/core/data/datasources/iuser_remote_datasource.dart';
+import 'package:treinadorpro/core/data/models/api_generic_response.dart';
+import 'package:treinadorpro/core/data/models/trainer_available_time_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/data/requests/login_request.dart';
 import 'package:treinadorpro/core/data/requests/register_request.dart';
@@ -42,5 +44,10 @@ class UserRepository implements IUserRepository {
   @override
   Future<UserModel> getLoggedUser() async {
     return await _userRemoteDatasource.getLoggedUser();
+  }
+
+  @override
+  Future<ApiGenericResponse<TrainerAvailableTimeResponseModel>> findTrainerAvailableTime() async {
+    return await _userRemoteDatasource.findTrainerAvailableTime();
   }
 }

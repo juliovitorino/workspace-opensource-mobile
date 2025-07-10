@@ -24,10 +24,12 @@ import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
 import '../../../../core/data/models/user_model.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/provider/user_provider.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_dropdown_label.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_searchable_dropdown.dart';
+import '../../../dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 
 class NewStudentPage extends ConsumerStatefulWidget {
   const NewStudentPage({super.key});
@@ -54,6 +56,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   bool _isShowCardOldStudentSelected = false;
   bool _isShowCardTrainingPack = false;
   bool _isCustomTime = false;
+  bool _isShowAvailableTime = false;
+
+  String _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
 
   final List<String> trainingTimes = [
     'Sem definição',
@@ -156,6 +161,11 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
     _planStartController.text = DateTime.now().toString().split(' ')[0];
     Future.microtask(() async {
       _userModel = (await _trainerStorageService.get())!;
+
+      ref
+          .read(findTrainerAvailableTimeViewModelProvider.notifier)
+          .findTrainerAvailableTime();
+
       ref
           .read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
           .findAllStudentsFromTrainer(_userModel.uuidId);
@@ -276,13 +286,28 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       final bool isSatSelected = _selectedDaysRequest.contains("SAT");
       final bool isSunSelected = _selectedDaysRequest.contains("SUN");
 
-      final String? _customTimeMon = _mondayController.trainingTime == '- x -' ? null : _mondayController.trainingTime;
-      final String? _customTimeTue = _tuesdayController.trainingTime == '- x -' ? null : _tuesdayController.trainingTime;
-      final String? _customTimeWed = _wednesdayController.trainingTime == '- x -' ? null : _wednesdayController.trainingTime;
-      final String? _customTimeThu = _thursdayController.trainingTime == '- x -' ? null : _thursdayController.trainingTime;
-      final String? _customTimeFri = _fridayController.trainingTime == '- x -' ? null : _fridayController.trainingTime;
-      final String? _customTimeSat = _saturdayController.trainingTime == '- x -' ? null : _saturdayController.trainingTime;
-      final String? _customTimeSun = _sundayController.trainingTime == '- x -' ? null : _sundayController.trainingTime;
+      final String? _customTimeMon = _mondayController.trainingTime == '- x -'
+          ? null
+          : _mondayController.trainingTime;
+      final String? _customTimeTue = _tuesdayController.trainingTime == '- x -'
+          ? null
+          : _tuesdayController.trainingTime;
+      final String? _customTimeWed =
+          _wednesdayController.trainingTime == '- x -'
+          ? null
+          : _wednesdayController.trainingTime;
+      final String? _customTimeThu = _thursdayController.trainingTime == '- x -'
+          ? null
+          : _thursdayController.trainingTime;
+      final String? _customTimeFri = _fridayController.trainingTime == '- x -'
+          ? null
+          : _fridayController.trainingTime;
+      final String? _customTimeSat = _saturdayController.trainingTime == '- x -'
+          ? null
+          : _saturdayController.trainingTime;
+      final String? _customTimeSun = _sundayController.trainingTime == '- x -'
+          ? null
+          : _sundayController.trainingTime;
 
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
@@ -395,6 +420,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
     final trainingPackFromTrainerState = ref.watch(
       trainingPackFromTrainerViewListModelProvider,
+    );
+    final _trainerAvailableTimeState = ref.watch(
+      findTrainerAvailableTimeViewModelProvider,
     );
 
     return Padding(
@@ -629,6 +657,32 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
             // Custom Schedule
             if (_isCustomTime) _buildCustomSchedule(),
+
+            //-------------------------------
+            // available time data sheet
+            //-------------------------------
+            SizedBox(height: 16),
+
+            ElevatedButton.icon(
+              onPressed: () => setState(() {
+                _isShowAvailableTime = !_isShowAvailableTime;
+                if(_isShowAvailableTime){
+                  _labelButtonAvailableTime = 'Esconder agenda de horários';
+                } else {
+                  _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
+                }
+
+              }),
+              icon: Icon(Icons.schedule),
+              label: Text(_labelButtonAvailableTime),
+            ),
+
+            if(_isShowAvailableTime)
+              _trainerAvailableTimeState.when(
+                data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
+              ),
 
             SizedBox(height: 16),
             ProWidgetTextFormField(

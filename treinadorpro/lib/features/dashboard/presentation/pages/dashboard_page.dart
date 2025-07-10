@@ -4,7 +4,6 @@ import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
-import 'package:treinadorpro/features/activestudents/presentation/pages/active_students_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
 import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
@@ -41,12 +40,14 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     Future.microtask(() async {
       token = (await getToken())!;
       ref.read(userViewModelProvider.notifier).getLoggedUser();
+      ref.read(findTrainerAvailableTimeViewModelProvider.notifier).findTrainerAvailableTime();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final _userState = ref.watch(userViewModelProvider);
+    final _trainerAvailableTimeState = ref.watch(findTrainerAvailableTimeViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -198,7 +199,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             ),
 
             // available free time
-            ProWidgetFreeAvailableTime(),
+            _trainerAvailableTimeState.when(
+                data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
+                error: (e,_) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator())
+            ),
           ],
         ),
       ),
