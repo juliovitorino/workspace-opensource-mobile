@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
+import 'package:treinadorpro/core/provider/dashboard_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
@@ -28,7 +29,6 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
-
   String token = "";
   final StorageService<String> _tokenStorage = TokenStorageService();
   final StorageService<UserModel> _trainerStorage = TrainerUserStorageService();
@@ -40,14 +40,20 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     Future.microtask(() async {
       token = (await getToken())!;
       ref.read(userViewModelProvider.notifier).getLoggedUser();
-      ref.read(findTrainerAvailableTimeViewModelProvider.notifier).findTrainerAvailableTime();
+      ref
+          .read(findTrainerAvailableTimeViewModelProvider.notifier)
+          .findTrainerAvailableTime();
+      ref.read(dashboardStatusViewModelProvider.notifier).dashboardStatus();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final _userState = ref.watch(userViewModelProvider);
-    final _trainerAvailableTimeState = ref.watch(findTrainerAvailableTimeViewModelProvider);
+    final _trainerAvailableTimeState = ref.watch(
+      findTrainerAvailableTimeViewModelProvider,
+    );
+    final _dashboardState = ref.watch(dashboardStatusViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,16 +64,15 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             text: token,
             icon: Icons.lock,
           ),
-          ProWidgetInfoAlertDialog(
-            title: 'page',
-            text: 'dashboard_page.dart',
-          ),
+          ProWidgetInfoAlertDialog(title: 'page', text: 'dashboard_page.dart'),
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => TrainerProfilePageDetail(token)),
+                MaterialPageRoute(
+                  builder: (_) => TrainerProfilePageDetail(token),
+                ),
               );
             },
           ),
@@ -87,13 +92,15 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         child: ListView(
           children: [
             _userState.when(
-                data: (user) {
-                  _trainerStorage.save(user);
-                  return Text('Bem-vindo, ${user.name} 👋',
-                      style: kWelcomeUserMessageTextStyle);
-                },
-                error: (e,_) => Center(child: Text("Erro: $e"),),
-                loading: () => Center(child: CircularProgressIndicator(),)
+              data: (user) {
+                _trainerStorage.save(user);
+                return Text(
+                  'Bem-vindo, ${user.name} 👋',
+                  style: kWelcomeUserMessageTextStyle,
+                );
+              },
+              error: (e, _) => Center(child: Text("Erro: $e")),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
             SizedBox(height: 8),
@@ -101,69 +108,90 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             SizedBox(height: 16),
 
             // today workout
-            ProWidgetStatusDashboardItem(
-              icon: Icons.fitness_center,
-              title: 'Treinos de hoje',
-              trailing: '3 alunos',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => TodayWorkoutsPage()),
-                );
-              },
+            _dashboardState.when(
+              data: (data) => ProWidgetStatusDashboardItem(
+                icon: Icons.fitness_center,
+                title: 'Treinos de hoje',
+                trailing: '${data.objectResponse.totalTodayWorkout} alunos',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => TodayWorkoutsPage()),
+                  );
+                },
+              ),
+              error: (e, _) => Center(child: Text('error: $e')),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
-            // training packs
-            ProWidgetStatusDashboardItem(
-              icon: Icons.edit_note,
-              title: 'Pacotes de Treino',
-              trailing: '3 opções',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => TrainingPackagePage()),
-                );
-              },
+            //training packs
+            _dashboardState.when(
+              data: (data) => ProWidgetStatusDashboardItem(
+                icon: Icons.edit_note,
+                title: 'Pacotes de Treino',
+                trailing: '${data.objectResponse.totalTrainingPack} opções',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => TrainingPackagePage()),
+                  );
+                },
+              ),
+              error: (e, _) => Center(child: Text('error: $e')),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
             // overdue payments
-            ProWidgetStatusDashboardItem(
-              icon: Icons.attach_money,
-              title: 'Pagamentos em atraso',
-              trailing: '2 alunos',
-              color: Colors.redAccent,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentsOverduePage()),
-                );
-              },
+            _dashboardState.when(
+              data: (data) => ProWidgetStatusDashboardItem(
+                icon: Icons.attach_money,
+                title: 'Pagamentos em atraso',
+                trailing: 'BRL ${data.objectResponse.overdueAmountContracts}',
+                color: Colors.redAccent,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => PaymentsOverduePage()),
+                  );
+                },
+              ),
+              error: (e, _) => Center(child: Text('error: $e')),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
             // active students
-            ProWidgetStatusDashboardItem(
-              icon: Icons.group,
-              title: 'Alunos ativos',
-              trailing: '18',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ActiveContractsPage()),
-                );
-              },
+            _dashboardState.when(
+              data: (data) => ProWidgetStatusDashboardItem(
+                icon: Icons.group,
+                title: 'Alunos ativos',
+                trailing: '${data.objectResponse.activeStudentContract}',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ActiveContractsPage()),
+                  );
+                },
+              ),
+              error: (e, _) => Text('error: $e'),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
             // revenue monthly
-            ProWidgetStatusDashboardItem(
-              icon: Icons.bar_chart,
-              title: 'Faturamento Maio',
-              trailing: 'R\$ 4.200,00',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
-                );
-              },
+            _dashboardState.when(
+              data: (data) =>
+                  ProWidgetStatusDashboardItem(
+                    icon: Icons.bar_chart,
+                    title: 'Faturamento Neste Mês',
+                    trailing: 'BRL ${data.objectResponse.totalAmountReceivedMonth}',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
+                      );
+                    },
+                  ),
+              error: (e,_) => Text('error: $e'),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
 
             SizedBox(height: 24),
@@ -200,9 +228,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
             // available free time
             _trainerAvailableTimeState.when(
-                data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
-                error: (e,_) => Center(child: Text('Error: $e')),
-                loading: () => Center(child: CircularProgressIndicator())
+              data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
+              error: (e, _) => Center(child: Text('Error: $e')),
+              loading: () => Center(child: CircularProgressIndicator()),
             ),
           ],
         ),
@@ -210,5 +238,3 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 }
-
-
