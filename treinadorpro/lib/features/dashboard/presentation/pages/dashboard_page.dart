@@ -116,7 +116,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => TodayWorkoutsPage()),
+                    MaterialPageRoute(builder: (_) => TodayWorkoutPage()),
                   );
                 },
               ),

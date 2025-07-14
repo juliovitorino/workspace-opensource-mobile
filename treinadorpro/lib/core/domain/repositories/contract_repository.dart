@@ -32,4 +32,9 @@ class ContractRepository implements IContractRespository{
     return await datasource.findAllActiveContracts();
   }
 
+  @override
+  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout() async {
+    return await datasource.findAllContractTodayWorkout();
+  }
+
 }

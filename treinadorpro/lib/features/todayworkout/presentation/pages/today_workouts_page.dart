@@ -1,121 +1,126 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/contract_response_model.dart';
+import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_page.dart';
 
-class TodayWorkoutsPage extends StatelessWidget {
-  final List<TodayWorkout> workouts = [
-    TodayWorkout(
-      time: '07:00',
-      studentName: 'João Pedro',
-      type: 'Treino Inferior',
-      plan: 'Plano Trimestral',
-      location: 'Academia Central',
-      confirmed: true,
-    ),
-    TodayWorkout(
-      time: '09:00',
-      studentName: 'Carla Lima',
-      type: 'Cardio Funcional',
-      plan: 'Plano Mensal',
-      location: 'Parque das Águas',
-      confirmed: false,
-    ),
-    TodayWorkout(
-      time: '18:00',
-      studentName: 'Rodrigo Silva',
-      type: 'Superior',
-      plan: 'Online',
-      location: 'Google Meet',
-      confirmed: true,
-    ),
-  ];
+class TodayWorkoutPage extends ConsumerStatefulWidget {
+  const TodayWorkoutPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Treinos de Hoje')),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: workouts.length,
-        itemBuilder: (context, index) {
-          final workout = workouts[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${workout.time} - ${workout.studentName}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Icon(
-                        workout.confirmed
-                            ? Icons.check_circle
-                            : Icons.help_outline,
-                        color: workout.confirmed ? Colors.green : Colors.orange,
-                      ),
-                    ],
+  ConsumerState<TodayWorkoutPage> createState() => _TodayWorkoutPageState();
+}
+
+class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
+  @override
+  void initState() {
+    Future.microtask(() async {
+      ref
+          .read(findAllContractTodayWorkoutViewModelProvider.notifier)
+          .findAllActiveContracts();
+    });
+  }
+
+  String _getCorrectTime(ContractResponseModel contract) {
+    Map<int, String?> mapDOW = {
+      1: contract.monday,
+      2: contract.tuesday,
+      3: contract.wednesday,
+      4: contract.thursday,
+      5: contract.friday,
+      6: contract.saturday,
+      7: contract.sunday,
+    };
+    DateTime now = DateTime.now();
+    int dayOfWeek = now.weekday;
+    return mapDOW[dayOfWeek] ?? 'Unavailable time';
+  }
+
+  Widget _buildCard(ContractResponseModel contract){
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${_getCorrectTime(contract)} - ${contract.studentUser.name}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 6),
-                  Text('${workout.type} • ${workout.plan}'),
-                  Text('📍 ${workout.location}'),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.chat),
-                        label: Text('WhatsApp'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => WorkoutSheetPage(),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('Abrir Ficha'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                // Icon(
+                //   workout.confirmed
+                //       ? Icons.check_circle
+                //       : Icons.help_outline,
+                //   color: workout.confirmed ? Colors.green : Colors.orange,
+                // ),
+              ],
             ),
-          );
-        },
+            SizedBox(height: 6),
+            Text(
+              '${contract.description} • ${contract.trainingPack.description}',
+            ),
+            Text('📍 SMV360'),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.chat),
+                  label: Text('WhatsApp'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                SizedBox(width: 8),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => WorkoutSheetPage()),
+                    );
+                  },
+                  icon: Icon(Icons.assignment),
+                  label: Text('Abrir Ficha'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-}
 
-class TodayWorkout {
-  final String time;
-  final String studentName;
-  final String type;
-  final String plan;
-  final String location;
-  final bool confirmed;
+  Widget _buildListView(List<ContractResponseModel> data) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        final workout = data[index];
+        return _buildCard(data[index]);
+      },
+    );
+  }
 
-  TodayWorkout({
-    required this.time,
-    required this.studentName,
-    required this.type,
-    required this.plan,
-    required this.location,
-    required this.confirmed,
-  });
+  @override
+  Widget build(BuildContext context) {
+    final contractState = ref.watch(
+      findAllContractTodayWorkoutViewModelProvider,
+    );
+
+    return Scaffold(
+      appBar: AppBar(title: Text('Treinos de Hoje')),
+      body: contractState.when(
+        data: (data) => _buildListView(data.objectResponse),
+        error: (e, _) => Center(child: Text('error: $e')),
+        loading: () => Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
 }
