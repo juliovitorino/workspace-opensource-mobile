@@ -102,7 +102,6 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
       padding: const EdgeInsets.all(16),
       itemCount: data.length,
       itemBuilder: (context, index) {
-        final workout = data[index];
         return _buildCard(data[index]);
       },
     );
