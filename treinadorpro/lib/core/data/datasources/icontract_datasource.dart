@@ -7,4 +7,5 @@ import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 abstract class IContractDatasource extends IRemoteDatasource<ExternalIdResponseModel, int>{
   Future<String> save(CreateNewStudentContractRequest request);
   Future<ApiGenericResponse<List<ContractResponseModel>>> findAllActiveContracts();
+  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout();
 }

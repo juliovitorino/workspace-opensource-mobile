@@ -19,7 +19,7 @@ class ContractDatasource implements IContractDatasource {
 
   ContractDatasource(this.apiClient, this.config);
 
-  static const module = 'new_student_remote_datasource';
+  static const module = 'contract_datasource';
 
   @override
   Future<ExternalIdResponseModel> fetchById(int id) {
@@ -88,5 +88,36 @@ class ContractDatasource implements IContractDatasource {
         objectResponse
         .map((contract) => ContractResponseModel.fromJson(contract))
         .toList());
+  }
+
+  @override
+  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout()  async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/today";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final List<dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
+            .map((contract) => ContractResponseModel.fromJson(contract))
+            .toList());
   }
 }
