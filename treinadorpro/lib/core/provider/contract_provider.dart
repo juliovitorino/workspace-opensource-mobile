@@ -3,8 +3,10 @@ import 'package:treinadorpro/core/data/datasources/contract_datasource.dart';
 import 'package:treinadorpro/core/data/datasources/icontract_datasource.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
+import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
 import 'package:treinadorpro/core/domain/repositories/contract_repository.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
+import 'package:treinadorpro/core/viewmodel/find_all_student_overdue_payment_view_model.dart';
 import 'package:treinadorpro/core/viewmodel/new_student_view_model.dart';
 
 import '../viewmodel/find_all_active_contracts_view_model.dart';
@@ -52,5 +54,14 @@ final findAllContractTodayWorkoutViewModelProvider =
     >((ref) {
       final repository = ref.read(contractRepositoryProvider);
       return FindAllContractTodayWorkoutViewModel(repository);
+    });
 
+final findAllStudentOverduePaymentViewModelProvider =
+    StateNotifierProvider<
+      FindAllStudentOverduePaymentViewModel,
+      AsyncValue<ApiGenericResponse<List<StudentPaymentResponseModel>>>
+    >((ref) {
+
+      final repository = ref.read(contractRepositoryProvider);
+      return FindAllStudentOverduePaymentViewModel(repository);
     });

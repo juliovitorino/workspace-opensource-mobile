@@ -1,122 +1,160 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/config/app_config.dart';
+import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
+import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/features/registerpayment/presentation/pages/register_payment_page.dart';
 
-class PaymentsOverduePage extends StatelessWidget {
-  final List<OverdueStudent> overdueStudents = [
-    OverdueStudent(
-      name: 'João Silva',
-      plan: 'Plano Mensal',
-      dueDate: '10/05/2025',
-      daysLate: 21,
-      amount: 150.00,
-    ),
-    OverdueStudent(
-      name: 'Carla Souza',
-      plan: 'Plano Trimestral',
-      dueDate: '05/05/2025',
-      daysLate: 26,
-      amount: 390.00,
-    ),
-    OverdueStudent(
-      name: 'Lucas Andrade',
-      plan: 'Plano Online',
-      dueDate: '20/04/2025',
-      daysLate: 41,
-      amount: 120.00,
-    ),
-  ];
+import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
+
+class PaymentsOverduePage extends ConsumerStatefulWidget {
+  const PaymentsOverduePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Pagamentos em Atraso')),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: overdueStudents.length,
-        itemBuilder: (context, index) {
-          final student = overdueStudents[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        student.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'R\$ ${student.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+  ConsumerState<PaymentsOverduePage> createState() =>
+      _PaymentsOverduePageState();
+}
+
+class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
+
+  late AppConfig config;
+
+  @override
+  void initState() {
+    super.initState();
+    config = ref.read(appConfigProvider);
+
+    Future.microtask(() async {
+      ref
+          .read(findAllStudentOverduePaymentViewModelProvider.notifier)
+          .findAllStudentOverduePayment();
+    });
+  }
+
+  int _getDaysLate(DateTime dueDate) {
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(dueDate);
+    return difference.inDays;
+  }
+
+  Widget _buildCard(StudentPaymentResponseModel overduePayment) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  overduePayment.contract.studentUser.name,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'BRL \$ ${overduePayment.amount.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.w600,
                   ),
-                  SizedBox(height: 4),
-                  Text(student.plan),
-                  SizedBox(height: 4),
-                  Text(
-                    'Vencimento: ${student.dueDate}  |  ${student.daysLate} dias de atraso',
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  SizedBox(height: 12),
-                  Wrap(
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.chat),
-                        label: Text('WhatsApp'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                      ),
-                      SizedBox(width: 8, height: 40),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RegisterPaymentPage(),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.check_circle_outline),
-                        label: Text('Registrar Pagamento'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
+            SizedBox(height: 4),
+            Text(overduePayment.contract.description),
+            SizedBox(height: 4),
+            Text(
+              'Vencimento: ${overduePayment.dueDate}  | ${_getDaysLate(overduePayment.dueDate)} dias de atraso',
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+            SizedBox(height: 12),
+            Wrap(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.chat),
+                  label: Text('WhatsApp'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                SizedBox(width: 8, height: 40),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => RegisterPaymentPage()),
+                    );
+                  },
+                  icon: Icon(Icons.check_circle_outline),
+                  label: Text('Registrar Pagamento'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-}
 
-class OverdueStudent {
-  final String name;
-  final String plan;
-  final String dueDate;
-  final int daysLate;
-  final double amount;
+  Widget _buildListView(List<StudentPaymentResponseModel> data) {
+    double total = data.fold(0.0, (sum, item) => sum + item.amount);
 
-  OverdueStudent({
-    required this.name,
-    required this.plan,
-    required this.dueDate,
-    required this.daysLate,
-    required this.amount,
-  });
+    return Column(
+      children: [
+        Container(
+          color: Colors.grey[100],
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Total sem receber:', style: TextStyle(fontSize: 16)),
+              Text(
+                'BRL \$ ${total.toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent[700]),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return _buildCard(data[index]);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _studentPaymentState = ref.watch(
+      findAllStudentOverduePaymentViewModelProvider,
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pagamentos em Atraso'),
+        actions: [
+          if(config.isDebugMode)
+            ProWidgetInfoAlertDialog(
+              title: 'page',
+              text: 'payments_overdue_page.dart',
+            ),
+        ],
+      ),
+      body: _studentPaymentState.when(
+        data: (data) => _buildListView(data.objectResponse),
+        error: (e, _) => Center(child: Text('error: $e')),
+        loading: () => Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
 }
