@@ -10,4 +10,5 @@ abstract class IContractDatasource extends IRemoteDatasource<ExternalIdResponseM
   Future<ApiGenericResponse<List<ContractResponseModel>>> findAllActiveContracts();
   Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout();
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentOverduePayment();
+  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment();
 }

@@ -153,4 +153,34 @@ class ContractDatasource implements IContractDatasource {
             .toList());
   }
 
+  @override
+  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment() async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/student/received-payments";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final List<dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
+            .map((contract) => StudentPaymentResponseModel.fromJson(contract))
+            .toList());
+  }
 }
