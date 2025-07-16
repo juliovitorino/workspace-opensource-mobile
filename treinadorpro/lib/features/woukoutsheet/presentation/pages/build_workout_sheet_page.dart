@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/datasources/workgroup_provider.dart';
+import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
 import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
@@ -15,8 +16,10 @@ import 'package:treinadorpro/core/domain/entities/goal.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
+import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
 import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/provider/program_provider.dart';
@@ -28,6 +31,7 @@ import '../../../../core/data/models/goal_model.dart';
 import '../../../../core/data/models/modality_model.dart';
 import '../../../../core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import '../../../../core/provider/modality_provider.dart';
+import '../../../../core/utils/date_utils.dart';
 
 class BuildWorkoutSheetPage extends ConsumerStatefulWidget {
   const BuildWorkoutSheetPage({super.key});
@@ -56,13 +60,18 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late Program _program; // = Program.programs.first;
   late Workgroup _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
+
   late StorageService<UserModel> _trainerStorageService;
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+
   late UserModel _userModel;
+  late String _contractToken;
   
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   final WeightUnit _weightUnit = WeightUnit.kg;
+
 
   @override
   void initState() {
@@ -72,7 +81,10 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
     Future.microtask(() async {
 
+      _contractToken = (await _contractTokenStorage.get())!;
       _userModel = (await _trainerStorageService.get())!;
+
+      ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
       ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
@@ -80,8 +92,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref
           .read(workgroupViewListModelProvider.notifier)
           .findAllActiveWorkgroups();
-      ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
-          .findAllStudentsFromTrainer(_userModel.uuidId);
+      // ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
+      //     .findAllStudentsFromTrainer(_userModel.uuidId);
     });
   }
 
@@ -175,6 +187,39 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     );
   }
 
+  Widget _buildCard(ContractResponseModel contract){
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${contract.studentUser.name}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 6),
+            Text(
+              '${contract.description} • ${contract.trainingPack.description}',
+            ),
+            Text('📍 SMV360'),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final modalityState = ref.watch(modalityViewModelProvider);
@@ -182,7 +227,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final exerciseState = ref.watch(exerciseViewModelProvider);
     final programState = ref.watch(programViewModelProvider);
     final workgroupState = ref.watch(workgroupViewListModelProvider);
-    final trainingPackState = ref.watch(trainingPackStudentsFromTrainerViewListModelProvider);
+    // final trainingPackState = ref.watch(trainingPackStudentsFromTrainerViewListModelProvider);
+    final contractState = ref.watch(findContractViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -201,14 +247,20 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               // student
               Text('Aluno'),
-              trainingPackState.when(
-                data: (studentList) => _buildStudentSearchable(studentList),
-                error: (e, _) => Center(child: Text('Error: $e')),
-                loading: () => Center(child: CircularProgressIndicator()),
-              ),
+              contractState.when(
+                  data: (contract) => _buildCard(contract.objectResponse),
+                  error: (e,_)=>Center(child: Text('error: $e')),
+                  loading: () => Center(child: CircularProgressIndicator())),
+
+              // // student
+              // Text('Aluno'),
+              // trainingPackState.when(
+              //   data: (studentList) => _buildStudentSearchable(studentList),
+              //   error: (e, _) => Center(child: Text('Error: $e')),
+              //   loading: () => Center(child: CircularProgressIndicator()),
+              // ),
 
               // Modality
               Text('Modalidade'),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_page.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 
 class TodayWorkoutPage extends ConsumerStatefulWidget {
   const TodayWorkoutPage({super.key});
@@ -21,20 +22,6 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
     });
   }
 
-  String _getCorrectTime(ContractResponseModel contract) {
-    Map<int, String?> mapDOW = {
-      1: contract.monday,
-      2: contract.tuesday,
-      3: contract.wednesday,
-      4: contract.thursday,
-      5: contract.friday,
-      6: contract.saturday,
-      7: contract.sunday,
-    };
-    DateTime now = DateTime.now();
-    int dayOfWeek = now.weekday;
-    return mapDOW[dayOfWeek] ?? 'Unavailable time';
-  }
 
   Widget _buildCard(ContractResponseModel contract){
     return Card(
@@ -48,7 +35,7 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${_getCorrectTime(contract)} - ${contract.studentUser.name}',
+                  '${getCorrectTime(contract)} - ${contract.studentUser.name}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

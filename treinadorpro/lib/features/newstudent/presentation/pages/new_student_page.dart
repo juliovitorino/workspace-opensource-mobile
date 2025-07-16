@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/data/models/training_info_request.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/data/models/training_time_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
@@ -20,6 +21,7 @@ import 'package:treinadorpro/features/newstudent/presentation/blocs/new_student_
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 import 'package:uuid/uuid_value.dart';
 
+import '../../../../core/constants/app_routes.dart';
 import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/students_from_trainer_response_model.dart';
 import '../../../../core/data/models/user_model.dart';
@@ -47,6 +49,8 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _planStartController = TextEditingController();
   final TextEditingController _objectiveController = TextEditingController();
+
+  final StorageService<String> _contractStorage = ContractTokenStorageService();
 
   String _gender = 'Masculino';
 
@@ -405,7 +409,9 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
         ),
       );
 
-      // Navigator.popAndPushNamed(context, AppRoutes.validateCode);
+      _contractStorage.save(state.objectResponse);
+
+      Navigator.popAndPushNamed(context, AppRoutes.buildWorkout);
     }
   }
 
