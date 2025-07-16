@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 
@@ -20,6 +22,8 @@ class ActiveContractsPage extends ConsumerStatefulWidget {
 class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
 
   late final AppConfig config;
+
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
 
   @override
   void initState() {
@@ -129,7 +133,8 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
 
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
+                    _contractTokenStorage.save(contract.externalId);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

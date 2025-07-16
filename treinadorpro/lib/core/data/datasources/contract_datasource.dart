@@ -50,7 +50,8 @@ class ContractDatasource implements IContractDatasource {
       'X-API-KEY': config.apiKey
     };
 
-    final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(request.toJson()));
+    final jsonResponse = await apiClient.post(
+        url, headers: headers, body: jsonEncode(request.toJson()));
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");
     }
@@ -61,39 +62,10 @@ class ContractDatasource implements IContractDatasource {
   }
 
   @override
-  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllActiveContracts() async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/active";
-
-    final String? token = await _tokenStorage.get();
-
-    if (config.isDebugMode) {
-      print('$module :: call url = $url');
-    }
-
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
-      'X-API-KEY': config.apiKey
-    };
-
-    final jsonResponse = await apiClient.get(url, headers: headers);
-    if (config.isDebugMode) {
-      print("$module :: jsonResponse = $jsonResponse");
-    }
-
-    final response = jsonResponse['response'];
-    final List<dynamic> objectResponse = jsonResponse['objectResponse'];
-
-    return ApiGenericResponse(
-        Response(response['msgcode'], response['mensagem']),
-        objectResponse
-        .map((contract) => ContractResponseModel.fromJson(contract))
-        .toList());
-  }
-
-  @override
-  Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout()  async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/today";
+  Future<ApiGenericResponse<
+      List<ContractResponseModel>>> findAllActiveContracts() async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/trainer/active";
 
     final String? token = await _tokenStorage.get();
 
@@ -123,8 +95,43 @@ class ContractDatasource implements IContractDatasource {
   }
 
   @override
-  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentOverduePayment() async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/student/overdue-payments";
+  Future<ApiGenericResponse<
+      List<ContractResponseModel>>> findAllContractTodayWorkout() async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/trainer/today";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final List<dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
+            .map((contract) => ContractResponseModel.fromJson(contract))
+            .toList());
+  }
+
+  @override
+  Future<ApiGenericResponse<
+      List<StudentPaymentResponseModel>>> findAllStudentOverduePayment() async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/trainer/student/overdue-payments";
 
     final String? token = await _tokenStorage.get();
 
@@ -154,8 +161,10 @@ class ContractDatasource implements IContractDatasource {
   }
 
   @override
-  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment() async {
-    final String url = "${config.apiBackendUrl}/v1/api/business/contract/trainer/student/received-payments";
+  Future<ApiGenericResponse<List<
+      StudentPaymentResponseModel>>> findAllStudentReceivedPayment() async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/trainer/student/received-payments";
 
     final String? token = await _tokenStorage.get();
 
@@ -182,5 +191,37 @@ class ContractDatasource implements IContractDatasource {
         objectResponse
             .map((contract) => StudentPaymentResponseModel.fromJson(contract))
             .toList());
+  }
+
+  @override
+  Future<ApiGenericResponse<ContractResponseModel>> findContract(
+      String externalId) async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/number/$externalId";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final dynamic objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        ContractResponseModel.fromJson(objectResponse)
+    );
   }
 }

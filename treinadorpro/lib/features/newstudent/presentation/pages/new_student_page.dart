@@ -411,7 +411,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
 
       _contractStorage.save(state.objectResponse);
 
-      Navigator.popAndPushNamed(context, AppRoutes.validateCode);
+      Navigator.popAndPushNamed(context, AppRoutes.buildWorkout);
     }
   }
 
