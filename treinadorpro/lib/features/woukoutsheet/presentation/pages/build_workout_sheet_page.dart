@@ -15,6 +15,7 @@ import 'package:treinadorpro/core/domain/entities/goal.dart';
 import 'package:treinadorpro/core/domain/entities/modality.dart';
 import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
@@ -56,13 +57,18 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late Program _program; // = Program.programs.first;
   late Workgroup _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
+
   late StorageService<UserModel> _trainerStorageService;
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+
   late UserModel _userModel;
+  late String _contractToken;
   
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   final WeightUnit _weightUnit = WeightUnit.kg;
+
 
   @override
   void initState() {
@@ -72,7 +78,9 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
     Future.microtask(() async {
 
+      _contractToken = (await _contractTokenStorage.get())!;
       _userModel = (await _trainerStorageService.get())!;
+
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
       ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
