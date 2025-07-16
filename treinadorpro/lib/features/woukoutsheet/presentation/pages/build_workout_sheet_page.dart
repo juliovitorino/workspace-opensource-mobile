@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
@@ -7,6 +9,7 @@ import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
 import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
+import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
 import 'package:treinadorpro/core/domain/entities/trainer_user.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
@@ -26,6 +29,8 @@ import 'package:treinadorpro/core/provider/program_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/workout_group_card.dart';
 
 import '../../../../core/data/models/goal_model.dart';
 import '../../../../core/data/models/modality_model.dart';
@@ -52,39 +57,44 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
   late final AppConfig config;
 
+  late final Map<String, List<UserWorkoutPlanModel>> userWorkoutPlanData;
+
   List<Exercise> _filteredExercises = Exercise.exercises;
 
-  late Modality _modality; // = Modality.modalities.first;
-  late Goal _goal; // = Goal.goals.first;
-  late Exercise _exercise; // = Exercise.exercises.first;
-  late Program _program; // = Program.programs.first;
-  late Workgroup _workGroup; // = Workgroup.workGroups.first;
+  late ModalityModel _modality; // = Modality.modalities.first;
+  late GoalModel _goal; // = Goal.goals.first;
+  late ExerciseModel _exercise; // = Exercise.exercises.first;
+  late ProgramModel _program; // = Program.programs.first;
+  late WorkgroupModel _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
+  late ContractResponseModel _contract;
 
   late StorageService<UserModel> _trainerStorageService;
-  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final StorageService<String> _contractTokenStorage =
+      ContractTokenStorageService();
 
   late UserModel _userModel;
   late String _contractToken;
-  
+
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
   ExecutionMethod _executionMethod = ExecutionMethod.serie;
   final WeightUnit _weightUnit = WeightUnit.kg;
-
 
   @override
   void initState() {
     super.initState();
     config = ref.read(appConfigProvider);
     _trainerStorageService = TrainerUserStorageService();
+    userWorkoutPlanData = {};
 
     Future.microtask(() async {
-
       _contractToken = (await _contractTokenStorage.get())!;
       _userModel = (await _trainerStorageService.get())!;
 
-      ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
+      ref
+          .read(findContractViewModelProvider.notifier)
+          .findContract(_contractToken);
       ref.read(modalityViewModelProvider.notifier).findAllActiveModalities();
       ref.read(goalViewModelProvider.notifier).findAllActiveGoals();
       ref.read(exerciseViewModelProvider.notifier).findAllActiveExercises();
@@ -92,8 +102,6 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       ref
           .read(workgroupViewListModelProvider.notifier)
           .findAllActiveWorkgroups();
-      // ref.read(trainingPackStudentsFromTrainerViewListModelProvider.notifier)
-      //     .findAllStudentsFromTrainer(_userModel.uuidId);
     });
   }
 
@@ -176,7 +184,9 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     );
   }
 
-  Widget _buildStudentSearchable(List<StudentsFromTrainerResponseModel> studentList) {
+  Widget _buildStudentSearchable(
+    List<StudentsFromTrainerResponseModel> studentList,
+  ) {
     final sortedStudentList = [...studentList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
     return ProWidgetSearchableDropdown<StudentsFromTrainerResponseModel>(
@@ -187,7 +197,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     );
   }
 
-  Widget _buildCard(ContractResponseModel contract){
+  Widget _buildCard(ContractResponseModel contract) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -200,10 +210,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               children: [
                 Text(
                   '${contract.studentUser.name}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -212,13 +219,11 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               '${contract.description} • ${contract.trainingPack.description}',
             ),
             Text('📍 SMV360'),
-
           ],
         ),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +234,9 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final workgroupState = ref.watch(workgroupViewListModelProvider);
     // final trainingPackState = ref.watch(trainingPackStudentsFromTrainerViewListModelProvider);
     final contractState = ref.watch(findContractViewModelProvider);
+
+    final workoutEntries = userWorkoutPlanData.entries.toList();
+    print("workoutEntries ${workoutEntries.length}");
 
     return Scaffold(
       appBar: AppBar(
@@ -250,17 +258,13 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               // student
               Text('Aluno'),
               contractState.when(
-                  data: (contract) => _buildCard(contract.objectResponse),
-                  error: (e,_)=>Center(child: Text('error: $e')),
-                  loading: () => Center(child: CircularProgressIndicator())),
-
-              // // student
-              // Text('Aluno'),
-              // trainingPackState.when(
-              //   data: (studentList) => _buildStudentSearchable(studentList),
-              //   error: (e, _) => Center(child: Text('Error: $e')),
-              //   loading: () => Center(child: CircularProgressIndicator()),
-              // ),
+                data: (contract) {
+                  _contract = contract.objectResponse;
+                  return _buildCard(contract.objectResponse);
+                },
+                error: (e, _) => Center(child: Text('error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
+              ),
 
               // Modality
               Text('Modalidade'),
@@ -390,7 +394,32 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               ElevatedButton.icon(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // lógica de salvar aluno
+                    setState(() {
+                      print("Entrei");
+                      userWorkoutPlanData.putIfAbsent(
+                        _workGroup.namePt,
+                        () => [],
+                      );
+                      userWorkoutPlanData[_workGroup.namePt]!.add(
+                        UserWorkoutPlanModel(
+                          contract: _contract,
+                          modality: _modality,
+                          goal: _goal,
+                          program: _program,
+                          // customProgram: _, //colocar
+                          workGroup: _workGroup,
+                          exercise: _exercise,
+                          // customExercise: _exe, // colocar
+                          executionTime: _executionTimeController.text,
+                          executionMethod: _executionMethod,
+                          restTime: _restController.text,
+                          qtyReps: int.parse(_repsController.text),
+                          qtySeries: int.parse(_seriesController.text),
+                          control: '${DateTime.now().microsecondsSinceEpoch}'
+
+                        ),
+                      );
+                    });
                   }
                 },
                 icon: Icon(Icons.check_circle),
@@ -412,6 +441,41 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                 onPressed: () => Navigator.pop(context),
                 child: Text('Cancelar'),
               ),
+
+              // preview
+              ProWidgetSectionTitle(title: 'Prévia da Ficha de Treino'),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(12),
+                itemCount: workoutEntries.length,
+                itemBuilder: (context, index) {
+                  final entry = workoutEntries[index];
+                  print("lvb = ${entry.key}");
+                  return WorkoutGroupCard(
+                    groupName: entry.key,
+                    exercises: entry.value,
+                    onDelete: (e) {
+                      setState(() {
+                        print("cheguei ${e.workGroup.namePt}");
+                        userWorkoutPlanData[e.workGroup.namePt]?.removeWhere((item) => item.control == e.control);
+                        final _exercisesGroup = userWorkoutPlanData[e.workGroup.namePt];
+                        if(_exercisesGroup!.isEmpty){
+                          print('entrei 2');
+                          if(userWorkoutPlanData.containsKey(e.workGroup.namePt)){
+                            print('deletando');
+                            userWorkoutPlanData.remove(e.workGroup.namePt);
+                          }
+
+                        }
+                      });
+                    },
+                  );
+                },
+              ),
+              // ListView(children: userWorkoutPlanData.entries.map((entry) {
+              //   return WorkoutGroupCard(groupName: entry.key, exercises: entry.value);
+              // }).toList())
             ],
           ),
         ),
