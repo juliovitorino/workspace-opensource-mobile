@@ -43,8 +43,6 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
     Future.microtask(() {
       _loadPage();
     });
-    // copy from mocked if environment is dev
-    packTrainingEntityList = TrainingPack.trainingPacks.toList();
   }
 
   void _onScroll() {

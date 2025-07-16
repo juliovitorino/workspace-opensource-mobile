@@ -211,18 +211,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   icon: Icon(Icons.person_add),
                   label: Text('Novo Aluno'),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BuildWorkoutSheetPage(),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.fitness_center),
-                  label: Text('Montar Treino'),
-                ),
               ],
             ),
 

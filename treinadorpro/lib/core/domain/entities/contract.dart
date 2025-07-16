@@ -64,22 +64,4 @@ class Contract {
     this.updatedAt,
   });
 
-  static final List<Contract> mockContracts = [
-    Contract(
-      id: 1,
-      externalId: '5c238d12-3f8b-4d95-aaff-123456789003',
-      packTrainingEntity: TrainingPack.trainingPacks[0],
-      studentUser: User.users[1],
-      goalDescription: 'Ganhar massa muscular',
-      price: Decimal.parse('299.90'),
-      currency: 'BRL',
-      monday: '07:00',
-      tuesday: '07:00',
-      wednesday: '07:00',
-      duration: '60 minutos',
-      status: 'A',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    ),
-  ];
 }
