@@ -11,7 +11,7 @@ class TrainingPack {
   final String externalId;
 
   @ignore
-  final User? personalUser;
+  final User? personalTrainer;
 
   @ignore
   final Modality? modality;
@@ -29,7 +29,7 @@ class TrainingPack {
   const TrainingPack({
     this.id,
     required this.externalId,
-    this.personalUser,
+    this.personalTrainer,
     this.modality,
     required this.description,
     required this.durationDays,

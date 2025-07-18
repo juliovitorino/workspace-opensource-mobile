@@ -15,9 +15,9 @@ class UserWorkoutPlanModel {
   final int? id;
   final String? externalId;
   final ContractResponseModel contract;
-  final ModalityModel modality;
-  final GoalModel goal;
-  final ProgramModel program;
+  final ModalityModel? modality;
+  final GoalModel? goal;
+  final ProgramModel? program;
   final WorkgroupModel workGroup;
   final ExerciseModel? exercise;
   final String? customExercise;
@@ -41,9 +41,9 @@ class UserWorkoutPlanModel {
     this.id,
     this.externalId,
     required this.contract,
-    required this.modality,
-    required this.goal,
-    required this.program,
+    this.modality,
+    this.goal,
+    this.program,
     required this.workGroup,
     this.exercise,
     this.customExercise,
