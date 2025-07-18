@@ -466,6 +466,16 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                       );
 
                       _userPlanDraft.save(draft, _contract.externalId);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Exercício inserido no rascunho com sucesso!👍'),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+
+
                     });
                   }
                 },
