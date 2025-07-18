@@ -56,27 +56,42 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                   ),
                 ),
 
-                // Total qty exercises
-                const SizedBox(width: 8),
-                Icon(Icons.fitness_center),
-                Text(
-                  '${widget.exercises.length}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      // Total qty exercises
+                      // const SizedBox(width: 8),
+                      Icon(Icons.fitness_center),
+                      Text(
+                        '${widget.exercises.length}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]
+                    ),
+                    Row(
+                      children: [
+
+                        // total time exercises
+                        // const SizedBox(width: 8),
+                        Icon(Icons.access_time),
+                        Text(
+                          '$totalCombined min',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
 
-                // total time exercises
-                const SizedBox(width: 8),
-                Icon(Icons.access_time),
-                Text(
-                  '$totalCombined min',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+
+
 
 
                 // delete icon
