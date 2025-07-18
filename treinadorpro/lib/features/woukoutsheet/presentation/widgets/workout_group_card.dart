@@ -25,6 +25,14 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
 
   @override
   Widget build(BuildContext context) {
+    int totalCombined = widget.exercises.fold<int>(
+      0,
+          (sum, item) =>
+      sum +
+          (int.tryParse(item.restTime ?? '0') ?? 0) +
+          (int.tryParse(item.executionTime ?? '0') ?? 0),
+    );
+
     return Card(
       margin: const EdgeInsets.all(12),
       elevation: 4,
@@ -36,6 +44,8 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
           children: [
             Row(
               children: [
+
+                // Workgoup name
                 Expanded(
                   child: Text(
                     widget.groupName,
@@ -46,7 +56,31 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                   ),
                 ),
 
+                // Total qty exercises
+                const SizedBox(width: 8),
+                Icon(Icons.fitness_center),
+                Text(
+                  '${widget.exercises.length}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                // total time exercises
+                const SizedBox(width: 8),
+                Icon(Icons.access_time),
+                Text(
+                  '$totalCombined min',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+
                 // delete icon
+                const SizedBox(width: 8),
                 if(_isShowDeleteGroupIcon)
                   IconButton(
                     onPressed: () => setState(() {

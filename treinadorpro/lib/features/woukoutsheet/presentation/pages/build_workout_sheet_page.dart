@@ -30,6 +30,7 @@ import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/provider/program_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_searchable_dropdown.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/workout_group_card.dart';
@@ -273,6 +274,18 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     final workoutEntries = userWorkoutPlanData.entries.toList();
     print("workoutEntries ${workoutEntries.length}");
 
+    int totalRestTime = 0;
+    int totalExecutionTime = 0;
+
+    userWorkoutPlanData.forEach((key, exerciseList) {
+      for (var exercise in exerciseList) {
+        totalRestTime += int.tryParse(exercise.restTime ?? '0') ?? 0;
+        totalExecutionTime += int.tryParse(exercise.executionTime ?? '0') ?? 0;
+      }
+    });
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Montar Treino'),
@@ -466,6 +479,16 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                       );
 
                       _userPlanDraft.save(draft, _contract.externalId);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Exercício inserido no rascunho com sucesso!👍'),
+                          duration: Duration(seconds: 3),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+
+
                     });
                   }
                 },
@@ -490,7 +513,10 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               ),
 
               // preview
-              ProWidgetSectionTitle(title: 'Prévia da Ficha de Treino'),
+              const SizedBox(height: 10,),
+              ProWidgetSectionTitle(title: 'Rascunho da Ficha de Treino'),
+              ProWidgetInfoRow(label: 'Aluno', value: _contract.studentUser.name),
+              ProWidgetInfoRow(label: 'Tempo total estimado de treino', value: '${totalRestTime + totalExecutionTime} min'),
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
