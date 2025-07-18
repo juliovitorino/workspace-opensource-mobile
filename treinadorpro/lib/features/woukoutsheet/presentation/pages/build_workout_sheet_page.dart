@@ -8,6 +8,7 @@ import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
 import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
@@ -21,6 +22,7 @@ import 'package:treinadorpro/core/domain/entities/program.dart';
 import 'package:treinadorpro/core/domain/entities/work_group.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/user_data_sheet_plan_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/provider/exercise_provider.dart';
@@ -57,14 +59,14 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
   late final AppConfig config;
 
-  late final Map<String, List<UserWorkoutPlanModel>> userWorkoutPlanData;
+  late Map<String, List<UserWorkoutPlanModel>> userWorkoutPlanData;
 
   List<Exercise> _filteredExercises = Exercise.exercises;
 
-  late ModalityModel _modality; // = Modality.modalities.first;
-  late GoalModel _goal; // = Goal.goals.first;
+  late ModalityModel? _modality; // = Modality.modalities.first;
+  late GoalModel? _goal; // = Goal.goals.first;
   late ExerciseModel _exercise; // = Exercise.exercises.first;
-  late ProgramModel _program; // = Program.programs.first;
+  late ProgramModel? _program; // = Program.programs.first;
   late WorkgroupModel _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
   late ContractResponseModel _contract;
@@ -72,9 +74,12 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   late StorageService<UserModel> _trainerStorageService;
   final StorageService<String> _contractTokenStorage =
       ContractTokenStorageService();
+  final UserDataSheetPlanStorageService _userPlanDraft =
+      UserDataSheetPlanStorageService();
 
   late UserModel _userModel;
   late String _contractToken;
+  late UserDataSheetPlanModel? _draft;
 
   TrainerUser _trainerUser = TrainerUser.trainerUsers.first;
 
@@ -91,6 +96,10 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
       _userModel = (await _trainerStorageService.get())!;
+      _draft = await _userPlanDraft.get(_contractToken);
+      if(_draft?.plan != null) {
+        userWorkoutPlanData = _draft!.plan;
+      }
 
       ref
           .read(findContractViewModelProvider.notifier)
@@ -128,10 +137,23 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   Widget _buildModalitySearchable(List<ModalityModel> modalityList) {
     final sortedList = [...modalityList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
+
+    final initial = _draft?.modality == null
+        ? null
+        : sortedList.firstWhere(
+          (m) => m.id == _draft!.modality?.id,
+      orElse: () => sortedList.first,
+    );
+
+    if(initial != null){
+      _modality = initial;
+    }
+
     return ProWidgetSearchableDropdown<ModalityModel>(
       items: sortedList,
       hintTextSearch: "Pesquisar Modalidade...",
       hintTextItem: 'Selecione uma modalidade',
+      initialValue: initial,
       onChanged: (value) => setState(() => _modality = value!),
     );
   }
@@ -139,10 +161,23 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   Widget _buildGoalSearchable(List<GoalModel> goalList) {
     final sortedGoalList = [...goalList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
+
+    final initial = _draft?.goal == null
+        ? null
+        : sortedGoalList.firstWhere(
+          (m) => m.id == _draft!.goal?.id,
+      orElse: () => sortedGoalList.first,
+    );
+
+    if(initial != null){
+      _goal = initial;
+    }
+
     return ProWidgetSearchableDropdown<GoalModel>(
       items: sortedGoalList,
       hintTextSearch: 'Pesquisar Objetivo...',
       hintTextItem: 'Selecione um Objetivo',
+      initialValue: initial,
       onChanged: (value) => setState(() => _goal = value!),
     );
   }
@@ -150,12 +185,24 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   Widget _buildProgramSearchable(List<ProgramModel> programList) {
     final sortedList = [...programList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
+
+    final initial = _draft?.program == null
+        ? null
+        : sortedList.firstWhere(
+          (m) => m.id == _draft!.program?.id,
+      orElse: () => sortedList.first,
+    );
+
+    if(initial != null){
+      _program = initial;
+    }
     return ProWidgetSearchableDropdown<ProgramModel>(
       items: sortedList,
       customTextInputAllowed: true,
       hintTextSearch: "Pesquisar Programa...",
-      hintTextItem: 'Selecione programar',
+      hintTextItem: 'Selecione programa',
       hintCustomTextInput: 'Informe um programa personalizado',
+      initialValue: initial,
       onChanged: (value) => setState(() => _program = value!),
     );
   }
@@ -163,6 +210,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
   Widget _buildWorkgroupSearchable(List<WorkgroupModel> workgroupList) {
     final sortedList = [...workgroupList]
       ..sort((a, b) => a.getName().compareTo(b.getName()));
+
     return ProWidgetSearchableDropdown<WorkgroupModel>(
       items: sortedList,
       hintTextSearch: "Pesquisar Grupo Muscular...",
@@ -184,20 +232,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
     );
   }
 
-  Widget _buildStudentSearchable(
-    List<StudentsFromTrainerResponseModel> studentList,
-  ) {
-    final sortedStudentList = [...studentList]
-      ..sort((a, b) => a.getName().compareTo(b.getName()));
-    return ProWidgetSearchableDropdown<StudentsFromTrainerResponseModel>(
-      hintTextSearch: 'Pesquisar Aluno...',
-      hintTextItem: 'Selecione um aluno',
-      items: sortedStudentList,
-      onChanged: (value) => setState(() => _student = value!),
-    );
-  }
-
-  Widget _buildCard(ContractResponseModel contract) {
+  Widget _buildContractCard(ContractResponseModel contract) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -209,7 +244,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${contract.studentUser.name}',
+                  contract.studentUser.name,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -246,6 +281,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
             title: 'page',
             text: 'build_workout_sheet_page.dart',
           ),
+          IconButton(onPressed: () => _userPlanDraft.clear(_contractToken), icon: Icon(Icons.delete))
         ],
       ),
       body: SingleChildScrollView(
@@ -260,7 +296,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               contractState.when(
                 data: (contract) {
                   _contract = contract.objectResponse;
-                  return _buildCard(contract.objectResponse);
+                  return _buildContractCard(contract.objectResponse);
                 },
                 error: (e, _) => Center(child: Text('error: $e')),
                 loading: () => Center(child: CircularProgressIndicator()),
@@ -391,15 +427,17 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               SizedBox(height: 12),
 
               // Action buttons and links
+
+              // save draft button
               ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     setState(() {
-                      print("Entrei");
                       userWorkoutPlanData.putIfAbsent(
                         _workGroup.namePt,
                         () => [],
                       );
+
                       userWorkoutPlanData[_workGroup.namePt]!.add(
                         UserWorkoutPlanModel(
                           contract: _contract,
@@ -415,15 +453,24 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                           restTime: _restController.text,
                           qtyReps: int.parse(_repsController.text),
                           qtySeries: int.parse(_seriesController.text),
-                          control: '${DateTime.now().microsecondsSinceEpoch}'
-
+                          control: '${DateTime.now().microsecondsSinceEpoch}',
                         ),
                       );
+
+                      final draft = UserDataSheetPlanModel(
+                        contract: _contract,
+                        modality: _modality,
+                        goal: _goal,
+                        program: _program,
+                        plan: userWorkoutPlanData,
+                      );
+
+                      _userPlanDraft.save(draft, _contract.externalId);
                     });
                   }
                 },
                 icon: Icon(Icons.check_circle),
-                label: Text('Salvar Exercício no Rascunho da Ficha'),
+                label: Text('Colocar no Rascunho da Ficha'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),
@@ -432,7 +479,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               OutlinedButton.icon(
                 onPressed: () {},
                 icon: Icon(Icons.calendar_today),
-                label: Text('Ver Ficha de Treino'),
+                label: Text('Aplicar Ficha de Treino'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                 ),
@@ -457,18 +504,30 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                     exercises: entry.value,
                     onDelete: (e) {
                       setState(() {
-                        print("cheguei ${e.workGroup.namePt}");
-                        userWorkoutPlanData[e.workGroup.namePt]?.removeWhere((item) => item.control == e.control);
-                        final _exercisesGroup = userWorkoutPlanData[e.workGroup.namePt];
-                        if(_exercisesGroup!.isEmpty){
-                          print('entrei 2');
-                          if(userWorkoutPlanData.containsKey(e.workGroup.namePt)){
-                            print('deletando');
+                        userWorkoutPlanData[e.workGroup.namePt]?.removeWhere(
+                          (item) => item.control == e.control,
+                        );
+                        final _exercisesGroup =
+                            userWorkoutPlanData[e.workGroup.namePt];
+                        if (_exercisesGroup!.isEmpty) {
+                          if (userWorkoutPlanData.containsKey(
+                            e.workGroup.namePt,
+                          )) {
                             userWorkoutPlanData.remove(e.workGroup.namePt);
                           }
-
                         }
                       });
+
+
+                      final draft = UserDataSheetPlanModel(
+                        contract: _contract,
+                        modality: _modality,
+                        goal: _goal,
+                        program: _program,
+                        plan: userWorkoutPlanData,
+                      );
+
+                      _userPlanDraft.save(draft, _contract.externalId);
                     },
                   );
                 },

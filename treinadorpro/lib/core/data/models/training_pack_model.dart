@@ -10,7 +10,7 @@ class TrainingPackModel extends TrainingPack implements IName{
   const TrainingPackModel({
     int? id,
     required String externalId,
-    required UserModel personalUser,
+    required UserModel personalTrainer,
     required Modality modality,
     required String description,
     required int durationDays,
@@ -24,7 +24,7 @@ class TrainingPackModel extends TrainingPack implements IName{
   }) : super(
     id: id,
     externalId: externalId,
-    personalUser: personalUser,
+    personalTrainer: personalTrainer,
     modality: modality,
     description: description,
     durationDays: durationDays,
@@ -39,10 +39,11 @@ class TrainingPackModel extends TrainingPack implements IName{
 
   factory TrainingPackModel.fromJson(Map<String, dynamic> json) {
     print('training_pack_model :: parsing fromJson has just started');
+    print(json['personalTrainer']);
     final response = TrainingPackModel(
       id: json['id'],
       externalId: json['externalId'],
-      personalUser: UserModel.fromJson(json['personalTrainer']),
+      personalTrainer: UserModel.fromJson(json['personalTrainer']),
       modality: ModalityModel.fromJson(json['modality']),
       description: json['description'],
       durationDays: json['durationDays'],
@@ -63,7 +64,7 @@ class TrainingPackModel extends TrainingPack implements IName{
     return {
       'id': id,
       'externalId': externalId,
-      'personalUser': (personalUser as UserModel).toJson(),
+      'personalTrainer': (personalTrainer as UserModel).toJson(),
       'modality': (modality as ModalityModel).toJson(),
       'description': description,
       'durationDays': durationDays,

@@ -1,10 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/data/models/user_model.dart';
 
-part 'contract_response_model.g.dart';
-
-@JsonSerializable()
 class ContractResponseModel {
   final String externalId;
   final TrainingPackModel trainingPack;
@@ -44,8 +40,47 @@ class ContractResponseModel {
     required this.updatedAt,
   });
 
-  factory ContractResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$ContractResponseModelFromJson(json);
+  factory ContractResponseModel.fromJson(Map<String, dynamic> json) {
+    return ContractResponseModel(
+      externalId: json['externalId'] as String,
+      trainingPack: TrainingPackModel.fromJson(json['trainingPack']),
+      studentUser: UserModel.fromJson(json['studentUser']),
+      description: json['description'] as String,
+      price: (json['price'] as num).toDouble(),
+      currency: json['currency'] as String,
+      monday: json['monday'] as String?,
+      tuesday: json['tuesday'] as String?,
+      wednesday: json['wednesday'] as String?,
+      thursday: json['thursday'] as String?,
+      friday: json['friday'] as String?,
+      saturday: json['saturday'] as String?,
+      sunday: json['sunday'] as String?,
+      duration: json['duration'] as String,
+      status: json['status'] as String,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$ContractResponseModelToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'externalId': externalId,
+      'trainingPack': trainingPack.toJson(),
+      'studentUser': studentUser.toJson(),
+      'description': description,
+      'price': price,
+      'currency': currency,
+      'monday': monday,
+      'tuesday': tuesday,
+      'wednesday': wednesday,
+      'thursday': thursday,
+      'friday': friday,
+      'saturday': saturday,
+      'sunday': sunday,
+      'duration': duration,
+      'status': status,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
 }

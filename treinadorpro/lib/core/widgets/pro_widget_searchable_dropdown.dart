@@ -12,6 +12,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
   final Function(T?)? onChanged;
   final Function()? onClear;
   final bool customTextInputAllowed;
+  final T? initialValue;
 
   const ProWidgetSearchableDropdown({
     super.key,
@@ -22,6 +23,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
     this.hintTextItem = 'Selecione um item',
     this.hintCustomTextInput = 'Campo personalizado',
     this.onClear,
+    this.initialValue,
   });
 
   @override
@@ -47,6 +49,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
     super.initState();
     _initFilteredItems();
     // _filteredItems = List.from(widget.items);
+    _selectedItem = widget.initialValue;
     _filteredItems.sort((a, b) => a.getName().compareTo(b.getName()));
     _searchTextEditingController.addListener(_onSearchChanged);
   }
