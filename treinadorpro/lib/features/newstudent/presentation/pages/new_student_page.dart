@@ -48,6 +48,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _planStartController = TextEditingController();
+  final TextEditingController _planEndDateController = TextEditingController();
   final TextEditingController _objectiveController = TextEditingController();
 
   final StorageService<String> _contractStorage = ContractTokenStorageService();
@@ -316,6 +317,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
       final trainingInfo = TrainingInfoRequest(
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
+        endDate: DateTime.parse(_planEndDateController.text),
         monday: _isCustomTime
             ? _customTimeMon
             : isMonSelected
@@ -592,6 +594,12 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             ProWidgetTextFormField(
               controller: _planStartController,
               label: 'Data de início (AAAA-MM-DD)',
+              keyboardType: TextInputType.datetime,
+            ),
+
+            ProWidgetTextFormField(
+              controller: _planEndDateController,
+              label: 'Data de Encerramento (AAAA-MM-DD)',
               keyboardType: TextInputType.datetime,
             ),
 

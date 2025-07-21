@@ -8,6 +8,7 @@ part 'training_info_request.g.dart';
 class TrainingInfoRequest {
   final String? goal;
   final DateTime? startDate;
+  final DateTime? endDate;
   final String? monday;
   final String? tuesday;
   final String? wednesday;
@@ -20,6 +21,7 @@ class TrainingInfoRequest {
   TrainingInfoRequest({
     this.goal,
     this.startDate,
+    this.endDate,
     this.monday,
     this.tuesday,
     this.wednesday,
