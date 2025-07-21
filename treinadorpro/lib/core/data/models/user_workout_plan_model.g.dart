@@ -13,10 +13,15 @@ UserWorkoutPlanModel _$UserWorkoutPlanModelFromJson(
       externalId: json['externalId'] as String?,
       contract: ContractResponseModel.fromJson(
           json['contract'] as Map<String, dynamic>),
-      modality:
-          ModalityModel.fromJson(json['modality'] as Map<String, dynamic>),
-      goal: GoalModel.fromJson(json['goal'] as Map<String, dynamic>),
-      program: ProgramModel.fromJson(json['program'] as Map<String, dynamic>),
+      modality: json['modality'] == null
+          ? null
+          : ModalityModel.fromJson(json['modality'] as Map<String, dynamic>),
+      goal: json['goal'] == null
+          ? null
+          : GoalModel.fromJson(json['goal'] as Map<String, dynamic>),
+      program: json['program'] == null
+          ? null
+          : ProgramModel.fromJson(json['program'] as Map<String, dynamic>),
       workGroup:
           WorkgroupModel.fromJson(json['workGroup'] as Map<String, dynamic>),
       exercise: json['exercise'] == null
