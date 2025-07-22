@@ -9,6 +9,7 @@ part of 'training_info_request.dart';
 TrainingInfoRequest _$TrainingInfoRequestFromJson(Map<String, dynamic> json) =>
     TrainingInfoRequest(
       goal: json['goal'] as String?,
+      workoutSite: json['workoutSite'] as String?,
       startDate: json['startDate'] == null
           ? null
           : DateTime.parse(json['startDate'] as String),
@@ -29,6 +30,7 @@ Map<String, dynamic> _$TrainingInfoRequestToJson(
         TrainingInfoRequest instance) =>
     <String, dynamic>{
       'goal': instance.goal,
+      'workoutSite': instance.workoutSite,
       'startDate': instance.startDate?.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
       'monday': instance.monday,

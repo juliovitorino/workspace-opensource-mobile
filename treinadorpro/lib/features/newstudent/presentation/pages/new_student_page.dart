@@ -50,6 +50,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
   final TextEditingController _planStartController = TextEditingController();
   final TextEditingController _planEndDateController = TextEditingController();
   final TextEditingController _objectiveController = TextEditingController();
+  final TextEditingController _workoutSiteController = TextEditingController();
 
   final StorageService<String> _contractStorage = ContractTokenStorageService();
 
@@ -315,6 +316,7 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
           : _sundayController.trainingTime;
 
       final trainingInfo = TrainingInfoRequest(
+        workoutSite: _workoutSiteController.text,
         goal: _objectiveController.text,
         startDate: DateTime.parse(_planStartController.text),
         endDate: DateTime.parse(_planEndDateController.text),
@@ -592,9 +594,14 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             //--------------------------------
             ProWidgetSectionTitle(title: 'Informações Sobre o Treino'),
             ProWidgetTextFormField(
+              controller: _workoutSiteController,
+              label: 'Local do Treino',
+              keyboardType: TextInputType.datetime,
+            ),
+
+            ProWidgetTextFormField(
               controller: _planStartController,
               label: 'Data de início (AAAA-MM-DD)',
-              keyboardType: TextInputType.datetime,
             ),
 
             ProWidgetTextFormField(

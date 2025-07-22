@@ -254,7 +254,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
             Text(
               '${contract.description} • ${contract.trainingPack.description}',
             ),
-            Text('📍 SMV360'),
+            Text('📍 ${contract.workoutSite}'),
           ],
         ),
       ),

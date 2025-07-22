@@ -115,6 +115,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
             Text('${contract.currency} ${contract.price}'),
             Text('Pacote: ${contract.trainingPack.description}'),
             Text('Modalidade: ${contract.trainingPack.modality?.namePt}'),
+            Text('Local do Treino: ${contract.workoutSite}'),
             SizedBox(width: 8, height: 10),
 
             _buildDays(contract),
