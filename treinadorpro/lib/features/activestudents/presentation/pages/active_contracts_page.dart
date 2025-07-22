@@ -8,6 +8,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_sto
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
@@ -119,7 +120,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
             _buildDays(contract),
             SizedBox(width: 8, height: 10),
 
-            Text('Contratado em ${contract.createdAt}'),
+            Text('Contratado em ${getDateTimeToDT(contract.createdAt)}'),
             SizedBox(width: 8, height: 10),
 
             Wrap(

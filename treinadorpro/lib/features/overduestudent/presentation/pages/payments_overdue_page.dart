@@ -4,6 +4,7 @@ import 'package:treinadorpro/config/app_config.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/features/registerpayment/presentation/pages/register_payment_page.dart';
 
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
@@ -67,7 +68,7 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
             Text(overduePayment.contract.description),
             SizedBox(height: 4),
             Text(
-              'Vencimento: ${overduePayment.dueDate}  | ${_getDaysLate(overduePayment.dueDate)} dias de atraso',
+              'Vencimento: ${getDateTimeToDate(overduePayment.dueDate)}  | ${_getDaysLate(overduePayment.dueDate)} dias de atraso',
               style: TextStyle(color: Colors.grey[700]),
             ),
             SizedBox(height: 12),

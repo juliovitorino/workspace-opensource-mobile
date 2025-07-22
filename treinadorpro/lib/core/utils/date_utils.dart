@@ -15,3 +15,13 @@ String getCorrectTime(ContractResponseModel contract) {
   int dayOfWeek = now.weekday;
   return mapDOW[dayOfWeek] ?? 'Unavailable time';
 }
+
+String getDateTimeToDate(DateTime dt) {
+  return dt.toString().split(' ')[0];
+}
+
+String getDateTimeToDT(DateTime dt) {
+  final date = dt.toString().split(' ');
+  final time = date[1].split('.');
+  return '${date[0]} ${time[0]}';
+}
