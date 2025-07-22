@@ -388,7 +388,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                     child: _buildTextField(
                       _repsController,
                       'Repetições',
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       required: true,
                     ),
                   ),
@@ -464,7 +464,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                           executionTime: _executionTimeController.text,
                           executionMethod: _executionMethod,
                           restTime: _restController.text,
-                          qtyReps: int.parse(_repsController.text),
+                          qtyReps: _repsController.text,
                           qtySeries: int.parse(_seriesController.text),
                           control: '${DateTime.now().microsecondsSinceEpoch}',
                         ),
