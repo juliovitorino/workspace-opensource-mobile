@@ -428,12 +428,6 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                   border: OutlineInputBorder(),
                   alignLabelWithHint: true,
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'O comentário não pode estar vazio';
-                  }
-                  return null;
-                },
               ),
 
               // actions button
