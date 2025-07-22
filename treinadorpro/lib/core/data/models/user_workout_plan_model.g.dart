@@ -32,7 +32,7 @@ UserWorkoutPlanModel _$UserWorkoutPlanModelFromJson(
       executionMethod: $enumDecodeNullable(
           _$ExecutionMethodEnumMap, json['executionMethod']),
       qtySeries: (json['qtySeries'] as num?)?.toInt(),
-      qtyReps: (json['qtyReps'] as num?)?.toInt(),
+      qtyReps: json['qtyReps'] as String?,
       execution: json['execution'] as String?,
       executionTime: json['executionTime'] as String?,
       restTime: json['restTime'] as String?,

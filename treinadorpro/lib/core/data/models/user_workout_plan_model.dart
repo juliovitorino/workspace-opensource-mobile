@@ -24,7 +24,7 @@ class UserWorkoutPlanModel {
   final String? customProgram;
   final ExecutionMethod? executionMethod;
   final int? qtySeries;
-  final int? qtyReps;
+  final String? qtyReps;
   final String? execution;
   final String? executionTime;
   final String? restTime;

@@ -7,6 +7,7 @@ part 'training_info_request.g.dart';
 @JsonSerializable()
 class TrainingInfoRequest {
   final String? goal;
+  final String? workoutSite;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? monday;
@@ -20,6 +21,7 @@ class TrainingInfoRequest {
 
   TrainingInfoRequest({
     this.goal,
+    this.workoutSite,
     this.startDate,
     this.endDate,
     this.monday,

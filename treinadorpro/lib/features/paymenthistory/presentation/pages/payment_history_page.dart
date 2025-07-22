@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/student_payment_response_model.dart';
@@ -60,12 +61,12 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
             Text('${payment.contract.description} | ${payment.contract.trainingPack.description}'),
             SizedBox(height: 4),
             Text(
-              'Vencimento: ${payment.dueDate} ',
+              'Vencimento: ${getDateTimeToDate(payment.dueDate)} ',
               style: TextStyle(color: Colors.grey[700]),
             ),
             SizedBox(height: 4),
             Text(
-              'Pago em: ${payment.paymentDate} ',
+              'Pago em: ${getDateTimeToDate(payment.paymentDate!)} ',
               style: TextStyle(color: Colors.grey[700]),
             ),
             SizedBox(height: 12),
@@ -133,7 +134,7 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pagamentos em Atraso'),
+        title: Text('Pagamentos Recebidos'),
         actions: [
           if(config.isDebugMode)
             ProWidgetInfoAlertDialog(

@@ -254,7 +254,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
             Text(
               '${contract.description} • ${contract.trainingPack.description}',
             ),
-            Text('📍 SMV360'),
+            Text('📍 ${contract.workoutSite}'),
           ],
         ),
       ),
@@ -388,7 +388,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                     child: _buildTextField(
                       _repsController,
                       'Repetições',
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       required: true,
                     ),
                   ),
@@ -428,12 +428,6 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                   border: OutlineInputBorder(),
                   alignLabelWithHint: true,
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'O comentário não pode estar vazio';
-                  }
-                  return null;
-                },
               ),
 
               // actions button
@@ -464,7 +458,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                           executionTime: _executionTimeController.text,
                           executionMethod: _executionMethod,
                           restTime: _restController.text,
-                          qtyReps: int.parse(_repsController.text),
+                          qtyReps: _repsController.text,
                           qtySeries: int.parse(_seriesController.text),
                           control: '${DateTime.now().microsecondsSinceEpoch}',
                         ),

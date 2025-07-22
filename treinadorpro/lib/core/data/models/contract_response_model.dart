@@ -6,6 +6,7 @@ class ContractResponseModel {
   final TrainingPackModel trainingPack;
   final UserModel studentUser;
   final String description;
+  final String? workoutSite;
   final double price;
   final String currency;
   final String? monday;
@@ -25,6 +26,7 @@ class ContractResponseModel {
     required this.trainingPack,
     required this.studentUser,
     required this.description,
+    this.workoutSite,
     required this.price,
     required this.currency,
     this.monday,
@@ -46,6 +48,7 @@ class ContractResponseModel {
       trainingPack: TrainingPackModel.fromJson(json['trainingPack']),
       studentUser: UserModel.fromJson(json['studentUser']),
       description: json['description'] as String,
+      workoutSite: json['workoutSite'] as String,
       price: (json['price'] as num).toDouble(),
       currency: json['currency'] as String,
       monday: json['monday'] as String?,
@@ -68,6 +71,7 @@ class ContractResponseModel {
       'trainingPack': trainingPack.toJson(),
       'studentUser': studentUser.toJson(),
       'description': description,
+      'workoutSite': workoutSite,
       'price': price,
       'currency': currency,
       'monday': monday,
