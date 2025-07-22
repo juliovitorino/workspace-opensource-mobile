@@ -4,6 +4,8 @@ import 'package:treinadorpro/core/data/models/training_pack_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_field_container.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_text_form_field.dart';
 
+import '../utils/string_utils.dart';
+
 class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
   final List<T> items;
   final String? hintTextSearch;
@@ -69,11 +71,14 @@ class _ProWidgetSearchableDropdownState<T extends IName>
       if (_searchTextEditingController.text.isEmpty) {
         _filteredItems = List.from(widget.items);
       } else {
+        final searchText = removeDiacritics(_searchTextEditingController.text.toLowerCase());
+
         _filteredItems = widget.items
             .where(
-              (item) => item.getName().toLowerCase().contains(
-                _searchTextEditingController.text.toLowerCase(),
-              ),
+              (item) {
+                final itemName = removeDiacritics(item.getName().toLowerCase());
+                return itemName.contains(searchText);
+              },
             )
             .toList();
         // print('Itens filtrados = $_filteredItems');
