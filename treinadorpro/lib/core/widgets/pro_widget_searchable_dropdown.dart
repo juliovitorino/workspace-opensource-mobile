@@ -13,6 +13,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
   final String? hintCustomTextInput;
   final Function(T?)? onChanged;
   final Function()? onClear;
+  final Function(String?)? onCustomTextInputChanged;
   final bool customTextInputAllowed;
   final T? initialValue;
 
@@ -21,6 +22,7 @@ class ProWidgetSearchableDropdown<T extends IName> extends StatefulWidget {
     required this.items,
     this.hintTextSearch = 'Pesquisar...',
     this.onChanged,
+    this.onCustomTextInputChanged,
     this.customTextInputAllowed = false,
     this.hintTextItem = 'Selecione um item',
     this.hintCustomTextInput = 'Campo personalizado',
@@ -54,6 +56,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
     _selectedItem = widget.initialValue;
     _filteredItems.sort((a, b) => a.getName().compareTo(b.getName()));
     _searchTextEditingController.addListener(_onSearchChanged);
+    _customTextEditingController.addListener(_onCustomTextChanged);
   }
 
   @override
@@ -64,6 +67,12 @@ class _ProWidgetSearchableDropdownState<T extends IName>
 
   void _initFilteredItems() {
     _filteredItems = List.from(widget.items);
+  }
+
+  void _onCustomTextChanged() {
+    if(!_customTextEditingController.text.isEmpty){
+      widget.onCustomTextInputChanged!(_customTextEditingController.text);
+    }
   }
 
   void _onSearchChanged() {
@@ -137,6 +146,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                     _isShowCloseIcon = true;
                     if (widget.onChanged != null) {
                       widget.onChanged!(newValue);
+                      widget.onCustomTextInputChanged!(null);
                     }
                   });
                 },
@@ -183,6 +193,7 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                     _isSeachableItem = false;
                     _isShowItemToSelect = false;
                     _isShowCustomTextInput = true;
+                    _customTextEditingController.clear();
                   }),
                   icon: const Icon(Icons.edit)
               ),

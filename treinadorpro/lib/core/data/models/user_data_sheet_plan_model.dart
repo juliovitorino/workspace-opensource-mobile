@@ -35,7 +35,7 @@ class UserDataSheetPlanModel {
       contract: ContractResponseModel.fromJson(json['contract']),
       modality: ModalityModel.fromJson(json['modality']),
       goal: GoalModel.fromJson(json['goal']),
-      program: ProgramModel.fromJson(json['program']),
+      program: json['program'] != null ?ProgramModel.fromJson(json['program']):null,
       plan: planMap,
     );
   }

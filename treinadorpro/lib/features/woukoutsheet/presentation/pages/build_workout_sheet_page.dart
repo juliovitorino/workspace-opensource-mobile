@@ -66,11 +66,16 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
   late ModalityModel? _modality; // = Modality.modalities.first;
   late GoalModel? _goal; // = Goal.goals.first;
-  late ExerciseModel _exercise; // = Exercise.exercises.first;
-  late ProgramModel? _program; // = Program.programs.first;
   late WorkgroupModel _workGroup; // = Workgroup.workGroups.first;
   late StudentsFromTrainerResponseModel _student;
   late ContractResponseModel _contract;
+
+  ProgramModel? _program; // = Program.programs.first;
+  ExerciseModel? _exercise; // = Exercise.exercises.first;
+
+
+  String? _customProgram = '';
+  String? _customExercise = '';
 
   late StorageService<UserModel> _trainerStorageService;
   final StorageService<String> _contractTokenStorage =
@@ -205,6 +210,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       hintCustomTextInput: 'Informe um programa personalizado',
       initialValue: initial,
       onChanged: (value) => setState(() => _program = value!),
+      onCustomTextInputChanged: (value) => _customProgram = value,
     );
   }
 
@@ -230,6 +236,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
       items: sortedExerciseList,
       customTextInputAllowed: true,
       onChanged: (value) => setState(() => _exercise = value!),
+      onCustomTextInputChanged: (value) => _customExercise = value,
     );
   }
 
@@ -451,10 +458,10 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
                           modality: _modality,
                           goal: _goal,
                           program: _program,
-                          // customProgram: _, //colocar
+                          customProgram: _customProgram != null ? _customProgram :null, //colocar
                           workGroup: _workGroup,
                           exercise: _exercise,
-                          // customExercise: _exe, // colocar
+                          customExercise: _customExercise, // colocar
                           executionTime: _executionTimeController.text,
                           executionMethod: _executionMethod,
                           restTime: _restController.text,
