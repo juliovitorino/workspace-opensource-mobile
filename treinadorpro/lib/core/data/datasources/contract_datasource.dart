@@ -8,6 +8,7 @@ import 'package:treinadorpro/core/data/models/create_new_student_contract_reques
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/data/models/response.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
@@ -222,6 +223,37 @@ class ContractDatasource implements IContractDatasource {
     return ApiGenericResponse(
         Response(response['msgcode'], response['mensagem']),
         ContractResponseModel.fromJson(objectResponse)
+    );
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request) async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/student/data-sheet-plan/save";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(request.toJson()));
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final bool objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
     );
   }
 }

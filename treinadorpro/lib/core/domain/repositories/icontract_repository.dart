@@ -5,6 +5,7 @@ import '../../data/models/contract_response_model.dart';
 import '../../data/models/create_new_student_contract_request.dart';
 import '../../data/models/external_id_response_model.dart';
 import '../../data/models/student_payment_response_model.dart';
+import '../../data/models/user_data_sheet_plan_model.dart';
 
 abstract class IContractRespository extends Repository<ExternalIdResponseModel, int>{
   Future<String> save(CreateNewStudentContractRequest request);
@@ -13,4 +14,5 @@ abstract class IContractRespository extends Repository<ExternalIdResponseModel, 
   Future<ApiGenericResponse<ContractResponseModel>> findContract(String externalId);
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentOverduePayment();
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment();
+  Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request);
 }

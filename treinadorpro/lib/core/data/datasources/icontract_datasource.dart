@@ -4,6 +4,7 @@ import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 
 abstract class IContractDatasource extends IRemoteDatasource<ExternalIdResponseModel, int>{
   Future<String> save(CreateNewStudentContractRequest request);
@@ -12,4 +13,5 @@ abstract class IContractDatasource extends IRemoteDatasource<ExternalIdResponseM
   Future<ApiGenericResponse<ContractResponseModel>> findContract(String externalId);
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentOverduePayment();
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment();
+  Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request);
 }
