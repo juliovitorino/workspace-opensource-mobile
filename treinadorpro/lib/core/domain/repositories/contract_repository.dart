@@ -4,6 +4,7 @@ import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/create_new_student_contract_request.dart';
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 
 class ContractRepository implements IContractRespository{
@@ -51,6 +52,11 @@ class ContractRepository implements IContractRespository{
   @override
   Future<ApiGenericResponse<ContractResponseModel>> findContract(String externalId) async {
     return await datasource.findContract(externalId);
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request) async {
+    return await datasource.saveUserDataSheetPlan(request);
   }
 
 }

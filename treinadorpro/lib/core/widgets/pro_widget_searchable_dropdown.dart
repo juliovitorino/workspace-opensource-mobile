@@ -146,7 +146,9 @@ class _ProWidgetSearchableDropdownState<T extends IName>
                     _isShowCloseIcon = true;
                     if (widget.onChanged != null) {
                       widget.onChanged!(newValue);
-                      widget.onCustomTextInputChanged!(null);
+                      if(widget.onCustomTextInputChanged != null){
+                        widget.onCustomTextInputChanged!(null);
+                      }
                     }
                   });
                 },

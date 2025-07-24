@@ -33,8 +33,8 @@ class UserDataSheetPlanModel {
 
     return UserDataSheetPlanModel(
       contract: ContractResponseModel.fromJson(json['contract']),
-      modality: ModalityModel.fromJson(json['modality']),
-      goal: GoalModel.fromJson(json['goal']),
+      modality: json['modality'] != null ? ModalityModel.fromJson(json['modality']) : null,
+      goal: json['goal'] != null ? GoalModel.fromJson(json['goal']) :null,
       program: json['program'] != null ?ProgramModel.fromJson(json['program']):null,
       plan: planMap,
     );
