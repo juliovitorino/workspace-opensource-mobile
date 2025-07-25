@@ -256,4 +256,35 @@ class ContractDatasource implements IContractDatasource {
         objectResponse
     );
   }
+
+  @override
+  Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId)  async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/student/data-sheet-plan/$contractExternalId";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final dynamic objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        UserDataSheetPlanModel.fromJson(objectResponse)
+    );
+  }
 }

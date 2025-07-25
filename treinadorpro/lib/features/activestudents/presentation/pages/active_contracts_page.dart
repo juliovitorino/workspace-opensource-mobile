@@ -6,12 +6,14 @@ import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/contract_token_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/user_data_sheet_plan_storage_service.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
+import '../../../woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
 
 class ActiveContractsPage extends ConsumerStatefulWidget {
   const ActiveContractsPage({super.key});
@@ -25,6 +27,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
   late final AppConfig config;
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final UserDataSheetPlanStorageService _userDataSheetPlanStorageService = UserDataSheetPlanStorageService();
 
   @override
   void initState() {
@@ -128,9 +131,15 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
               children: [
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.group),
-                  label: Text('Ver Todos'),
+                  onPressed: () {
+                    _contractTokenStorage.save(contract.externalId);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => WorkoutSheetDetailPage()), //WorkoutSheetPage()
+                    );
+                  },
+                  icon: Icon(Icons.assignment),
+                  label: Text('Ver Treino'),
                 ),
 
                 SizedBox(width: 8, height: 40),
@@ -146,6 +155,13 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                   },
                   icon: Icon(Icons.fitness_center),
                   label: Text('Montar Treino'),
+                ),
+
+                SizedBox(width: 8, height: 40),
+                ElevatedButton.icon(
+                  onPressed: () async => _userDataSheetPlanStorageService.clear(contract.externalId),
+                  icon: Icon(Icons.delete_forever),
+                  label: Text('Apagar Rascunho Treino'),
                 ),
 
               ],

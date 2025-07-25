@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_page.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+
+import '../../../../config/app_config.dart';
+import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/provider/app_config_provider.dart';
+import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 
 class TodayWorkoutPage extends ConsumerStatefulWidget {
   const TodayWorkoutPage({super.key});
@@ -13,8 +20,18 @@ class TodayWorkoutPage extends ConsumerStatefulWidget {
 }
 
 class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
+
+  late final AppConfig config;
+
+  final StorageService<String> _contractTokenStorage =
+  ContractTokenStorageService();
+
   @override
   void initState() {
+    super.initState();
+
+    config = ref.read(appConfigProvider);
+
     Future.microtask(() async {
       ref
           .read(findAllContractTodayWorkoutViewModelProvider.notifier)
@@ -68,9 +85,10 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
                 SizedBox(width: 8),
                 OutlinedButton.icon(
                   onPressed: () {
+                    _contractTokenStorage.save(contract.externalId);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => WorkoutSheetPage()),
+                      MaterialPageRoute(builder: (_) => WorkoutSheetDetailPage()), //WorkoutSheetPage()
                     );
                   },
                   icon: Icon(Icons.assignment),
@@ -101,7 +119,13 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Treinos de Hoje')),
+      appBar: AppBar(title: Text('Treinos de Hoje'),         actions: [
+        if(config.isDebugMode)
+          ProWidgetInfoAlertDialog(
+            title: "Page",
+            text: "today_workout_page.dart",
+          ),
+      ],),
       body: contractState.when(
         data: (data) => _buildListView(data.objectResponse),
         error: (e, _) => Center(child: Text('error: $e')),
