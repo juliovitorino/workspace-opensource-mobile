@@ -90,10 +90,6 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                   ],
                 ),
 
-
-
-
-
                 // delete icon
                 const SizedBox(width: 8),
                 if(_isShowDeleteGroupIcon)
@@ -133,7 +129,7 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${e.qtySeries}x${e.qtyReps} • Executar em ${e.executionTime}m • descanso: ${e.restTime}m',
+                        '${e.qtySeries}x${e.qtyReps} • Tempo: ${e.executionTime}m • descanso: ${e.restTime}m',
                       ),
                       SizedBox(height: 8),
                       Chip(label: Text(e.executionMethod.toString())),
