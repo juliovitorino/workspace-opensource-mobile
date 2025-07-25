@@ -4,6 +4,7 @@ import 'package:treinadorpro/core/data/datasources/icontract_datasource.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
+import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/domain/repositories/contract_repository.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 import 'package:treinadorpro/core/viewmodel/find_all_student_overdue_payment_view_model.dart';
@@ -13,6 +14,7 @@ import 'package:treinadorpro/core/viewmodel/new_student_view_model.dart';
 import '../viewmodel/find_all_active_contracts_view_model.dart';
 import '../viewmodel/find_all_contract_today_workout_view_model.dart';
 import '../viewmodel/find_all_student_received_payment_view_model.dart';
+import '../viewmodel/find_user_workout_data_sheet_plan_view_model.dart';
 import 'app_config_provider.dart';
 import 'http_api_client_provider.dart';
 
@@ -83,4 +85,13 @@ final findContractViewModelProvider =
     >((ref) {
       final repository = ref.read(contractRepositoryProvider);
       return FindContractViewModel(repository);
+    });
+
+final findUserWorkoutDataSheetPlanViewModelProvider =
+    StateNotifierProvider<
+      FindUserWorkoutDataSheetPlanViewModel,
+      AsyncValue<ApiGenericResponse<UserDataSheetPlanModel>>
+    >((ref) {
+      final repository = ref.read(contractRepositoryProvider);
+      return FindUserWorkoutDataSheetPlanViewModel(repository);
     });

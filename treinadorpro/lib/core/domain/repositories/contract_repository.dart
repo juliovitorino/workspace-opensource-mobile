@@ -59,4 +59,8 @@ class ContractRepository implements IContractRespository{
     return await datasource.saveUserDataSheetPlan(request);
   }
 
+  @override
+  Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId) async {
+    return await datasource.findUserWorkoutDataSheetPlan(contractExternalId);
+  }
 }

@@ -302,6 +302,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
         totalExecutionTime += int.tryParse(exercise.executionTime ?? '0') ?? 0;
       }
     });
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -518,6 +519,8 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               label: 'Tempo total estimado de treino',
               value: '${totalRestTime + totalExecutionTime} min',
             ),
+
+
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -614,7 +617,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
         ),
       );
 
-      Navigator.popAndPushNamed(context, AppRoutes.workoutSheetPage);
+      Navigator.popAndPushNamed(context, AppRoutes.workoutSheetDetailPage);
     }
   }
 
