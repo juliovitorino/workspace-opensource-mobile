@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 
 import '../../../../config/app_config.dart';
@@ -14,11 +15,13 @@ import '../../../../core/data/models/user_data_sheet_plan_model.dart';
 import '../../../../core/data/models/user_workout_plan_model.dart';
 import '../../../../core/domain/repositories/icontract_repository.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_data_sheet_plan_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
+import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../blocs/build_workout_sheet_cubit.dart';
 import '../widgets/workout_group_card.dart';
@@ -43,13 +46,12 @@ class _WorkoutSheetDetailPageState
   late UserDataSheetPlanModel _userDataSheetSaved;
 
   ProgramModel? _program; // = Program.programs.first;
+  List<UserWorkoutPlanModel>? exerciseList;
+  bool _isEnableStartTrainingButton = false;
 
-
-  final StorageService<String> _contractTokenStorage =
-      ContractTokenStorageService();
-  final UserDataSheetPlanStorageService _userPlanDraft =
-  UserDataSheetPlanStorageService();
-
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
+  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage = UserTrainingStorageService();
 
   @override
   void initState() {
@@ -62,11 +64,6 @@ class _WorkoutSheetDetailPageState
 
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
-      // _userModel = (await _trainerStorageService.get())!;
-      // _draft = await _userPlanDraft.get(_contractToken);
-      // if (_draft?.plan != null) {
-      //   userWorkoutPlanData = _draft!.plan;
-      // }
       ref
           .read(findContractViewModelProvider.notifier)
           .findContract(_contractToken);
@@ -114,7 +111,6 @@ class _WorkoutSheetDetailPageState
               '${contract.description} • ${contract.trainingPack.description}',
             ),
             Text('📍 ${contract.workoutSite}'),
-
           ],
         ),
       ),
@@ -137,7 +133,6 @@ class _WorkoutSheetDetailPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // student
-          Text('Aluno'),
           contractState.when(
             data: (contract) {
               _contract = contract.objectResponse;
@@ -147,91 +142,129 @@ class _WorkoutSheetDetailPageState
             loading: () => Center(child: CircularProgressIndicator()),
           ),
 
+          // pin message
           SizedBox(height: 16),
-          ProWidgetPin(pinMessage: 'Selecione abaixo os treinos que você quer aplicar ao seu aluno'),
+          ProWidgetPin(
+            pinMessage:
+                'Selecione abaixo os exercícios que você quer treinar com seu aluno',
+          ),
+
+          // exercise list
           SizedBox(height: 16),
           userDataSheetState.when(
-              data: (data) => _buildExercisesListView(context, data.objectResponse),
-              error: (e,_)=> Center(child: Text('error: $e')),
-              loading: () => Center(child: CircularProgressIndicator())),
-
-          SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              _contractTokenStorage.save(_contract.externalId);
-              _userPlanDraft.save(_userDataSheetSaved, _contract.externalId);
-              Navigator.popAndPushNamed(context, AppRoutes.buildWorkout);
-            },
-            icon: Icon(Icons.check),
-            label: Text('Modificar Ficha de Treino'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              minimumSize: Size.fromHeight(50),
-            ),
+            data: (data) =>
+                _buildExercisesListView(context, data.objectResponse),
+            error: (e, _) => Center(child: Text('error: $e')),
+            loading: () => Center(child: CircularProgressIndicator()),
           ),
+
+          // start workout button
+          SizedBox(height: 16),
+          if (_isEnableStartTrainingButton)
+            ElevatedButton.icon(
+              onPressed: () => _showAlertDialogStartTraining(context),
+              icon: Icon(Icons.play_circle),
+              label: Text('Iniciar o Treino'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: Size.fromHeight(50),
+              ),
+            ),
+
+          // change workout plan button
+          SizedBox(height: 16),
+          if (!_isEnableStartTrainingButton)
+            ElevatedButton.icon(
+              onPressed: () {
+                _contractTokenStorage.save(_contract.externalId);
+                _userPlanDraft.save(_userDataSheetSaved, _contract.externalId);
+                Navigator.popAndPushNamed(context, AppRoutes.buildWorkout);
+              },
+              icon: Icon(Icons.check),
+              label: Text('Modificar Ficha de Treino'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: Size.fromHeight(50),
+              ),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildExercisesListView(BuildContext context, UserDataSheetPlanModel data){
+  Widget _buildExercisesListView(
+    BuildContext context,
+    UserDataSheetPlanModel data,
+  ) {
     final workoutEntries = data.plan.entries.toList();
     _modality = data.modality;
     _goal = data.goal;
     _program = data.program;
     _userDataSheetSaved = data;
 
-    return
-      ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(12),
-        itemCount: workoutEntries.length,
-        itemBuilder: (context, index) {
-          final entry = workoutEntries[index];
-          return WorkoutGroupCard(
-            groupName: entry.key,
-            exercises: entry.value,
-            onDelete: (e) {
-              setState(() {
-                userWorkoutPlanData[e.workGroup.namePt]?.removeWhere(
-                      (item) => item.control == e.control,
-                );
-                final _exercisesGroup =
-                userWorkoutPlanData[e.workGroup.namePt];
-                if (_exercisesGroup!.isEmpty) {
-                  if (userWorkoutPlanData.containsKey(
-                    e.workGroup.namePt,
-                  )) {
-                    userWorkoutPlanData.remove(e.workGroup.namePt);
-                  }
-                }
-              });
-
-              final draft = UserDataSheetPlanModel(
-                contract: _contract,
-                modality: _modality,
-                goal: _goal,
-                program: _program,
-                plan: userWorkoutPlanData,
-              );
-
-              // _userPlanDraft.save(draft, _contract.externalId);
-            },
-          );
-        },
-      );
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(12),
+      itemCount: workoutEntries.length,
+      itemBuilder: (context, index) {
+        final entry = workoutEntries[index];
+        return WorkoutGroupCard(
+          deleteButtonVisible: false,
+          trainingButtonVisible: true,
+          groupName: entry.key,
+          exercises: entry.value,
+          onAddExerciseList: (list) async {
+            setState(() {
+              exerciseList ??= [];
+              exerciseList!.removeWhere((item) => list.contains(item));
+              exerciseList!.addAll(list);
+              list.forEach((item) => print('${item.exercise?.namePt}'));
+              print('Lista em andamento ${exerciseList?.length}');
+              if (exerciseList!.isNotEmpty) {
+                _isEnableStartTrainingButton = true;
+                _userTrainingStorage.save(exerciseList!, _contract.externalId);
+              }
+            });
+          },
+          onDeleteExerciseList: (list) async {
+            setState(() {
+              exerciseList ??= [];
+              exerciseList!.removeWhere((item) => list.contains(item));
+              _userTrainingStorage.save(exerciseList!, _contract.externalId);
+              if (exerciseList!.isEmpty) {
+                _isEnableStartTrainingButton = false;
+                _userTrainingStorage.clear(_contract.externalId);
+              }
+            });
+          },
+        );
+      },
+    );
   }
 
+  void _showAlertDialogStartTraining(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => ProWidgetAlertDialog(
+        title: 'Vamos treinar?',
+        proceedButton: 'Sim, vamos começar',
+        onProceed: () => Navigator.of(context).pop(),
+        onCancel: () => Navigator.of(context).pop(),
+      ),
+    );
+  }
 
   Future<void> _processFormListenerFromCubitStateChanged(
-      BuildContext context,
-      HandlerState state,
-      ) async {
+    BuildContext context,
+    HandlerState state,
+  ) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel =
-      state.objectResponse as ExceptionApiModel;
+          state.objectResponse as ExceptionApiModel;
 
       print("statusCode = ${exceptionApiModel.statusCode}");
       print("msgcode = ${exceptionApiModel.msgcode}");
@@ -243,10 +276,8 @@ class _WorkoutSheetDetailPageState
     } else if (!state.isLoading && state.errorMessage == null) {
       await showDialog(
         context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Sucesso'),
-          content: Text("Plano Salvo"),
-        ),
+        builder: (_) =>
+            AlertDialog(title: Text('Sucesso'), content: Text("Plano Salvo")),
       );
 
       // Navigator.popAndPushNamed(context, AppRoutes.workoutSheetPage);
