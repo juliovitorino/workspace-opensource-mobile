@@ -48,6 +48,7 @@ UserWorkoutPlanModel _$UserWorkoutPlanModelFromJson(
           ? null
           : DateTime.parse(json['updatedAt'] as String),
       control: json['control'] as String?,
+      trainingStatus: json['trainingStatus'] as String?,
     );
 
 Map<String, dynamic> _$UserWorkoutPlanModelToJson(
@@ -77,6 +78,7 @@ Map<String, dynamic> _$UserWorkoutPlanModelToJson(
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'control': instance.control,
+      'trainingStatus': instance.trainingStatus,
     };
 
 const _$ExecutionMethodEnumMap = {

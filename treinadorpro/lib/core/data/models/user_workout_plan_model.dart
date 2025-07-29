@@ -36,6 +36,7 @@ class UserWorkoutPlanModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? control;
+  final String? trainingStatus;
 
   UserWorkoutPlanModel( {
     this.id,
@@ -62,6 +63,7 @@ class UserWorkoutPlanModel {
     this.createdAt,
     this.updatedAt,
     this.control,
+    this.trainingStatus,
   });
 
   factory UserWorkoutPlanModel.fromJson(Map<String, dynamic> json) =>

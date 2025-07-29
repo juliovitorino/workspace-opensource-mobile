@@ -10,6 +10,7 @@ class WorkoutGroupCard extends StatefulWidget {
   final void Function(List<UserWorkoutPlanModel> exerciseList)? onDeleteExerciseList;
   final bool? deleteButtonVisible;
   final bool? trainingButtonVisible;
+  final bool? showExercises;
 
   const WorkoutGroupCard({
     super.key,
@@ -19,7 +20,8 @@ class WorkoutGroupCard extends StatefulWidget {
     this.onAddExerciseList,
     this.onDeleteExerciseList,
     this.deleteButtonVisible = true,
-    this.trainingButtonVisible = false
+    this.trainingButtonVisible = false,
+    this.showExercises = true,
   });
 
   @override
@@ -28,11 +30,18 @@ class WorkoutGroupCard extends StatefulWidget {
 
 class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
   bool _isShowDeleteIcon = false;
-  bool _isShowExercisesIcon = true;
   bool _isShowDeleteGroupIcon = true;
   bool _applyGreenColor = false;
 
+  late bool _isShowExercisesIcon;
+
   Color? _trainingColor = Colors.grey[200];
+
+  @override
+  void initState(){
+    super.initState();
+    _isShowExercisesIcon = widget.showExercises!;
+  }
 
   @override
   Widget build(BuildContext context) {
