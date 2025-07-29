@@ -6,6 +6,7 @@ import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_status.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -61,6 +62,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       itemCount: _trainingList?.length,
       itemBuilder: (context, index) {
         final training = _trainingList?[index];
+
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 12),
           elevation: 4,
@@ -72,29 +74,65 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(training!.workGroup.namePt, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  '${training!.workGroup.namePt} (${training!.externalId})',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 ListTile(
                   title: Text(
-                    training?.customExercise ?? training?.exercise?.namePt ?? 'Exercício',
+                    training.customExercise ??
+                        training.exercise?.namePt ??
+                        'Exercício',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${training?.qtySeries}x${training?.qtyReps} • Tempo: ${training?.executionTime}m • descanso: ${training?.restTime}m',
+                        '${training.qtySeries}x${training.qtyReps} • Tempo: ${training.executionTime}m • descanso: ${training.restTime}m',
                       ),
                       SizedBox(height: 8),
                       Chip(label: Text(training!.executionMethod.toString())),
+                      SizedBox(height: 8),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            print('oie...');
+                          });
+                        },
+                        icon: Icon(Icons.play_arrow),
+                        label: Text('INICIAR'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          minimumSize: Size.fromHeight(50),
+                        ),
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  Widget _futureBuilderBuild(
+    BuildContext context,
+    AsyncSnapshot<List<UserWorkoutPlanModel>?> snapshot,
+  ) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Erro: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data == null) {
+      return const Center(child: Text('Nenhum dado encontrado.'));
+    } else {
+      // Agora temos os dados, podemos chamar o método que recebe a lista
+      return _buildExercisesListView(snapshot.data!);
+    }
   }
 
   Widget _buildFormArea(
@@ -120,18 +158,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           // exercise list - avoid late initialization
           FutureBuilder<List<UserWorkoutPlanModel>?>(
             future: _trainingListFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Erro: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(child: Text('Nenhum dado encontrado.'));
-              } else {
-                // Agora temos os dados, podemos chamar o método que recebe a lista
-                return _buildExercisesListView(snapshot.data!);
-              }
-            },
+            builder: (context, snapshot) =>
+                _futureBuilderBuild(context, snapshot),
           ),
         ],
       ),
@@ -185,7 +213,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       create: (_) => TrainingPageCubit(_contractRepository),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Treino'),
+          title: Text('Sessão de Treino'),
           actions: [
             if (config.isDebugMode)
               ProWidgetInfoAlertDialog(

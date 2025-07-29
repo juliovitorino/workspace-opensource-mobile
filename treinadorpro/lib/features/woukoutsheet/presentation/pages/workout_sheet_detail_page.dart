@@ -215,6 +215,7 @@ class _WorkoutSheetDetailPageState
       itemBuilder: (context, index) {
         final entry = workoutEntries[index];
         return WorkoutGroupCard(
+          showExercises: false,
           deleteButtonVisible: false,
           trainingButtonVisible: true,
           groupName: entry.key,
