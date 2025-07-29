@@ -49,9 +49,12 @@ class _WorkoutSheetDetailPageState
   List<UserWorkoutPlanModel>? exerciseList;
   bool _isEnableStartTrainingButton = false;
 
-  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
-  final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
-  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage = UserTrainingStorageService();
+  final StorageService<String> _contractTokenStorage =
+      ContractTokenStorageService();
+  final UserDataSheetPlanStorageService _userPlanDraft =
+      UserDataSheetPlanStorageService();
+  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
+      UserTrainingStorageService();
 
   @override
   void initState() {
@@ -252,7 +255,11 @@ class _WorkoutSheetDetailPageState
       builder: (_) => ProWidgetAlertDialog(
         title: 'Vamos treinar?',
         proceedButton: 'Sim, vamos começar',
-        onProceed: () => Navigator.of(context).pop(),
+        onProceed: () {
+          Navigator.of(context).pop();
+          _contractTokenStorage.save(_contractToken);
+          Navigator.popAndPushNamed(context, AppRoutes.trainingPage);
+        },
         onCancel: () => Navigator.of(context).pop(),
       ),
     );
