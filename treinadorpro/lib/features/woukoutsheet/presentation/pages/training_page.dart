@@ -7,6 +7,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_servic
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_status.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -96,9 +97,16 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                       SizedBox(height: 8),
                       ElevatedButton.icon(
                         onPressed: () {
-                          setState(() {
-                            print('oie...');
-                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ExerciseExecutionPage(
+                                exerciseName:
+                                    training.customExercise ??
+                                    training.exercise!.namePt,
+                              ),
+                            ),
+                          );
                         },
                         icon: Icon(Icons.play_arrow),
                         label: Text('INICIAR'),
