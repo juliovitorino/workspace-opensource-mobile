@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_status.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
@@ -33,12 +34,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   late final AppConfig config;
   late String _contractToken;
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
-  // late Future<List<UserWorkoutPlanModel>?> _trainingListFuture;
+  late UserTrainingSessionModel userTrainingSessionModelInstance;
 
-  final StorageService<String> _contractTokenStorage =
-      ContractTokenStorageService();
-  final KeyStorageService<List<UserWorkoutPlanModel>> _trainingStorage =
-      UserTrainingStorageService();
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService = UserWorkoutPlanStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage = UserTrainingSessionStorageService();
 
 
@@ -57,7 +56,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     _contractToken = (await _contractTokenStorage.get())!;
     setState(() {
       _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
-      // _trainingListFuture = _trainingStorage.get(_contractToken);
     });
   }
 
@@ -103,14 +101,12 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                       SizedBox(height: 8),
                       ElevatedButton.icon(
                         onPressed: () {
+                          print('chegando... 1');
+                          _userWorkoutPlanStorageService.save(training, _contractToken);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ExerciseExecutionPage(
-                                exerciseName:
-                                    training.customExercise ??
-                                    training.exercise!.namePt,
-                              ),
+                              builder: (_) => ExerciseExecutionPage(),
                             ),
                           );
                         },
@@ -144,7 +140,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     } else if (!snapshot.hasData || snapshot.data == null) {
       return const Center(child: Text('Nenhum dado encontrado.'));
     } else {
-      // Agora temos os dados, podemos chamar o método que recebe a lista
+      // Now... we have data and we can call method
+      userTrainingSessionModelInstance = snapshot.data!;
       return _buildExercisesListView(snapshot.data!.userWorkoutPlanList);
     }
   }

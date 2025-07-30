@@ -16,6 +16,7 @@ import 'core/constants/app_routes.dart';
 import 'features/trainerprofile/presentation/pages/trainer_profile_page_detail.dart';
 import 'features/validatesixdigit/presentation/validate_six_digit_page.dart';
 import 'features/welcome/presentation/pages/welcome_screen.dart';
+import 'features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 
 class TreinadorProApp extends ConsumerStatefulWidget {
 
@@ -69,6 +70,7 @@ class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
         AppRoutes.workoutSheetPage: (context) => WorkoutSheetPage(),
         AppRoutes.workoutSheetDetailPage: (context) => WorkoutSheetDetailPage(),
         AppRoutes.trainingPage: (context) => TrainingPage(),
+        AppRoutes.exerciseExecutionPage: (context) => ExerciseExecutionPage(),
       },
     );  }
 }

@@ -7,5 +7,6 @@ class AppRoutes {
   static const workoutSheetPage = 'WorkoutSheetPage';
   static const workoutSheetDetailPage = 'WorkoutSheetDetailPage';
   static const trainingPage = 'trainingPage';
+  static const exerciseExecutionPage = 'ExerciseExecutionPage';
 // add more routes if necessary
 }

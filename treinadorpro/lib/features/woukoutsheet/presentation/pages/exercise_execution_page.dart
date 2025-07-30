@@ -1,79 +1,193 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExerciseExecutionPage extends StatefulWidget {
-  final String exerciseName;
+import '../../../../config/app_config.dart';
+import '../../../../core/data/models/user_training_session_model.dart';
+import '../../../../core/data/models/user_workout_plan_model.dart';
+import '../../../../core/domain/repositories/icontract_repository.dart';
+import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
+import '../../../../core/provider/app_config_provider.dart';
+import '../../../../core/provider/contract_provider.dart';
+import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 
-  const ExerciseExecutionPage({super.key, required this.exerciseName});
+class ExerciseExecutionPage extends ConsumerStatefulWidget {
+  const ExerciseExecutionPage({super.key});
 
   @override
-  State<ExerciseExecutionPage> createState() => _ExerciseExecutionPageState();
+  ConsumerState<ExerciseExecutionPage> createState() =>
+      _ExerciseExecutionPageState();
 }
 
-class _ExerciseExecutionPageState extends State<ExerciseExecutionPage> {
-  final List<SetData> sets = List.generate(3, (_) => SetData());
+class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
+  late final AppConfig config;
+  late String _contractToken;
+  late final IContractRespository _contractRepository;
+  late UserTrainingSessionModel? _userTrainingSessionModel;
+  late Future<UserWorkoutPlanModel?> _userWorkoutPlanModelFuture;
+  late UserWorkoutPlanModel? _userWorkoutPlanModelInstance;
+  late List<SetData> sets;
+
+  // final List<SetData> sets = List.generate(3, (_) => SetData());
+
+  final StorageService<String> _contractTokenStorage =
+      ContractTokenStorageService();
+
+  final KeyStorageService<UserTrainingSessionModel>
+  _userTrainingSessionStorage = UserTrainingSessionStorageService();
+
+  final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
+      UserWorkoutPlanStorageService();
+
+  String exerciseName = '...';
+  List<TextEditingController> _weightControllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    config = ref.read(appConfigProvider);
+
+    // vai ser usado futuramente
+    _contractRepository = ref.read(contractRepositoryProvider);
+
+    _initData();
+  }
+
+  void _initData() async {
+    print('ExerciseExecutionPage => _initData');
+    _contractToken = (await _contractTokenStorage.get())!;
+    _userTrainingSessionModel = await _userTrainingSessionStorage.get(
+      _contractToken,
+
+    );
+    _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(
+      _contractToken,
+    );
+
+    sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
+    exerciseName = _userWorkoutPlanModelInstance!.customExercise ?? _userWorkoutPlanModelInstance!.exercise!.namePt;
+
+    setState(() {
+      _userWorkoutPlanModelFuture = _userWorkoutPlanStorageService.get(
+        _contractToken,
+      );
+    });
+  }
+
+  Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: userWorkoutPlanModel.qtySeries,
+      itemBuilder: (context, index) {
+        final set = sets[index];
+        return Card(
+          elevation: 3,
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Série ${index + 1}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _weightControllers[index],
+                        decoration: const InputDecoration(
+                          labelText: "Peso (kg)",
+                        ),
+                        onChanged: (value) =>
+                        set.weight = double.tryParse(value) ?? 0,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "Tempo: ${formatTime(set.elapsedSeconds)}",
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text("Iniciar Série"),
+                      onPressed: set.completed || set.isRunning
+                          ? null
+                          : () => startTimer(set),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.check),
+                      label: const Text("Finalizar Série"),
+                      onPressed: set.isRunning ? () => stopTimer(set) : null,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                if (set.completed)
+                  const Text(
+                    "✅ Série concluída",
+                    style: TextStyle(color: Colors.green),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _builderExercutionSets(
+    BuildContext context,
+    AsyncSnapshot<UserWorkoutPlanModel?> snapshot,
+  ) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Erro: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data == null) {
+      return const Center(child: Text('Nenhum dado encontrado.'));
+    } else {
+      // Now... we have data and we can call method
+      _userWorkoutPlanModelInstance = snapshot.data!;
+      exerciseName = _userWorkoutPlanModelInstance!.customExercise ?? _userWorkoutPlanModelInstance!.exercise!.namePt;
+      // sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
+      _weightControllers = List.generate( _userWorkoutPlanModelInstance!.qtySeries!,          (_) => TextEditingController(),    );
+
+      return _buildExercisesListView(snapshot.data!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.exerciseName)),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: sets.length,
-        itemBuilder: (context, index) {
-          final set = sets[index];
-          return Card(
-            elevation: 3,
-            margin: const EdgeInsets.only(bottom: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Série ${index + 1}", style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(labelText: "Peso (kg)"),
-                          onChanged: (value) => set.weight = double.tryParse(value) ?? 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text("Tempo: ${formatTime(set.elapsedSeconds)}", style: const TextStyle(fontSize: 16)),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.play_arrow),
-                        label: const Text("Iniciar Série"),
-                        onPressed: set.completed || set.isRunning
-                            ? null
-                            : () => startTimer(set),
-                      ),
-                      const SizedBox(width: 12),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.check),
-                        label: const Text("Finalizar Série"),
-                        onPressed: set.isRunning
-                            ? () => stopTimer(set)
-                            : null,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  if (set.completed)
-                    const Text("✅ Série concluída", style: TextStyle(color: Colors.green)),
-                ],
-              ),
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: Text(exerciseName),
+        actions: [
+          if (config.isDebugMode)
+            ProWidgetInfoAlertDialog(title: 'page', text: 'training_page.dart'),
+        ],
       ),
+
+      body: FutureBuilder<UserWorkoutPlanModel?>(
+        future: _userWorkoutPlanModelFuture,
+        builder: (context, snapshot) =>
+            _builderExercutionSets(context, snapshot),
+      ),
+
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton.icon(
@@ -83,7 +197,9 @@ class _ExerciseExecutionPageState extends State<ExerciseExecutionPage> {
             final allDone = sets.every((s) => s.completed);
             if (!allDone) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Todas as séries devem ser concluídas")),
+                const SnackBar(
+                  content: Text("Todas as séries devem ser concluídas"),
+                ),
               );
               return;
             }
