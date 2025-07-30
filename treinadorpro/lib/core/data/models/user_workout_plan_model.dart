@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/data/models/exercise_model.dart';
 import 'package:treinadorpro/core/data/models/goal_model.dart';
 import 'package:treinadorpro/core/data/models/modality_model.dart';
 import 'package:treinadorpro/core/data/models/program_model.dart';
+import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
 import 'package:treinadorpro/core/data/models/work_group_model.dart';
 import 'package:treinadorpro/core/enums/execution_method_enum.dart';
 
@@ -37,6 +38,7 @@ class UserWorkoutPlanModel {
   final DateTime? updatedAt;
   final String? control;
   final String? trainingStatus;
+  final List<UserExecutionSetModel>? userExecutionSetList;
 
   UserWorkoutPlanModel( {
     this.id,
@@ -64,6 +66,7 @@ class UserWorkoutPlanModel {
     this.updatedAt,
     this.control,
     this.trainingStatus,
+    this.userExecutionSetList,
   });
 
   factory UserWorkoutPlanModel.fromJson(Map<String, dynamic> json) =>

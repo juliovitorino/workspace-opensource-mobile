@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
+import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 
@@ -18,6 +21,7 @@ import '../../../../core/infrastructure/localstorage/contract_token_storage_serv
 import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_data_sheet_plan_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
@@ -49,12 +53,10 @@ class _WorkoutSheetDetailPageState
   List<UserWorkoutPlanModel>? exerciseList;
   bool _isEnableStartTrainingButton = false;
 
-  final StorageService<String> _contractTokenStorage =
-      ContractTokenStorageService();
-  final UserDataSheetPlanStorageService _userPlanDraft =
-      UserDataSheetPlanStorageService();
-  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
-      UserTrainingStorageService();
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
+  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage = UserTrainingStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage = UserTrainingSessionStorageService();
 
   @override
   void initState() {
@@ -167,7 +169,7 @@ class _WorkoutSheetDetailPageState
             ElevatedButton.icon(
               onPressed: () => _showAlertDialogStartTraining(context),
               icon: Icon(Icons.play_circle),
-              label: Text('Iniciar o Treino'),
+              label: Text('Iniciar Sessão de Treino'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
@@ -249,6 +251,12 @@ class _WorkoutSheetDetailPageState
     );
   }
 
+  Future<UserTrainingSessionModel> getInstanceUserTrainingSessionModel() async {
+    List<UserWorkoutPlanModel>? userWorkoutPlanList = await _userTrainingStorage.get(_contract.externalId);
+    UserTrainingSessionModel instance = UserTrainingSessionModel(contract: _contract, userWorkoutPlanList: userWorkoutPlanList);
+    return instance;
+  }
+
   void _showAlertDialogStartTraining(BuildContext context) {
     showDialog(
       context: context,
@@ -258,8 +266,13 @@ class _WorkoutSheetDetailPageState
         proceedButton: 'Sim, vamos começar',
         onProceed: () {
           Navigator.of(context).pop();
-          _contractTokenStorage.save(_contractToken);
-          Navigator.popAndPushNamed(context, AppRoutes.trainingPage);
+          getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
+
+            print('userTrainingSessionModel => ${jsonEncode(userTrainingSessionModel)}');
+            _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
+            _contractTokenStorage.save(_contractToken);
+            Navigator.popAndPushNamed(context, AppRoutes.trainingPage);
+          });
         },
         onCancel: () => Navigator.of(context).pop(),
       ),

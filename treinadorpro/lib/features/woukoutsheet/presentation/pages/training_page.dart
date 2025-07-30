@@ -11,9 +11,11 @@ import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_e
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
+import '../../../../core/data/models/user_training_session_model.dart';
 import '../../../../core/domain/repositories/icontract_repository.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
@@ -30,12 +32,15 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   late final IContractRespository _contractRepository;
   late final AppConfig config;
   late String _contractToken;
-  late Future<List<UserWorkoutPlanModel>?> _trainingListFuture;
+  late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
+  // late Future<List<UserWorkoutPlanModel>?> _trainingListFuture;
 
   final StorageService<String> _contractTokenStorage =
       ContractTokenStorageService();
   final KeyStorageService<List<UserWorkoutPlanModel>> _trainingStorage =
       UserTrainingStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage = UserTrainingSessionStorageService();
+
 
   @override
   void initState() {
@@ -51,18 +56,19 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   void _initData() async {
     _contractToken = (await _contractTokenStorage.get())!;
     setState(() {
-      _trainingListFuture = _trainingStorage.get(_contractToken);
+      _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+      // _trainingListFuture = _trainingStorage.get(_contractToken);
     });
   }
 
-  Widget _buildExercisesListView(List<UserWorkoutPlanModel>? _trainingList) {
+  Widget _buildExercisesListView(List<UserWorkoutPlanModel>? trainingList) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(12),
-      itemCount: _trainingList?.length,
+      itemCount: trainingList?.length,
       itemBuilder: (context, index) {
-        final training = _trainingList?[index];
+        final training = trainingList?[index];
 
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 12),
@@ -129,7 +135,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   Widget _futureBuilderBuild(
     BuildContext context,
-    AsyncSnapshot<List<UserWorkoutPlanModel>?> snapshot,
+    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
   ) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
@@ -139,7 +145,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       return const Center(child: Text('Nenhum dado encontrado.'));
     } else {
       // Agora temos os dados, podemos chamar o método que recebe a lista
-      return _buildExercisesListView(snapshot.data!);
+      return _buildExercisesListView(snapshot.data!.userWorkoutPlanList);
     }
   }
 
@@ -153,19 +159,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // student
-          // contractState.when(
-          //   data: (contract) {
-          //     _contract = contract.objectResponse;
-          //     return _buildContractCard(contract.objectResponse);
-          //   },
-          //   error: (e, _) => Center(child: Text('error: $e')),
-          //   loading: () => Center(child: CircularProgressIndicator()),
-          // ),
 
-          // exercise list - avoid late initialization
-          FutureBuilder<List<UserWorkoutPlanModel>?>(
-            future: _trainingListFuture,
+          // exercise list from UserTrainingSessionModel
+          FutureBuilder<UserTrainingSessionModel?>(
+            future: _userTrainingSessionModelFuture,
             builder: (context, snapshot) =>
                 _futureBuilderBuild(context, snapshot),
           ),
