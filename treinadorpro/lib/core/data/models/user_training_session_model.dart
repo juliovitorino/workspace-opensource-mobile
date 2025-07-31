@@ -11,7 +11,9 @@ class UserTrainingSessionModel {
   final String? externalId;
   final ContractResponseModel contract;
   DateTime? startedAt;
-  final DateTime? finishedAt;
+  DateTime? finishedAt;
+  String progressStatus;
+  String syncStatus;
   final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -23,6 +25,8 @@ class UserTrainingSessionModel {
     required this.contract,
     this.startedAt,
     this.finishedAt,
+    this.progressStatus = 'NOT_STARTED',
+    this.syncStatus = 'NOT_STARTED',
     this.status,
     this.createdAt,
     this.updatedAt,

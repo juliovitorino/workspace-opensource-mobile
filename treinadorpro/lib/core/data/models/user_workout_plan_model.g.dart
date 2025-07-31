@@ -48,7 +48,7 @@ UserWorkoutPlanModel _$UserWorkoutPlanModelFromJson(
           ? null
           : DateTime.parse(json['updatedAt'] as String),
       control: json['control'] as String?,
-      trainingStatus: json['trainingStatus'] as String?,
+      trainingStatus: json['trainingStatus'] as String? ?? '',
       userExecutionSetList: (json['userExecutionSetList'] as List<dynamic>?)
           ?.map(
               (e) => UserExecutionSetModel.fromJson(e as Map<String, dynamic>))

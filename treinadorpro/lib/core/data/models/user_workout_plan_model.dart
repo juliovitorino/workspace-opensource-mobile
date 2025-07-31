@@ -37,7 +37,7 @@ class UserWorkoutPlanModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? control;
-  final String? trainingStatus;
+  String? trainingStatus;
   List<UserExecutionSetModel>? userExecutionSetList = [];
 
   UserWorkoutPlanModel( {
@@ -65,7 +65,7 @@ class UserWorkoutPlanModel {
     this.createdAt,
     this.updatedAt,
     this.control,
-    this.trainingStatus,
+    this.trainingStatus = '',
     this.userExecutionSetList,
   });
 

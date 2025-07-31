@@ -19,6 +19,8 @@ UserTrainingSessionModel _$UserTrainingSessionModelFromJson(
       finishedAt: json['finishedAt'] == null
           ? null
           : DateTime.parse(json['finishedAt'] as String),
+      progressStatus: json['progressStatus'] as String? ?? 'NOT_STARTED',
+      syncStatus: json['syncStatus'] as String? ?? 'NOT_STARTED',
       status: json['status'] as String?,
       createdAt: json['createdAt'] == null
           ? null
@@ -39,6 +41,8 @@ Map<String, dynamic> _$UserTrainingSessionModelToJson(
       'contract': instance.contract,
       'startedAt': instance.startedAt?.toIso8601String(),
       'finishedAt': instance.finishedAt?.toIso8601String(),
+      'progressStatus': instance.progressStatus,
+      'syncStatus': instance.syncStatus,
       'status': instance.status,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),

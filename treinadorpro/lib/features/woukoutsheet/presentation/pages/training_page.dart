@@ -6,6 +6,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_servic
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -33,10 +34,15 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
   late UserTrainingSessionModel userTrainingSessionModelInstance;
 
-  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
-  final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService = UserWorkoutPlanStorageService();
-  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage = UserTrainingSessionStorageService();
+  final StorageService<String> _contractTokenStorage =
+      ContractTokenStorageService();
+  final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
+      UserWorkoutPlanStorageService();
+  final KeyStorageService<UserTrainingSessionModel>
+  _userTrainingSessionStorage = UserTrainingSessionStorageService();
 
+  late int totalCompletedExercise;
+  late int totalExercise;
 
   @override
   void initState() {
@@ -52,18 +58,23 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   void _initData() async {
     _contractToken = (await _contractTokenStorage.get())!;
     setState(() {
-      _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+      _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(
+        _contractToken,
+      );
+      totalCompletedExercise = 0;
+      totalExercise = 0;
     });
   }
 
   Widget _buildExercisesListView(List<UserWorkoutPlanModel>? trainingList) {
+    _updateProgressIndicator(trainingList!);
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(12),
-      itemCount: trainingList?.length,
+      itemCount: trainingList.length,
       itemBuilder: (context, index) {
-        final training = trainingList?[index];
+        final training = trainingList[index];
 
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 12),
@@ -77,10 +88,11 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${training!.workGroup.namePt} (${training!.externalId})',
+                  training!.workGroup.namePt.toUpperCase(),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 ListTile(
+                  trailing: training.trainingStatus == 'DONE' ? Text('\u{1F3C5}', style: TextStyle(fontSize: 32),): null,
                   title: Text(
                     training.customExercise ??
                         training.exercise?.namePt ??
@@ -94,26 +106,41 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         '${training.qtySeries}x${training.qtyReps} • Tempo: ${training.executionTime}m • descanso: ${training.restTime}m',
                       ),
                       SizedBox(height: 8),
-                      Chip(label: Text(training!.executionMethod.toString())),
-                      SizedBox(height: 8),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          print('chegando... 1');
-                          _userWorkoutPlanStorageService.save(training, _contractToken);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ExerciseExecutionPage(),
+                      Chip(label: Text(training.executionMethod.toString())),
+                      if(training.trainingStatus != 'DONE')
+                        Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 8),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              _userWorkoutPlanStorageService.save(
+                                training,
+                                _contractToken,
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ExerciseExecutionPage(),
+                                ),
+                              ).then((result) {
+                                if(result){
+                                  setState(() {
+                                    _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+                                  });
+                                }
+
+                              });
+                            },
+                            icon: Icon(Icons.play_arrow),
+                            label: Text('INICIAR O EXERCÍCIO'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                              minimumSize: Size.fromHeight(50),
                             ),
-                          );
-                        },
-                        icon: Icon(Icons.play_arrow),
-                        label: Text('INICIAR'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          minimumSize: Size.fromHeight(50),
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -153,7 +180,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
+          ExerciseProgressCard(completed: totalCompletedExercise, total: totalExercise, percent: 10),
           // exercise list from UserTrainingSessionModel
           FutureBuilder<UserTrainingSessionModel?>(
             future: _userTrainingSessionModelFuture,
@@ -163,6 +190,11 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
         ],
       ),
     );
+  }
+
+  void _updateProgressIndicator(List<UserWorkoutPlanModel> userWorkoutPlanList){
+      totalExercise = userWorkoutPlanList.length;
+      totalCompletedExercise = userWorkoutPlanList.where((e) => e.trainingStatus == 'DONE').toList().length;
   }
 
   Widget _buildForm(
@@ -225,6 +257,25 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           builder: (context, state) => _buildForm(context, state, config),
           listener: (context, state) =>
               _processFormListenerFromCubitStateChanged(context, state),
+        ),
+
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              userTrainingSessionModelInstance.finishedAt = DateTime.now();
+              userTrainingSessionModelInstance.progressStatus = 'FINISHED';
+              userTrainingSessionModelInstance.syncStatus = 'PENDING';
+              _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
+            },
+            icon: Icon(Icons.stop_circle),
+            label: Text('Encerrar Sessão de Treino'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              minimumSize: Size.fromHeight(50),
+            ),
+          ),
         ),
       ),
     );

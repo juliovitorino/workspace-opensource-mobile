@@ -116,7 +116,9 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
       itemCount: userWorkoutPlanModel.qtySeries,
       itemBuilder: (context, index) {
         final set = sets[index];
-        _repsControllers[index].text = userWorkoutPlanModel.qtyReps!;
+        if(_repsControllers[index].text.isEmpty){
+          _repsControllers[index].text = userWorkoutPlanModel.qtyReps!;
+        }
 
         return Card(
           elevation: 3,
@@ -250,6 +252,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
               _userWorkoutPlanModelInstance!.externalId,
         )
         .firstOrNull;
+    userWorkoutPlanFound?.trainingStatus = 'DONE';
     userWorkoutPlanFound?.userExecutionSetList ??= [];
     userWorkoutPlanFound?.userExecutionSetList = _userWorkoutPlanModelInstance!
         .userExecutionSetList!
@@ -292,7 +295,6 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             }
 
             _updateUserExecutionSetListIntoUserTrainingSession();
-            print('2103 _userTrainingSessionModel => ${jsonEncode(_userTrainingSessionModel)}');
             _userWorkoutPlanStorageService.clear(_contractToken);
             _userTrainingSessionStorage.save(_userTrainingSessionModel!, _contractToken);
 
@@ -301,7 +303,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
               const SnackBar(content: Text("Exercício finalizado!")),
             );
 
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
       ),
