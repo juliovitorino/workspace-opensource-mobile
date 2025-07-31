@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class ExerciseProgressCard extends StatelessWidget {
   final int completed;
   final int total;
-  final double percent;
+  final int trainingTime;
 
   const ExerciseProgressCard({
     super.key,
     required this.completed,
     required this.total,
-    required this.percent,
+    required this.trainingTime,
   });
 
   @override
@@ -24,6 +24,19 @@ class ExerciseProgressCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                const Icon(Icons.access_time, size: 24),
+                const SizedBox(width: 8),
+                const Text(
+                  'Tempo Estimado',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text('$trainingTime min'),
+              ],
+            ),
+            const SizedBox(height: 12),
             Row(
               children: [
                 const Icon(Icons.fitness_center, size: 24),
