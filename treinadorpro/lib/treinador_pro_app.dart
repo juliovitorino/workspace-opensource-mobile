@@ -6,6 +6,7 @@ import 'package:treinadorpro/features/dashboard/presentation/pages/dashboard_pag
 import 'package:treinadorpro/features/login/presentation/pages/login_page.dart';
 import 'package:treinadorpro/features/splash/presentation/pages/splash_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/sync_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_page.dart';
@@ -71,6 +72,7 @@ class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
         AppRoutes.workoutSheetDetailPage: (context) => WorkoutSheetDetailPage(),
         AppRoutes.trainingPage: (context) => TrainingPage(),
         AppRoutes.exerciseExecutionPage: (context) => ExerciseExecutionPage(),
+        AppRoutes.syncPage: (context) => SyncPage(),
       },
     );  }
 }
