@@ -49,6 +49,10 @@ UserWorkoutPlanModel _$UserWorkoutPlanModelFromJson(
           : DateTime.parse(json['updatedAt'] as String),
       control: json['control'] as String?,
       trainingStatus: json['trainingStatus'] as String?,
+      userExecutionSetList: (json['userExecutionSetList'] as List<dynamic>?)
+          ?.map(
+              (e) => UserExecutionSetModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$UserWorkoutPlanModelToJson(
@@ -79,6 +83,7 @@ Map<String, dynamic> _$UserWorkoutPlanModelToJson(
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'control': instance.control,
       'trainingStatus': instance.trainingStatus,
+      'userExecutionSetList': instance.userExecutionSetList,
     };
 
 const _$ExecutionMethodEnumMap = {
