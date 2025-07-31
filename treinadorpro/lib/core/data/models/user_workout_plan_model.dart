@@ -38,7 +38,7 @@ class UserWorkoutPlanModel {
   final DateTime? updatedAt;
   final String? control;
   final String? trainingStatus;
-  final List<UserExecutionSetModel>? userExecutionSetList;
+  List<UserExecutionSetModel>? userExecutionSetList = [];
 
   UserWorkoutPlanModel( {
     this.id,

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/user_training_session_model.dart';
@@ -31,6 +33,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   late Future<UserWorkoutPlanModel?> _userWorkoutPlanModelFuture;
   late UserWorkoutPlanModel? _userWorkoutPlanModelInstance;
   late List<SetData> sets;
+  late DateTime _startedAt;
 
   // final List<SetData> sets = List.generate(3, (_) => SetData());
 
@@ -45,6 +48,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
 
   String exerciseName = '...';
   List<TextEditingController> _weightControllers = [];
+  List<TextEditingController> _repsControllers = [];
 
   @override
   void initState() {
@@ -62,14 +66,19 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     _contractToken = (await _contractTokenStorage.get())!;
     _userTrainingSessionModel = await _userTrainingSessionStorage.get(
       _contractToken,
-
     );
+
     _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(
       _contractToken,
     );
 
-    sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
-    exerciseName = _userWorkoutPlanModelInstance!.customExercise ?? _userWorkoutPlanModelInstance!.exercise!.namePt;
+    sets = List.generate(
+      _userWorkoutPlanModelInstance!.qtySeries!,
+      (_) => SetData(),
+    );
+    exerciseName =
+        _userWorkoutPlanModelInstance!.customExercise ??
+        _userWorkoutPlanModelInstance!.exercise!.namePt;
 
     setState(() {
       _userWorkoutPlanModelFuture = _userWorkoutPlanStorageService.get(
@@ -78,13 +87,37 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     });
   }
 
-  Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
+  void _addExecutionSetToUserWorkoutPlanModelInstance(
+    double? weight,
+    DateTime finishedAt,
+    int setNumber,
+    String? reps,
+  ) {
+    if (_userWorkoutPlanModelInstance!.userExecutionSetList == null) {
+      _userWorkoutPlanModelInstance!.userExecutionSetList = [];
+    }
+    _userWorkoutPlanModelInstance!.userExecutionSetList!.add(
+      UserExecutionSetModel(
+        startedAt: _startedAt,
+        finishedAt: finishedAt,
+        setNumber: setNumber,
+        weight: 999,
+        reps: int.tryParse(reps!) ?? 0,
+      ),
+    );
+    print(
+      '_userWorkoutPlanModelInstance => ${jsonEncode(_userWorkoutPlanModelInstance)}',
+    );
+  }
 
+  Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: userWorkoutPlanModel.qtySeries,
       itemBuilder: (context, index) {
         final set = sets[index];
+        _repsControllers[index].text = userWorkoutPlanModel.qtyReps!;
+
         return Card(
           elevation: 3,
           margin: const EdgeInsets.only(bottom: 16),
@@ -94,7 +127,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Série ${index + 1}",
+                  "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -108,7 +141,16 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                           labelText: "Peso (kg)",
                         ),
                         onChanged: (value) =>
-                        set.weight = double.tryParse(value) ?? 0,
+                            set.weight = double.tryParse(value) ?? 0,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _repsControllers[index],
+                        decoration: const InputDecoration(labelText: "Reps"),
+                        onChanged: (value) => set.reps = value,
                       ),
                     ),
                   ],
@@ -126,13 +168,27 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                       label: const Text("Iniciar Série"),
                       onPressed: set.completed || set.isRunning
                           ? null
-                          : () => startTimer(set),
+                          : () {
+                              startTimer(set);
+                              _startedAt = DateTime.now();
+                            },
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.check),
                       label: const Text("Finalizar Série"),
-                      onPressed: set.isRunning ? () => stopTimer(set) : null,
+                      onPressed: set.isRunning
+                          ? () {
+                              _addExecutionSetToUserWorkoutPlanModelInstance(
+                                set.weight,
+                                DateTime.now(),
+                                index + 1,
+                                set.reps ??
+                                    _userWorkoutPlanModelInstance!.qtyReps!,
+                              );
+                              stopTimer(set);
+                            }
+                          : null,
                     ),
                   ],
                 ),
@@ -163,12 +219,42 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     } else {
       // Now... we have data and we can call method
       _userWorkoutPlanModelInstance = snapshot.data!;
-      exerciseName = _userWorkoutPlanModelInstance!.customExercise ?? _userWorkoutPlanModelInstance!.exercise!.namePt;
+      exerciseName =
+          _userWorkoutPlanModelInstance!.customExercise ??
+          _userWorkoutPlanModelInstance!.exercise!.namePt;
       // sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
-      _weightControllers = List.generate( _userWorkoutPlanModelInstance!.qtySeries!,          (_) => TextEditingController(),    );
+
+      _buildControllers();
 
       return _buildExercisesListView(snapshot.data!);
     }
+  }
+
+  void _buildControllers() {
+    _weightControllers = List.generate(
+      _userWorkoutPlanModelInstance!.qtySeries!,
+      (_) => TextEditingController(),
+    );
+
+    _repsControllers = List.generate(
+      _userWorkoutPlanModelInstance!.qtySeries!,
+      (_) => TextEditingController(),
+    );
+  }
+
+  void _updateUserExecutionSetListIntoUserTrainingSession() {
+    final userWorkoutPlanFound = _userTrainingSessionModel?.userWorkoutPlanList
+        ?.where(
+          (userWorkoutPlanItem) =>
+              userWorkoutPlanItem.externalId ==
+              _userWorkoutPlanModelInstance!.externalId,
+        )
+        .firstOrNull;
+    userWorkoutPlanFound?.userExecutionSetList ??= [];
+    userWorkoutPlanFound?.userExecutionSetList = _userWorkoutPlanModelInstance!
+        .userExecutionSetList!
+        .map((e) => UserExecutionSetModel.fromJson(e.toJson()))
+        .toList();
   }
 
   @override
@@ -178,7 +264,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
         title: Text(exerciseName),
         actions: [
           if (config.isDebugMode)
-            ProWidgetInfoAlertDialog(title: 'page', text: 'training_page.dart'),
+            ProWidgetInfoAlertDialog(title: 'page', text: 'exercise_execution_page.dart'),
         ],
       ),
 
@@ -201,12 +287,20 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                   content: Text("Todas as séries devem ser concluídas"),
                 ),
               );
+
               return;
             }
+
+            _updateUserExecutionSetListIntoUserTrainingSession();
+            print('2103 _userTrainingSessionModel => ${jsonEncode(_userTrainingSessionModel)}');
+            _userWorkoutPlanStorageService.clear(_contractToken);
+            _userTrainingSessionStorage.save(_userTrainingSessionModel!, _contractToken);
+
             // TODO: Salvar no backend ou banco local
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Exercício finalizado!")),
             );
+
             Navigator.pop(context);
           },
         ),
@@ -240,6 +334,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
 
 class SetData {
   double weight = 0;
+  String? reps;
   int elapsedSeconds = 0;
   bool completed = false;
   bool isRunning = false;

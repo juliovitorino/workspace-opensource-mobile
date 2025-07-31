@@ -10,7 +10,8 @@ class UserTrainingSessionModel {
   final int? id;
   final String? externalId;
   final ContractResponseModel contract;
-  final DateTime? executionTimestamp;
+  DateTime? startedAt;
+  final DateTime? finishedAt;
   final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -20,7 +21,8 @@ class UserTrainingSessionModel {
     this.id,
     this.externalId,
     required this.contract,
-    this.executionTimestamp,
+    this.startedAt,
+    this.finishedAt,
     this.status,
     this.createdAt,
     this.updatedAt,

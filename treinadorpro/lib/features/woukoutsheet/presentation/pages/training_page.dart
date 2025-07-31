@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
-import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_status.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 
 import '../../../../config/app_config.dart';

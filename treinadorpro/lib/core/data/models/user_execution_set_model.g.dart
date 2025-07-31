@@ -9,21 +9,16 @@ part of 'user_execution_set_model.dart';
 UserExecutionSetModel _$UserExecutionSetModelFromJson(
         Map<String, dynamic> json) =>
     UserExecutionSetModel(
-      id: (json['id'] as num).toInt(),
-      externalId: json['externalId'] as String,
-      userTrainingSessionId: (json['userTrainingSessionId'] as num).toInt(),
-      userWorkoutPlan: json['userWorkoutPlan'] == null
-          ? null
-          : UserWorkoutPlanModel.fromJson(
-              json['userWorkoutPlan'] as Map<String, dynamic>),
+      id: (json['id'] as num?)?.toInt(),
+      externalId: json['externalId'] as String?,
       startedAt: DateTime.parse(json['startedAt'] as String),
       finishedAt: DateTime.parse(json['finishedAt'] as String),
       setNumber: (json['setNumber'] as num).toInt(),
       reps: (json['reps'] as num?)?.toInt(),
       weight: (json['weight'] as num?)?.toDouble(),
-      weightUnit: json['weightUnit'] as String,
+      weightUnit: json['weightUnit'] as String?,
       elapsedTime: (json['elapsedTime'] as num?)?.toInt(),
-      status: json['status'] as String,
+      status: json['status'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -37,8 +32,6 @@ Map<String, dynamic> _$UserExecutionSetModelToJson(
     <String, dynamic>{
       'id': instance.id,
       'externalId': instance.externalId,
-      'userTrainingSessionId': instance.userTrainingSessionId,
-      'userWorkoutPlan': instance.userWorkoutPlan,
       'startedAt': instance.startedAt.toIso8601String(),
       'finishedAt': instance.finishedAt.toIso8601String(),
       'setNumber': instance.setNumber,

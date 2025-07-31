@@ -267,6 +267,7 @@ class _WorkoutSheetDetailPageState
         onProceed: () {
           Navigator.of(context).pop();
           getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
+            userTrainingSessionModel.startedAt = DateTime.now();
 
             print('userTrainingSessionModel => ${jsonEncode(userTrainingSessionModel)}');
             _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);

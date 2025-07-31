@@ -13,9 +13,12 @@ UserTrainingSessionModel _$UserTrainingSessionModelFromJson(
       externalId: json['externalId'] as String?,
       contract: ContractResponseModel.fromJson(
           json['contract'] as Map<String, dynamic>),
-      executionTimestamp: json['executionTimestamp'] == null
+      startedAt: json['startedAt'] == null
           ? null
-          : DateTime.parse(json['executionTimestamp'] as String),
+          : DateTime.parse(json['startedAt'] as String),
+      finishedAt: json['finishedAt'] == null
+          ? null
+          : DateTime.parse(json['finishedAt'] as String),
       status: json['status'] as String?,
       createdAt: json['createdAt'] == null
           ? null
@@ -34,7 +37,8 @@ Map<String, dynamic> _$UserTrainingSessionModelToJson(
       'id': instance.id,
       'externalId': instance.externalId,
       'contract': instance.contract,
-      'executionTimestamp': instance.executionTimestamp?.toIso8601String(),
+      'startedAt': instance.startedAt?.toIso8601String(),
+      'finishedAt': instance.finishedAt?.toIso8601String(),
       'status': instance.status,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
