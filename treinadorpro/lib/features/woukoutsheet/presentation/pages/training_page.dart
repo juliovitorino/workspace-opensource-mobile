@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
@@ -9,6 +10,7 @@ import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/sync_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
 import '../../../../config/app_config.dart';
@@ -40,9 +42,9 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
-      UserWorkoutPlanStorageService();
+  UserWorkoutPlanStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-      UserTrainingSessionStorageService();
+  UserTrainingSessionStorageService();
 
   late int totalCompletedExercise;
   late int totalExercise;
@@ -78,7 +80,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
-        ProWidgetInfoRow(label: 'Status', value: 'INICIADO', widget: ProWidgetTag(text: 'INICIADO', backgroundColor: Colors.white, borderColor: Colors.green)),
+        ProWidgetInfoRow(label: 'Status', value: 'INICIADO', widget: ProWidgetTag(
+            text: 'INICIADO', backgroundColor: Colors.white, borderColor: Colors.green)),
         ExerciseProgressCard(
           completed: totalCompletedExercise,
           total: totalExercise,
@@ -118,7 +121,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${training.qtySeries}x${training.qtyReps} • Tempo: ${training.executionTime}m • descanso: ${training.restTime}m',
+                            '${training.qtySeries}x${training.qtyReps} • Tempo: ${training
+                                .executionTime}m • descanso: ${training.restTime}m',
                           ),
                           SizedBox(height: 8),
                           Chip(label: Text(training.executionMethod.toString())),
@@ -165,10 +169,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     );
   }
 
-  Widget _futureBuilderBuild(
-    BuildContext context,
-    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
-  ) {
+  Widget _futureBuilderBuild(BuildContext context,
+      AsyncSnapshot<UserTrainingSessionModel?> snapshot,) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
@@ -184,7 +186,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;
       trainingTime = 0;
       userWorkoutPlanList?.forEach(
-        (e) => trainingTime += int.parse(e.executionTime!) + int.parse(e.restTime!),
+            (e) => trainingTime += int.parse(e.executionTime!) + int.parse(e.restTime!),
       );
       return _buildExercisesListView(userWorkoutPlanList, snapshot.data!.startedAt!);
     }
@@ -217,16 +219,17 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   Widget _buildForm(BuildContext context, HandlerState state, AppConfig config) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        constraints: BoxConstraints(minHeight: MediaQuery
+            .of(context)
+            .size
+            .height),
         child: _buildFormArea(state, context, config),
       ),
     );
   }
 
-  Future<void> _processFormListenerFromCubitStateChanged(
-    BuildContext context,
-    HandlerState state,
-  ) async {
+  Future<void> _processFormListenerFromCubitStateChanged(BuildContext context,
+      HandlerState state,) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 
@@ -250,21 +253,44 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ProWidgetAlertDialog(
-        title: 'Existe um treino em andamento. Fazendo isso o treino será perdido. Você tem certeza de sair?',
-        proceedButton: 'Sim, abandone o treino',
-        onProceed: () {
-          Navigator.of(context).pop();
-          _userTrainingSessionStorage.clear(_contractToken);
-          Navigator.of(context).pop();
-        },
-        onCancel: () => Navigator.of(context).pop(),
-      ),
+      builder: (_) =>
+          ProWidgetAlertDialog(
+            title: 'Existe um treino em andamento. Fazendo isso o treino será perdido. Você tem certeza de sair?',
+            proceedButton: 'Sim, abandone o treino',
+            onProceed: () {
+              Navigator.of(context).pop();
+              _userTrainingSessionStorage.clear(_contractToken);
+              Navigator.of(context).pop();
+            },
+            onCancel: () => Navigator.of(context).pop(),
+          ),
+    );
+  }
+
+  void _showAlertDialogSyncPage(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) =>
+          ProWidgetAlertDialog(
+            title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
+            proceedButton: 'Sim, salve a ficha',
+            onProceed: () {
+              Navigator.of(context).pop();
+
+              Navigator.popAndPushNamed(context, AppRoutes.syncPage);
+            },
+            onCancel: () {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          ),
     );
   }
 
   void _checkExitPage(BuildContext context) {
-      _showAlertDialogExitPage(context);
+    _showAlertDialogExitPage(context);
   }
 
   @override
@@ -274,7 +300,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Sessão de Treino'),
-          leading: IconButton(onPressed: () => _checkExitPage(context), icon: Icon(Icons.arrow_back)),
+          leading: IconButton(
+              onPressed: () => _checkExitPage(context), icon: Icon(Icons.arrow_back)),
           actions: [
             if (config.isDebugMode)
               ProWidgetInfoAlertDialog(title: 'page', text: 'training_page.dart'),
@@ -293,7 +320,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               userTrainingSessionModelInstance.progressStatus = 'FINISHED';
               userTrainingSessionModelInstance.syncStatus = 'PENDING';
               _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              _showAlertDialogSyncPage(context);
             },
             icon: Icon(Icons.stop_circle),
             label: Text('Encerrar Sessão de Treino'),
