@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class ProWidgetInfoRow extends StatelessWidget {
   final String label;
   final String value;
+  final Widget? widget;
 
-  const ProWidgetInfoRow({super.key, required this.label, required this.value});
+  const ProWidgetInfoRow({super.key, required this.label, required this.value, this.widget});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -13,7 +14,7 @@ class ProWidgetInfoRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text('$label:', style: TextStyle(fontWeight: FontWeight.w500)),
-        Flexible(child: Text(value, textAlign: TextAlign.right)),
+        widget ?? Flexible(child: Text(value, textAlign: TextAlign.right)),
       ],
     ),
   );

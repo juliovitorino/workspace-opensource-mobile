@@ -7,6 +7,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
@@ -77,6 +78,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
+        ProWidgetInfoRow(label: 'Status', value: 'INICIADO', widget: ProWidgetTag(text: 'INICIADO', backgroundColor: Colors.white, borderColor: Colors.green)),
         ExerciseProgressCard(
           completed: totalCompletedExercise,
           total: totalExercise,
@@ -176,7 +178,9 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     } else {
       // Now... we have data and we can call method
       userTrainingSessionModelInstance = snapshot.data!;
-      trainingHasStarted = userTrainingSessionModelInstance.progressStatus != 'NOT_STARTED';
+      userTrainingSessionModelInstance.progressStatus = 'STARTED';
+      trainingHasStarted = true;
+
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;
       trainingTime = 0;
       userWorkoutPlanList?.forEach(
