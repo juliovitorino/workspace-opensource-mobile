@@ -267,28 +267,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     );
   }
 
-  void _showAlertDialogSyncPage(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) =>
-          ProWidgetAlertDialog(
-            title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
-            proceedButton: 'Sim, salve a ficha',
-            onProceed: () {
-              Navigator.of(context).pop();
-
-              Navigator.popAndPushNamed(context, AppRoutes.syncPage);
-            },
-            onCancel: () {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          ),
-    );
-  }
-
   void _checkExitPage(BuildContext context) {
     _showAlertDialogExitPage(context);
   }
@@ -320,8 +298,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               userTrainingSessionModelInstance.progressStatus = 'FINISHED';
               userTrainingSessionModelInstance.syncStatus = 'PENDING';
               _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
-              // Navigator.of(context).pop();
-              _showAlertDialogSyncPage(context);
+              Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
             },
             icon: Icon(Icons.stop_circle),
             label: Text('Encerrar Sessão de Treino'),
