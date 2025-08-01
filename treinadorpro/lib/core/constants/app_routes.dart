@@ -9,5 +9,6 @@ class AppRoutes {
   static const trainingPage = 'trainingPage';
   static const exerciseExecutionPage = 'ExerciseExecutionPage';
   static const syncPage = 'syncPage';
+  static const trainingSummaryPage = 'TrainingSummaryPage';
 // add more routes if necessary
 }

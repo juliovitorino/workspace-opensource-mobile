@@ -35,8 +35,6 @@ class SyncPage extends StatelessWidget {
                 Icon(Icons.smartphone, size: 30),
                 SizedBox(width: 12),
                 Text('Celular'),
-                SizedBox(width: 12),
-                Text('Enviando dados...'),
               ],
             ),
             const SizedBox(height: 16),
