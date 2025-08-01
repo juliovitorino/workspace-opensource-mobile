@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
@@ -22,10 +27,13 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
   late final AppConfig config;
   late String _contractToken;
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
+  late UserTrainingSessionModel _userTrainingSessionInstance;
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-  UserTrainingSessionStorageService();
+      UserTrainingSessionStorageService();
+
+  final TextEditingController _commentsController = TextEditingController();
 
   @override
   void initState() {
@@ -46,108 +54,151 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) =>
-          ProWidgetAlertDialog(
-            title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
-            proceedButton: 'Sim, salve a ficha',
-            onProceed: () {
-              Navigator.of(context).pop();
-
-              Navigator.popAndPushNamed(context, AppRoutes.syncPage);
-            },
-            onCancel: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(
-                  SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          ),
+      builder: (_) => ProWidgetAlertDialog(
+        title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
+        proceedButton: 'Sim, salve a ficha',
+        onProceed: () {
+          Navigator.of(context).pop();
+          _userTrainingSessionInstance.comments = _commentsController.text;
+          _userTrainingSessionStorage.save(_userTrainingSessionInstance, _contractToken);
+          Navigator.popAndPushNamed(context, AppRoutes.syncPage);
+        },
+        onCancel: () {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 
-  Widget _buildSummaryView(UserTrainingSessionModel trainingSession) {
-    return
-
-      Padding
-        (
-        padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            const Text("Aluno: João da Silva"),
-            const Text("Data: 31/07/2025 às 15:22"),
-            const SizedBox(height: 12),
-            const Row(
-              children: [
-                Icon(Icons.check_circle_outline, color: Colors.teal),
-                SizedBox(width: 8),
-                Text("DURAÇÃO: CONCLUÍDO"),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Row(
-              children: [
-                Icon(Icons.fitness_center),
-                SizedBox(width: 8),
-                Text("Exercícios realizados: 8"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Row(
-              children: [Icon(Icons.access_time), SizedBox(width: 8), Text("Séries totais: 24")],
-            ),
-            const SizedBox(height: 8),
-            const Row(
-              children: [
-                Icon(Icons.fitness_center_outlined),
-                SizedBox(width: 8),
-                Expanded(child: Text("Grupos musculares: Peito, Tríceps, Ombro")),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Row(
-              children: [
-                Icon(Icons.stacked_bar_chart),
-                SizedBox(width: 8),
-                Text("Carga média: 42,5 kg"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Row(
-              children: [Icon(Icons.repeat), SizedBox(width: 8), Text("Repetições médias: 10")],
-            ),
-            const SizedBox(height: 24),
-            const Text("Observações:"),
-            const SizedBox(height: 8),
-            TextField(
-              maxLines: 4,
-              decoration: InputDecoration(
-                hintText: "Digite suas observações...",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton.icon(
-                onPressed: () => _showAlertDialogSyncPage(context),
-                icon: Icon(Icons.sync),
-                label: Text('SALVAR E SINCRONIZAR'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size.fromHeight(50),
-                ),
-              ),
-            )
-            ,
-          ]
-          ,
+  int _sumExecutedExercises(List<UserWorkoutPlanModel>? exercises) {
+    if (exercises == null) return 0;
+    final List<UserWorkoutPlanModel> executedExercises = exercises
+        .where(
+          (e) =>
+              e.trainingStatus == 'DONE' &&
+              e.userExecutionSetList != null &&
+              e.userExecutionSetList!.isNotEmpty,
         )
-        ,
-      );
+        .toList();
+    return executedExercises.length;
+  }
+
+  int _sumExecutedSeriesExercises(List<UserWorkoutPlanModel>? exercises) {
+    if (exercises == null) return 0;
+    int counter = 0;
+    final List<UserWorkoutPlanModel> executedExercises = exercises
+        .where(
+          (e) =>
+              e.trainingStatus == 'DONE' &&
+              e.userExecutionSetList != null &&
+              e.userExecutionSetList!.isNotEmpty,
+        )
+        .toList();
+
+    executedExercises.forEach(
+      (e) => e.userExecutionSetList != null && e.userExecutionSetList!.isNotEmpty
+          ? counter += e.userExecutionSetList!.length
+          : counter += 0,
+    );
+    return counter;
+  }
+
+  Set<String> _workgroupExecutedExercises(List<UserWorkoutPlanModel>? exercises) {
+    if (exercises == null) return {};
+    int counter = 0;
+    final List<UserWorkoutPlanModel> executedExercises = exercises
+        .where(
+          (e) =>
+              e.trainingStatus == 'DONE' &&
+              e.userExecutionSetList != null &&
+              e.userExecutionSetList!.isNotEmpty,
+        )
+        .toList();
+
+    final workgroups = executedExercises.map((e) => e.workGroup.namePt).toList();
+    return workgroups.toSet();
+  }
+
+  Widget _buildSummaryView(UserTrainingSessionModel trainingSession) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: ListView(
+        children: [
+          ProWidgetSectionTitle(title: trainingSession.contract.studentUser.name),
+          ProWidgetInfoRow(
+            label: 'Início do Treino',
+            value: getDateTimeToDT(trainingSession.startedAt!),
+          ),
+          ProWidgetInfoRow(
+            label: 'Término do Treino',
+            value: getDateTimeToDT(trainingSession.finishedAt!),
+          ),
+          ProWidgetInfoRow(
+            label: 'Status',
+            value: 'FINISHED',
+            widget: ProWidgetTag(text: 'CONCLUÍDO', borderColor: Colors.green, backgroundColor: Colors.white),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Icon(Icons.fitness_center),
+              SizedBox(width: 8),
+              Text(
+                "Exercícios realizados: ${_sumExecutedExercises(trainingSession.userWorkoutPlanList)}",
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.access_time),
+              SizedBox(width: 8),
+              Text(
+                "Séries totais: ${_sumExecutedSeriesExercises(trainingSession.userWorkoutPlanList)}",
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.fitness_center_outlined),
+              SizedBox(width: 8),
+              Expanded(child: Text("Grupos musculares: ${_workgroupExecutedExercises(trainingSession.userWorkoutPlanList).join(', ')}")),
+            ],
+          ),
+          const SizedBox(height: 24),
+          const Text("Observações:"),
+          const SizedBox(height: 8),
+          TextField(
+            maxLines: 4,
+            controller: _commentsController,
+            decoration: InputDecoration(
+              hintText: "Digite suas observações...",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton.icon(
+              onPressed: () => _showAlertDialogSyncPage(context),
+              icon: Icon(Icons.sync),
+              label: Text('SALVAR E SINCRONIZAR'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: Size.fromHeight(50),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _summaryBuilder(BuildContext context, AsyncSnapshot<UserTrainingSessionModel?> snapshot) {
@@ -159,6 +210,7 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
       return const Center(child: Text('Nenhum dado encontrado.'));
     } else {
       // Now... we have data and we can call method
+      _userTrainingSessionInstance = snapshot.data!;
       return _buildSummaryView(snapshot.data!);
     }
   }
@@ -166,18 +218,20 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 8),
-              Text("RESUMO DO TREINO"),
-            ],
-          ),
-          backgroundColor: Colors.black87,
+      appBar: AppBar(
+        title: const Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 8),
+            Text("RESUMO DO TREINO"),
+          ],
         ),
-        body: FutureBuilder<UserTrainingSessionModel?>(future: _userTrainingSessionModelFuture,
-            builder: (context, snapshot) => _summaryBuilder(context, snapshot))
+        backgroundColor: Colors.black87,
+      ),
+      body: FutureBuilder<UserTrainingSessionModel?>(
+        future: _userTrainingSessionModelFuture,
+        builder: (context, snapshot) => _summaryBuilder(context, snapshot),
+      ),
     );
   }
 }

@@ -18,6 +18,7 @@ class UserTrainingSessionModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<UserWorkoutPlanModel>? userWorkoutPlanList;
+  String? comments;
 
   UserTrainingSessionModel({
     this.id,
@@ -31,6 +32,7 @@ class UserTrainingSessionModel {
     this.createdAt,
     this.updatedAt,
     this.userWorkoutPlanList,
+    this.comments,
   });
 
   factory UserTrainingSessionModel.fromJson(Map<String, dynamic> json) =>
