@@ -31,6 +31,7 @@ UserTrainingSessionModel _$UserTrainingSessionModelFromJson(
       userWorkoutPlanList: (json['userWorkoutPlanList'] as List<dynamic>?)
           ?.map((e) => UserWorkoutPlanModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      comments: json['comments'] as String?,
     );
 
 Map<String, dynamic> _$UserTrainingSessionModelToJson(
@@ -47,4 +48,5 @@ Map<String, dynamic> _$UserTrainingSessionModelToJson(
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'userWorkoutPlanList': instance.userWorkoutPlanList,
+      'comments': instance.comments,
     };

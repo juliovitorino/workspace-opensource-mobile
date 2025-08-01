@@ -10,7 +10,6 @@ import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/pages/sync_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
 import '../../../../config/app_config.dart';
