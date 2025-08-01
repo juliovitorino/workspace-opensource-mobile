@@ -1,48 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/data/models/user_training_session_model.dart';
+import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
+import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
+import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 
-class TrainingSummaryPage extends StatelessWidget {
+class TrainingSummaryPage extends ConsumerStatefulWidget {
   const TrainingSummaryPage({super.key});
+
+  @override
+  ConsumerState<TrainingSummaryPage> createState() => _TrainingSummaryPageState();
+}
+
+class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
+  late final AppConfig config;
+  late String _contractToken;
+  late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
+
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
+  UserTrainingSessionStorageService();
+
+  @override
+  void initState() {
+    super.initState();
+    config = ref.read(appConfigProvider);
+
+    _initData();
+  }
+
+  void _initData() async {
+    _contractToken = (await _contractTokenStorage.get())!;
+    setState(() {
+      _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+    });
+  }
 
   void _showAlertDialogSyncPage(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ProWidgetAlertDialog(
-        title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
-        proceedButton: 'Sim, salve a ficha',
-        onProceed: () {
-          Navigator.of(context).pop();
+      builder: (_) =>
+          ProWidgetAlertDialog(
+            title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
+            proceedButton: 'Sim, salve a ficha',
+            onProceed: () {
+              Navigator.of(context).pop();
 
-          Navigator.popAndPushNamed(context, AppRoutes.syncPage);
-        },
-        onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-        },
-      ),
+              Navigator.popAndPushNamed(context, AppRoutes.syncPage);
+            },
+            onCancel: () {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(
+                  SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 8),
-            Text("RESUMO DO TREINO"),
-          ],
-        ),
-        backgroundColor: Colors.black87,
-      ),
-      body: Padding(
+  Widget _buildSummaryView(UserTrainingSessionModel trainingSession) {
+    return
+
+      Padding
+        (
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
@@ -112,10 +141,43 @@ class TrainingSummaryPage extends StatelessWidget {
                   minimumSize: Size.fromHeight(50),
                 ),
               ),
-            ),
-          ],
+            )
+            ,
+          ]
+          ,
+        )
+        ,
+      );
+  }
+
+  Widget _summaryBuilder(BuildContext context, AsyncSnapshot<UserTrainingSessionModel?> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Erro: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data == null) {
+      return const Center(child: Text('Nenhum dado encontrado.'));
+    } else {
+      // Now... we have data and we can call method
+      return _buildSummaryView(snapshot.data!);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 8),
+              Text("RESUMO DO TREINO"),
+            ],
+          ),
+          backgroundColor: Colors.black87,
         ),
-      ),
+        body: FutureBuilder<UserTrainingSessionModel?>(future: _userTrainingSessionModelFuture,
+            builder: (context, snapshot) => _summaryBuilder(context, snapshot))
     );
   }
 }
