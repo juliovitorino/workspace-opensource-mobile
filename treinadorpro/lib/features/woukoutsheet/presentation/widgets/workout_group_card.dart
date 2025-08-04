@@ -85,7 +85,7 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                 ),
 
                 // order
-                if(widget.order! > 0)
+                if(widget.order != null && widget.order! > 0)
                   ProWidgetTag(text: widget.order.toString(), borderColor: Colors.redAccent, backgroundColor: Colors.yellow),
 
                 // view icon
