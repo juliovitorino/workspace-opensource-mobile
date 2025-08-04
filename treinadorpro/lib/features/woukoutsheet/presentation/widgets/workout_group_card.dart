@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 
 class WorkoutGroupCard extends StatefulWidget {
   final String groupName;
@@ -8,9 +8,13 @@ class WorkoutGroupCard extends StatefulWidget {
   final void Function(UserWorkoutPlanModel exercise)? onDelete;
   final void Function(List<UserWorkoutPlanModel> exerciseList)? onAddExerciseList;
   final void Function(List<UserWorkoutPlanModel> exerciseList)? onDeleteExerciseList;
+  final void Function(String)? onAddOrderMap;
+  final void Function(String)? onDeleteOrderMap;
+
   final bool? deleteButtonVisible;
   final bool? trainingButtonVisible;
   final bool? showExercises;
+  final int? order;
 
   const WorkoutGroupCard({
     super.key,
@@ -22,6 +26,9 @@ class WorkoutGroupCard extends StatefulWidget {
     this.deleteButtonVisible = true,
     this.trainingButtonVisible = false,
     this.showExercises = true,
+    this.order = 0,
+    this.onAddOrderMap,
+    this.onDeleteOrderMap,
   });
 
   @override
@@ -77,6 +84,10 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                   ),
                 ),
 
+                // order
+                if(widget.order != null && widget.order! > 0)
+                  ProWidgetTag(text: widget.order.toString(), borderColor: Colors.redAccent, backgroundColor: Colors.yellow),
+
                 // view icon
                 _isShowExercisesIcon
                     ? IconButton(
@@ -102,9 +113,11 @@ class _WorkoutGroupCardState extends State<WorkoutGroupCard> {
                       if(_applyGreenColor){
                         _trainingColor = Colors.green[200];
                         widget.onAddExerciseList?.call(widget.exercises);
+                        widget.onAddOrderMap?.call(widget.groupName);
                       } else {
                         _trainingColor = Colors.grey[200];
                         widget.onDeleteExerciseList?.call(widget.exercises);
+                        widget.onDeleteOrderMap?.call(widget.groupName);
                       }
 
                     }),
