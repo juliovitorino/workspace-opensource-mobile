@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,12 +35,10 @@ class WorkoutSheetDetailPage extends ConsumerStatefulWidget {
   const WorkoutSheetDetailPage({super.key});
 
   @override
-  ConsumerState<WorkoutSheetDetailPage> createState() =>
-      _WorkoutSheetDetailPageState();
+  ConsumerState<WorkoutSheetDetailPage> createState() => _WorkoutSheetDetailPageState();
 }
 
-class _WorkoutSheetDetailPageState
-    extends ConsumerState<WorkoutSheetDetailPage> {
+class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage> {
   late final IContractRespository _contractRespository;
   late final AppConfig config;
   late Map<String, List<UserWorkoutPlanModel>> userWorkoutPlanData;
@@ -52,11 +51,17 @@ class _WorkoutSheetDetailPageState
   ProgramModel? _program; // = Program.programs.first;
   List<UserWorkoutPlanModel>? exerciseList;
   bool _isEnableStartTrainingButton = false;
+  bool _isOrderMapStarted = false;
+  
+  int orderCounter = 0;
+  Map<String, int> orderMap = {};
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
-  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage = UserTrainingStorageService();
-  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage = UserTrainingSessionStorageService();
+  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
+      UserTrainingStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
+      UserTrainingSessionStorageService();
 
   @override
   void initState() {
@@ -69,9 +74,7 @@ class _WorkoutSheetDetailPageState
 
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
-      ref
-          .read(findContractViewModelProvider.notifier)
-          .findContract(_contractToken);
+      ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
 
       ref
           .read(findUserWorkoutDataSheetPlanViewModelProvider.notifier)
@@ -79,16 +82,10 @@ class _WorkoutSheetDetailPageState
     });
   }
 
-  Widget _buildForm(
-    BuildContext context,
-    HandlerState state,
-    AppConfig config,
-  ) {
+  Widget _buildForm(BuildContext context, HandlerState state, AppConfig config) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height,
-        ),
+        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: _buildFormArea(state, context, config),
       ),
     );
@@ -112,9 +109,7 @@ class _WorkoutSheetDetailPageState
               ],
             ),
             SizedBox(height: 6),
-            Text(
-              '${contract.description} • ${contract.trainingPack.description}',
-            ),
+            Text('${contract.description} • ${contract.trainingPack.description}'),
             Text('📍 ${contract.workoutSite}'),
           ],
         ),
@@ -122,14 +117,12 @@ class _WorkoutSheetDetailPageState
     );
   }
 
-  Widget _buildFormArea(
-    HandlerState state,
-    BuildContext context,
-    AppConfig config,
-  ) {
-    final userDataSheetState = ref.watch(
-      findUserWorkoutDataSheetPlanViewModelProvider,
-    );
+  void _initOrderMap(Map<String, List<UserWorkoutPlanModel>> workgroupMap) {
+    workgroupMap.forEach((key, value) => orderMap[key] = 0);
+  }
+
+  Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config) {
+    final userDataSheetState = ref.watch(findUserWorkoutDataSheetPlanViewModelProvider);
     final contractState = ref.watch(findContractViewModelProvider);
 
     return SingleChildScrollView(
@@ -150,15 +143,19 @@ class _WorkoutSheetDetailPageState
           // pin message
           SizedBox(height: 16),
           ProWidgetPin(
-            pinMessage:
-                'Selecione abaixo os exercícios que você quer treinar com seu aluno',
+            pinMessage: 'Selecione abaixo os exercícios que você na ordem que deseja treinar com seu aluno',
           ),
 
           // exercise list
           SizedBox(height: 16),
           userDataSheetState.when(
-            data: (data) =>
-                _buildExercisesListView(context, data.objectResponse),
+            data: (data) {
+              if(!_isOrderMapStarted){
+                _initOrderMap(data.objectResponse.plan);
+                _isOrderMapStarted = true;
+              }
+              return _buildExercisesListView(context, data.objectResponse);
+            },
             error: (e, _) => Center(child: Text('error: $e')),
             loading: () => Center(child: CircularProgressIndicator()),
           ),
@@ -199,10 +196,7 @@ class _WorkoutSheetDetailPageState
     );
   }
 
-  Widget _buildExercisesListView(
-    BuildContext context,
-    UserDataSheetPlanModel data,
-  ) {
+  Widget _buildExercisesListView(BuildContext context, UserDataSheetPlanModel data) {
     final workoutEntries = data.plan.entries.toList();
     _modality = data.modality;
     _goal = data.goal;
@@ -221,7 +215,25 @@ class _WorkoutSheetDetailPageState
           deleteButtonVisible: false,
           trainingButtonVisible: true,
           groupName: entry.key,
+          order: orderMap[entry.key],
           exercises: entry.value,
+          onAddOrderMap:(workgroup) {
+            setState(() {
+              orderMap[workgroup] = ++orderCounter;
+            });
+          },
+          onDeleteOrderMap: (workgroup){
+            --orderCounter;
+            int? order = orderMap[workgroup];
+            orderMap[workgroup] = 0;
+            orderMap.forEach((key,value) {
+              if(value > order!){
+                setState(() {
+                  orderMap[key] = --value;
+                });
+              }
+            });
+          },
           onAddExerciseList: (list) async {
             setState(() {
               exerciseList ??= [];
@@ -252,8 +264,13 @@ class _WorkoutSheetDetailPageState
   }
 
   Future<UserTrainingSessionModel> getInstanceUserTrainingSessionModel() async {
-    List<UserWorkoutPlanModel>? userWorkoutPlanList = await _userTrainingStorage.get(_contract.externalId);
-    UserTrainingSessionModel instance = UserTrainingSessionModel(contract: _contract, userWorkoutPlanList: userWorkoutPlanList);
+    List<UserWorkoutPlanModel>? userWorkoutPlanList = await _userTrainingStorage.get(
+      _contract.externalId,
+    );
+    UserTrainingSessionModel instance = UserTrainingSessionModel(
+      contract: _contract,
+      userWorkoutPlanList: userWorkoutPlanList,
+    );
     return instance;
   }
 
@@ -285,21 +302,17 @@ class _WorkoutSheetDetailPageState
     HandlerState state,
   ) async {
     if (state.errorMessage != null) {
-      final ExceptionApiModel exceptionApiModel =
-          state.objectResponse as ExceptionApiModel;
+      final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 
       print("statusCode = ${exceptionApiModel.statusCode}");
       print("msgcode = ${exceptionApiModel.msgcode}");
       print("message = ${exceptionApiModel.message}");
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
     } else if (!state.isLoading && state.errorMessage == null) {
       await showDialog(
         context: context,
-        builder: (_) =>
-            AlertDialog(title: Text('Sucesso'), content: Text("Plano Salvo")),
+        builder: (_) => AlertDialog(title: Text('Sucesso'), content: Text("Plano Salvo")),
       );
 
       // Navigator.popAndPushNamed(context, AppRoutes.workoutSheetPage);
@@ -314,16 +327,12 @@ class _WorkoutSheetDetailPageState
         appBar: AppBar(
           title: Text('Ficha de Treino'),
           actions: [
-            ProWidgetInfoAlertDialog(
-              title: 'page',
-              text: 'workout_sheet_detail_page.dart',
-            ),
+            ProWidgetInfoAlertDialog(title: 'page', text: 'workout_sheet_detail_page.dart'),
           ],
         ),
         body: BlocConsumer<BuildWorkoutSheetCubit, HandlerState>(
           builder: (context, state) => _buildForm(context, state, config),
-          listener: (context, state) =>
-              _processFormListenerFromCubitStateChanged(context, state),
+          listener: (context, state) => _processFormListenerFromCubitStateChanged(context, state),
         ),
       ),
     );
