@@ -12,6 +12,7 @@ import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
 import 'package:treinadorpro/core/network/api_client.dart';
+import 'package:treinadorpro/core/network/api_exception.dart';
 
 class ContractDatasource implements IContractDatasource {
   final ApiClient apiClient;

@@ -5,4 +5,6 @@ import 'package:treinadorpro/core/domain/repositories/repository.dart';
 abstract class ITrainingSessionRepository extends Repository<UserTrainingSessionModel, int>{
   Future<ApiGenericResponse<bool>> save(UserTrainingSessionModel request);
 
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(
+      String contractExternalId);
 }

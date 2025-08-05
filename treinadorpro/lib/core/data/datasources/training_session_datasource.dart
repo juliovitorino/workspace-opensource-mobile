@@ -65,4 +65,37 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
         objectResponse
     );
   }
+
+  @override
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(
+      String contractExternalId) async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/training/session/$contractExternalId";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+      print('filho da puta');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey,
+    };
+
+    final jsonResponse = await apiClient.get(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final Map<String, dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        UserTrainingSessionModel.fromJson(objectResponse)
+    );
+  }
 }

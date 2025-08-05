@@ -60,7 +60,7 @@ class _SyncPageState extends ConsumerState<SyncPage> {
       child: Form(
         key: _formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +201,7 @@ class _SyncPageState extends ConsumerState<SyncPage> {
       create: (_) => SyncPageCubit(_repository),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Novo Contrato'),
+          title: Text('Sincronizar'),
           actions: [
             if (config.isDebugMode) ProWidgetInfoAlertDialog(title: 'page', text: 'sync_page.dart'),
           ],

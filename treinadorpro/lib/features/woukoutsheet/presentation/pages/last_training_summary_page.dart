@@ -17,14 +17,14 @@ import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 
-class TrainingSummaryPage extends ConsumerStatefulWidget {
-  const TrainingSummaryPage({super.key});
+class LastTrainingSummaryPage extends ConsumerStatefulWidget {
+  const LastTrainingSummaryPage({super.key});
 
   @override
-  ConsumerState<TrainingSummaryPage> createState() => _TrainingSummaryPageState();
+  ConsumerState<LastTrainingSummaryPage> createState() => _LastTrainingSummaryPageState();
 }
 
-class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
+class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPage> {
   late final AppConfig config;
   late String _contractToken;
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
@@ -33,8 +33,6 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
       UserTrainingSessionStorageService();
-
-  final TextEditingController _commentsController = TextEditingController();
 
   @override
   void initState() {
@@ -49,30 +47,6 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
     setState(() {
       _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
     });
-  }
-
-  void _showAlertDialogSyncPage(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => ProWidgetAlertDialog(
-        title: 'O treino foi encerrado. Quer enviar agora para ficha do aluno?',
-        proceedButton: 'Sim, salve a ficha',
-        onProceed: () {
-          Navigator.of(context).pop();
-          _userTrainingSessionInstance.comments = _commentsController.text;
-          _userTrainingSessionStorage.save(_userTrainingSessionInstance, _contractToken);
-          Navigator.popAndPushNamed(context, AppRoutes.syncPage);
-        },
-        onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-        },
-      ),
-    );
   }
 
   int _sumExecutedExercises(List<UserWorkoutPlanModel>? exercises) {
@@ -180,24 +154,13 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
             ],
           ),
           const SizedBox(height: 24),
-          const Text("Observações:"),
-          const SizedBox(height: 8),
-          TextField(
-            maxLines: 4,
-            controller: _commentsController,
-            decoration: InputDecoration(
-              hintText: "Digite suas observações...",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             height: 50,
             child: ElevatedButton.icon(
-              onPressed: () => _showAlertDialogSyncPage(context),
-              icon: Icon(Icons.sync),
-              label: Text('SALVAR E SINCRONIZAR'),
+              onPressed: () => Navigator.popAndPushNamed(context, AppRoutes.trainingPage),
+              icon: Icon(Icons.visibility),
+              label: Text('Ver Treino Detalhado'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
@@ -230,7 +193,7 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
       appBar: AppBar(
         actions: [
           if (config.isDebugMode)
-            ProWidgetInfoAlertDialog(title: 'page', text: 'training_summary_page.dart'),
+            ProWidgetInfoAlertDialog(title: 'page', text: 'last_training_summary_page.dart'),
         ],
         title: const Row(
           children: [

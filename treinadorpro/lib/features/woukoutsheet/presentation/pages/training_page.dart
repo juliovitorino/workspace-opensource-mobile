@@ -21,6 +21,7 @@ import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
+import '../../../../core/widgets/pro_widget_alert_close_dialog.dart';
 import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../blocs/training_page_cubit.dart';
@@ -41,15 +42,17 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
-  UserWorkoutPlanStorageService();
+      UserWorkoutPlanStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-  UserTrainingSessionStorageService();
+      UserTrainingSessionStorageService();
 
   late int totalCompletedExercise;
   late int totalExercise;
   late int trainingTime;
 
   late bool trainingHasStarted;
+
+  bool _hideButtonFinishTrainingSession = false;
 
   @override
   void initState() {
@@ -79,15 +82,32 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
-        ProWidgetInfoRow(label: 'Status Treino', value: 'INICIADO', widget: ProWidgetTag(
-            text: 'INICIADO', backgroundColor: Colors.white, borderColor: Colors.green)),
-        ProWidgetInfoRow(label: 'Sincronização', value: 'INICIADO', widget: ProWidgetTag(
-            text: 'PENDENTE', backgroundColor: Colors.red, borderColor: Colors.red)),
-        ExerciseProgressCard(
-          completed: totalCompletedExercise,
-          total: totalExercise,
-          trainingTime: trainingTime,
+        ProWidgetInfoRow(label: 'Pacote', value: userTrainingSessionModelInstance.contract.trainingPack.description),
+        ProWidgetInfoRow(label: 'Modalidade', value: userTrainingSessionModelInstance.contract.trainingPack.modality!.namePt),
+        ProWidgetInfoRow(
+          label: 'Status Treino',
+          value: '...',
+          widget: ProWidgetTag(
+            text: userTrainingSessionModelInstance.progressStatus,
+            backgroundColor: Colors.white,
+            borderColor: Colors.green,
+          ),
         ),
+        ProWidgetInfoRow(
+          label: 'Sincronização',
+          value: '...',
+          widget: ProWidgetTag(
+            text: userTrainingSessionModelInstance.syncStatus,
+            backgroundColor: Colors.red,
+            borderColor: Colors.red,
+          ),
+        ),
+        if(userTrainingSessionModelInstance.progressStatus != 'FINISHED')
+          ExerciseProgressCard(
+            completed: totalCompletedExercise,
+            total: totalExercise,
+            trainingTime: trainingTime,
+          ),
         SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true,
@@ -122,41 +142,47 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${training.qtySeries}x${training.qtyReps} • Tempo: ${training
-                                .executionTime}m • descanso: ${training.restTime}m',
+                            '${training.qtySeries}x${training.qtyReps} • Tempo: ${training.executionTime}m • descanso: ${training.restTime}m',
                           ),
                           SizedBox(height: 8),
                           Chip(label: Text(training.executionMethod.toString())),
-                          if (training.trainingStatus != 'DONE')
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 8),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    _userWorkoutPlanStorageService.save(training, _contractToken);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (_) => ExerciseExecutionPage()),
-                                    ).then((result) {
-                                      if (result) {
-                                        setState(() {
-                                          _userTrainingSessionModelFuture =
-                                              _userTrainingSessionStorage.get(_contractToken);
+                          training.trainingStatus == 'DONE' ||
+                                  userTrainingSessionModelInstance.progressStatus == 'FINISHED'
+                              ? SizedBox.shrink()
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 8),
+                                    ElevatedButton.icon(
+                                      onPressed: () {
+                                        _userWorkoutPlanStorageService.save(
+                                          training,
+                                          _contractToken,
+                                        );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => ExerciseExecutionPage(),
+                                          ),
+                                        ).then((result) {
+                                          if (result) {
+                                            setState(() {
+                                              _userTrainingSessionModelFuture =
+                                                  _userTrainingSessionStorage.get(_contractToken);
+                                            });
+                                          }
                                         });
-                                      }
-                                    });
-                                  },
-                                  icon: Icon(Icons.play_arrow),
-                                  label: Text('INICIAR O EXERCÍCIO'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    foregroundColor: Colors.white,
-                                    minimumSize: Size.fromHeight(50),
-                                  ),
+                                      },
+                                      icon: Icon(Icons.play_arrow),
+                                      label: Text('INICIAR O EXERCÍCIO'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.white,
+                                        minimumSize: Size.fromHeight(50),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
                         ],
                       ),
                     ),
@@ -170,8 +196,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     );
   }
 
-  Widget _futureBuilderBuild(BuildContext context,
-      AsyncSnapshot<UserTrainingSessionModel?> snapshot,) {
+  Widget _futureBuilderBuild(
+    BuildContext context,
+    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
+  ) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
@@ -181,14 +209,17 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     } else {
       // Now... we have data and we can call method
       userTrainingSessionModelInstance = snapshot.data!;
-      userTrainingSessionModelInstance.progressStatus = 'STARTED';
-      userTrainingSessionModelInstance.syncStatus = 'PENDING';
-      trainingHasStarted = true;
+
+      if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
+        userTrainingSessionModelInstance.progressStatus = 'STARTED';
+        userTrainingSessionModelInstance.syncStatus = 'PENDING';
+        trainingHasStarted = true;
+      }
 
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;
       trainingTime = 0;
       userWorkoutPlanList?.forEach(
-            (e) => trainingTime += int.parse(e.executionTime!) + int.parse(e.restTime!),
+        (e) => trainingTime += int.parse(e.executionTime!) + int.parse(e.restTime!),
       );
       return _buildExercisesListView(userWorkoutPlanList, snapshot.data!.startedAt!);
     }
@@ -221,17 +252,16 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   Widget _buildForm(BuildContext context, HandlerState state, AppConfig config) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery
-            .of(context)
-            .size
-            .height),
+        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: _buildFormArea(state, context, config),
       ),
     );
   }
 
-  Future<void> _processFormListenerFromCubitStateChanged(BuildContext context,
-      HandlerState state,) async {
+  Future<void> _processFormListenerFromCubitStateChanged(
+    BuildContext context,
+    HandlerState state,
+  ) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 
@@ -250,29 +280,43 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
     }
   }
 
-
   void _showAlertDialogExitPage(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) =>
-          ProWidgetAlertDialog(
-            title: 'Existe um treino em andamento. Fazendo isso o treino será perdido. Você tem certeza de sair?',
-            proceedButton: 'Sim, abandone o treino',
-            onProceed: () {
-              Navigator.of(context).pop();
-              _userTrainingSessionStorage.clear(_contractToken);
-              Navigator.of(context).pop();
-            },
-            onCancel: () => Navigator.of(context).pop(),
-          ),
+      builder: (_) => ProWidgetAlertDialog(
+        title:
+            'Existe um treino em andamento. Fazendo isso o treino será perdido. Você tem certeza de sair?',
+        proceedButton: 'Sim, abandone o treino',
+        onProceed: () {
+          Navigator.of(context).pop();
+          _userTrainingSessionStorage.clear(_contractToken);
+          Navigator.of(context).pop();
+        },
+        onCancel: () => Navigator.of(context).pop(),
+      ),
     );
   }
 
   void _checkExitPage(BuildContext context) {
-    _showAlertDialogExitPage(context);
+    if(userTrainingSessionModelInstance.progressStatus != 'FINISHED'){
+      _showAlertDialogExitPage(context);
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
+
+  void _showAlertCloseDialog(BuildContext context, String title, Function()? onClose) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => ProWidgetAlertCloseDialog(
+        title: title,
+        onClose: onClose,
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -281,7 +325,9 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
         appBar: AppBar(
           title: Text('Sessão de Treino'),
           leading: IconButton(
-              onPressed: () => _checkExitPage(context), icon: Icon(Icons.arrow_back)),
+            onPressed: () => _checkExitPage(context),
+            icon: Icon(Icons.arrow_back),
+          ),
           actions: [
             if (config.isDebugMode)
               ProWidgetInfoAlertDialog(title: 'page', text: 'training_page.dart'),
@@ -294,22 +340,44 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              userTrainingSessionModelInstance.finishedAt = DateTime.now();
-              userTrainingSessionModelInstance.progressStatus = 'FINISHED';
-              userTrainingSessionModelInstance.syncStatus = 'PENDING';
-              _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
-              Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
-            },
-            icon: Icon(Icons.stop_circle),
-            label: Text('Encerrar Sessão de Treino'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              minimumSize: Size.fromHeight(50),
-            ),
-          ),
+          child: _hideButtonFinishTrainingSession
+              ? ElevatedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.close),
+                  label: Text('Fechar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size.fromHeight(50),
+                  ),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    if(userTrainingSessionModelInstance.progressStatus != 'FINISHED'){
+
+                      userTrainingSessionModelInstance.finishedAt = DateTime.now();
+                      userTrainingSessionModelInstance.progressStatus = 'FINISHED';
+                      userTrainingSessionModelInstance.syncStatus = 'PENDING';
+                      _userTrainingSessionStorage.save(
+                        userTrainingSessionModelInstance,
+                        _contractToken,
+                      );
+                      Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
+                    } else {
+                      _showAlertCloseDialog(context, 'Treino já está encerrado', () => Navigator.of(context).pop());
+                      setState(() {
+                        _hideButtonFinishTrainingSession = true;
+                      });
+                    }
+                  },
+                  icon: Icon(Icons.stop_circle),
+                  label: Text('Encerrar Sessão de Treino'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size.fromHeight(50),
+                  ),
+                ),
         ),
       ),
     );

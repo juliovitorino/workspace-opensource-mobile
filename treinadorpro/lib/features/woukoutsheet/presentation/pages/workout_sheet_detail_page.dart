@@ -7,7 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
+import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/contract_response_model.dart';
@@ -52,7 +55,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   List<UserWorkoutPlanModel>? exerciseList;
   bool _isEnableStartTrainingButton = false;
   bool _isOrderMapStarted = false;
-  
+
   int orderCounter = 0;
   Map<String, int> orderMap = {};
 
@@ -74,12 +77,17 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
 
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
+      print('_contractToken => $_contractToken');
       ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
 
       ref
           .read(findUserWorkoutDataSheetPlanViewModelProvider.notifier)
           .findUserWorkoutDataSheetPlan(_contractToken);
-    });
+
+      ref
+          .read(findMostRecentTrainingSessionViewModelProvider.notifier)
+          .findMostRecentTrainingSession(_contractToken);
+    }); //END Future.microtask
   }
 
   Widget _buildForm(BuildContext context, HandlerState state, AppConfig config) {
@@ -124,6 +132,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config) {
     final userDataSheetState = ref.watch(findUserWorkoutDataSheetPlanViewModelProvider);
     final contractState = ref.watch(findContractViewModelProvider);
+    final trainingSessionState = ref.watch(findMostRecentTrainingSessionViewModelProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -140,17 +149,53 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
             loading: () => Center(child: CircularProgressIndicator()),
           ),
 
+          // latest workout session
+          SizedBox(height: 16),
+          Wrap(
+            children: [
+              trainingSessionState.when(
+                data: (data) {
+                  if (data != null) {
+                    UserTrainingSessionModel trainingSessionModel = data.objectResponse;
+                    trainingSessionModel.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
+                    _userTrainingSessionStorage.save(trainingSessionModel, _contractToken);
+
+                    return ElevatedButton.icon(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => LastTrainingSummaryPage()),
+                      ),
+                      icon: Icon(Icons.history),
+                      label: Text('Ver Treino Anterior'),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+                error: (e, _) => Text('Error: $e'),
+                loading: () => Row(
+                  children: [
+                    Text('buscando último treino'),
+                    SizedBox(width: 8),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
           // pin message
           SizedBox(height: 16),
           ProWidgetPin(
-            pinMessage: 'Selecione abaixo os exercícios que você na ordem que deseja treinar com seu aluno',
+            pinMessage:
+                'Selecione abaixo os exercícios que você na ordem que deseja treinar com seu aluno',
           ),
 
           // exercise list
           SizedBox(height: 16),
           userDataSheetState.when(
             data: (data) {
-              if(!_isOrderMapStarted){
+              if (!_isOrderMapStarted) {
                 _initOrderMap(data.objectResponse.plan);
                 _isOrderMapStarted = true;
               }
@@ -217,17 +262,17 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           groupName: entry.key,
           order: orderMap[entry.key],
           exercises: entry.value,
-          onAddOrderMap:(workgroup) {
+          onAddOrderMap: (workgroup) {
             setState(() {
               orderMap[workgroup] = ++orderCounter;
             });
           },
-          onDeleteOrderMap: (workgroup){
+          onDeleteOrderMap: (workgroup) {
             --orderCounter;
             int? order = orderMap[workgroup];
             orderMap[workgroup] = 0;
-            orderMap.forEach((key,value) {
-              if(value > order!){
+            orderMap.forEach((key, value) {
+              if (value > order!) {
                 setState(() {
                   orderMap[key] = --value;
                 });

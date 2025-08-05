@@ -1,6 +1,3 @@
-
-
-
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
 
 import '../../data/models/api_generic_response.dart';
@@ -27,6 +24,11 @@ class TrainingSessionRepository implements ITrainingSessionRepository{
   @override
   Future<ApiGenericResponse<bool>> save(UserTrainingSessionModel request) async {
     return await datasource.save(request);
+  }
+
+  @override
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(String contractExternalId) async {
+    return await datasource.findMostRecentTrainingSession(contractExternalId);
   }
 
 }
