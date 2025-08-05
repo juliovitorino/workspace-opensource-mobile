@@ -139,6 +139,10 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
             value: getDateTimeToDT(trainingSession.finishedAt!),
           ),
           ProWidgetInfoRow(
+            label: 'Tempo de Treino',
+            value: dateDifference(trainingSession.finishedAt!, trainingSession.startedAt!),
+          ),
+          ProWidgetInfoRow(
             label: 'Status',
             value: 'FINISHED',
             widget: ProWidgetTag(

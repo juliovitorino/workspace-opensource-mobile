@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
@@ -113,6 +114,10 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
             value: getDateTimeToDT(trainingSession.finishedAt!),
           ),
           ProWidgetInfoRow(
+            label: 'Tempo de Treino',
+            value: dateDifference(trainingSession.finishedAt!, trainingSession.startedAt!),
+          ),
+          ProWidgetInfoRow(
             label: 'Status',
             value: 'FINISHED',
             widget: ProWidgetTag(
@@ -158,7 +163,7 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
             width: double.infinity,
             height: 50,
             child: ElevatedButton.icon(
-              onPressed: () => Navigator.popAndPushNamed(context, AppRoutes.trainingPage),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())) ,
               icon: Icon(Icons.visibility),
               label: Text('Ver Treino Detalhado'),
               style: ElevatedButton.styleFrom(

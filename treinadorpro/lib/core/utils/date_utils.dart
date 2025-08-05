@@ -32,3 +32,26 @@ String getFormattedDate(String locale) {
   DateTime now = DateTime.now();
   return DateFormat.yMMMMEEEEd(locale).format(now);
 }
+
+String dateDifference(DateTime start, DateTime end) {
+  final duration = end.difference(start).abs();
+
+  final days = duration.inDays;
+  final hours = duration.inHours % 24;
+  final minutes = duration.inMinutes % 60;
+  final seconds = duration.inSeconds % 60;
+
+  final parts = <String>[];
+
+  if (days > 0) parts.add('$days ${days == 1 ? 'dia' : 'dias'}');
+  if (hours > 0) parts.add('$hours ${hours == 1 ? 'hora' : 'horas'}');
+  if (minutes > 0) parts.add('$minutes ${minutes == 1 ? 'minuto' : 'minutos'}');
+  if (seconds > 0) parts.add('$seconds ${seconds == 1 ? 'seg' : 'seg'}');
+
+  if (parts.isEmpty) return '0 segundos';
+
+  if (parts.length == 1) return parts.first;
+
+  final last = parts.removeLast();
+  return '${parts.join(', ')} e $last';
+}
