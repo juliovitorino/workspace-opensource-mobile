@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_alert_close_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/rest_timer.dart';
 
@@ -74,6 +75,17 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     setState(() {
       _userWorkoutPlanModelFuture = _userWorkoutPlanStorageService.get(_contractToken);
     });
+  }
+
+  void _showAlertCloseDialog(BuildContext context, String title, Function()? onClose) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => ProWidgetAlertCloseDialog(
+        title: title,
+        onClose: onClose,
+      ),
+    );
   }
 
   void _addExecutionSetToUserWorkoutPlanModelInstance(
@@ -283,10 +295,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
           onPressed: () {
             final allDone = sets.every((s) => s.completed);
             if (!allDone) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text("Todas as séries devem ser concluídas")));
-
+              _showAlertCloseDialog(context, 'Todas as séries devem ser concluídas', () => Navigator.of(context).pop());
               return;
             }
 
@@ -294,12 +303,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             _userWorkoutPlanStorageService.clear(_contractToken);
             _userTrainingSessionStorage.save(_userTrainingSessionModel!, _contractToken);
 
-            // TODO: Salvar no backend ou banco local
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text("Exercício finalizado!")));
-
-            Navigator.pop(context, true);
+            _showAlertCloseDialog(context, 'Exercício finalizado!', () { Navigator.of(context).pop(); Navigator.of(context).pop(true);});
           },
         ),
       ),
