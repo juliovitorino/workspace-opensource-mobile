@@ -279,7 +279,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
       context: context,
       barrierDismissible: false,
       builder: (_) => ProWidgetAlertDialog(
-        title: 'Vamos treinar?',
+        title: 'Vamos treinar com ${_contract.studentUser.name}?',
         proceedButton: 'Sim, vamos começar',
         onProceed: () {
           Navigator.of(context).pop();

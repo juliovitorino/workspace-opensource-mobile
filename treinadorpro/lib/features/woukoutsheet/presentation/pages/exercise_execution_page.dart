@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/rest_timer.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/user_training_session_model.dart';
@@ -21,8 +23,7 @@ class ExerciseExecutionPage extends ConsumerStatefulWidget {
   const ExerciseExecutionPage({super.key});
 
   @override
-  ConsumerState<ExerciseExecutionPage> createState() =>
-      _ExerciseExecutionPageState();
+  ConsumerState<ExerciseExecutionPage> createState() => _ExerciseExecutionPageState();
 }
 
 class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
@@ -35,13 +36,10 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   late List<SetData> sets;
   late DateTime _startedAt;
 
-  // final List<SetData> sets = List.generate(3, (_) => SetData());
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
 
-  final StorageService<String> _contractTokenStorage =
-      ContractTokenStorageService();
-
-  final KeyStorageService<UserTrainingSessionModel>
-  _userTrainingSessionStorage = UserTrainingSessionStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
+      UserTrainingSessionStorageService();
 
   final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
       UserWorkoutPlanStorageService();
@@ -64,26 +62,17 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   void _initData() async {
     print('ExerciseExecutionPage => _initData');
     _contractToken = (await _contractTokenStorage.get())!;
-    _userTrainingSessionModel = await _userTrainingSessionStorage.get(
-      _contractToken,
-    );
+    _userTrainingSessionModel = await _userTrainingSessionStorage.get(_contractToken);
 
-    _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(
-      _contractToken,
-    );
+    _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(_contractToken);
 
-    sets = List.generate(
-      _userWorkoutPlanModelInstance!.qtySeries!,
-      (_) => SetData(),
-    );
+    sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
     exerciseName =
         _userWorkoutPlanModelInstance!.customExercise ??
         _userWorkoutPlanModelInstance!.exercise!.namePt;
 
     setState(() {
-      _userWorkoutPlanModelFuture = _userWorkoutPlanStorageService.get(
-        _contractToken,
-      );
+      _userWorkoutPlanModelFuture = _userWorkoutPlanStorageService.get(_contractToken);
     });
   }
 
@@ -105,106 +94,118 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
         reps: int.tryParse(reps!) ?? 0,
       ),
     );
-    print(
-      '_userWorkoutPlanModelInstance => ${jsonEncode(_userWorkoutPlanModelInstance)}',
-    );
+    print('_userWorkoutPlanModelInstance => ${jsonEncode(_userWorkoutPlanModelInstance)}');
   }
 
   Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: userWorkoutPlanModel.qtySeries,
-      itemBuilder: (context, index) {
-        final set = sets[index];
-        if(_repsControllers[index].text.isEmpty){
-          _repsControllers[index].text = userWorkoutPlanModel.qtyReps!;
-        }
-
-        return Card(
-          elevation: 3,
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _weightControllers[index],
-                        decoration: const InputDecoration(
-                          labelText: "Peso (kg)",
-                        ),
-                        onChanged: (value) =>
-                            set.weight = double.tryParse(value) ?? 0,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _repsControllers[index],
-                        decoration: const InputDecoration(labelText: "Reps"),
-                        onChanged: (value) => set.reps = value,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  "Tempo: ${formatTime(set.elapsedSeconds)}",
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.play_arrow),
-                      label: const Text("Iniciar Série"),
-                      onPressed: set.completed || set.isRunning
-                          ? null
-                          : () {
-                              startTimer(set);
-                              _startedAt = DateTime.now();
-                            },
-                    ),
-                    const SizedBox(width: 12),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.check),
-                      label: const Text("Finalizar Série"),
-                      onPressed: set.isRunning
-                          ? () {
-                              _addExecutionSetToUserWorkoutPlanModelInstance(
-                                set.weight,
-                                DateTime.now(),
-                                index + 1,
-                                set.reps ??
-                                    _userWorkoutPlanModelInstance!.qtyReps!,
-                              );
-                              stopTimer(set);
-                            }
-                          : null,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                if (set.completed)
-                  const Text(
-                    "✅ Série concluída",
-                    style: TextStyle(color: Colors.green),
-                  ),
-              ],
-            ),
+    return Column(
+      children: [
+        Container(
+          color: Colors.grey[100],
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RestTimer()
+            ],
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: userWorkoutPlanModel.qtySeries,
+            itemBuilder: (context, index) {
+              final set = sets[index];
+              if (_repsControllers[index].text.isEmpty) {
+                _repsControllers[index].text = userWorkoutPlanModel.qtyReps!;
+              }
+
+              return Card(
+                elevation: 3,
+                margin: const EdgeInsets.only(bottom: 16),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _weightControllers[index],
+                              decoration: const InputDecoration(labelText: "Peso (kg)"),
+                              onChanged: (value) => set.weight = double.tryParse(value) ?? 0,
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _repsControllers[index],
+                              decoration: const InputDecoration(labelText: "Reps"),
+                              onChanged: (value) => set.reps = value,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        "Tempo: ${formatTime(set.elapsedSeconds)}",
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.play_arrow),
+                            label: const Text("Iniciar Série"),
+                            onPressed: set.completed || set.isRunning
+                                ? null
+                                : () {
+                                    startTimer(set);
+                                    _startedAt = DateTime.now();
+                                  },
+                          ),
+                          const SizedBox(width: 12),
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.check),
+                            label: const Text("Finalizar Série"),
+                            onPressed: set.isRunning
+                                ? () {
+                                    _addExecutionSetToUserWorkoutPlanModelInstance(
+                                      set.weight,
+                                      DateTime.now(),
+                                      index + 1,
+                                      set.reps ?? _userWorkoutPlanModelInstance!.qtyReps!,
+                                    );
+                                    stopTimer(set);
+                                  }
+                                : null,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      if (set.completed)
+                        ProWidgetTag(
+                          text: 'SÉRIE CONCLUÍDA',
+                          borderColor: Colors.green,
+                          backgroundColor: Colors.green,
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -224,7 +225,6 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
       exerciseName =
           _userWorkoutPlanModelInstance!.customExercise ??
           _userWorkoutPlanModelInstance!.exercise!.namePt;
-      // sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
 
       _buildControllers();
 
@@ -248,8 +248,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     final userWorkoutPlanFound = _userTrainingSessionModel?.userWorkoutPlanList
         ?.where(
           (userWorkoutPlanItem) =>
-              userWorkoutPlanItem.externalId ==
-              _userWorkoutPlanModelInstance!.externalId,
+              userWorkoutPlanItem.externalId == _userWorkoutPlanModelInstance!.externalId,
         )
         .firstOrNull;
     userWorkoutPlanFound?.trainingStatus = 'DONE';
@@ -273,8 +272,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
 
       body: FutureBuilder<UserWorkoutPlanModel?>(
         future: _userWorkoutPlanModelFuture,
-        builder: (context, snapshot) =>
-            _builderExercutionSets(context, snapshot),
+        builder: (context, snapshot) => _builderExercutionSets(context, snapshot),
       ),
 
       bottomNavigationBar: Padding(
@@ -285,11 +283,9 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
           onPressed: () {
             final allDone = sets.every((s) => s.completed);
             if (!allDone) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Todas as séries devem ser concluídas"),
-                ),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Todas as séries devem ser concluídas")));
 
               return;
             }
@@ -299,9 +295,9 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             _userTrainingSessionStorage.save(_userTrainingSessionModel!, _contractToken);
 
             // TODO: Salvar no backend ou banco local
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Exercício finalizado!")),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Exercício finalizado!")));
 
             Navigator.pop(context, true);
           },

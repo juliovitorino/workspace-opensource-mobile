@@ -8,3 +8,7 @@ String removeDiacritics(String str) {
   }
   return str;
 }
+
+String getFirstString(String text){
+  return text.split(' ')[0];
+}
