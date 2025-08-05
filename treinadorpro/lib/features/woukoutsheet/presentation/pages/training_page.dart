@@ -79,8 +79,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
-        ProWidgetInfoRow(label: 'Status', value: 'INICIADO', widget: ProWidgetTag(
+        ProWidgetInfoRow(label: 'Status Treino', value: 'INICIADO', widget: ProWidgetTag(
             text: 'INICIADO', backgroundColor: Colors.white, borderColor: Colors.green)),
+        ProWidgetInfoRow(label: 'Sincronização', value: 'INICIADO', widget: ProWidgetTag(
+            text: 'PENDENTE', backgroundColor: Colors.red, borderColor: Colors.red)),
         ExerciseProgressCard(
           completed: totalCompletedExercise,
           total: totalExercise,
@@ -180,6 +182,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       // Now... we have data and we can call method
       userTrainingSessionModelInstance = snapshot.data!;
       userTrainingSessionModelInstance.progressStatus = 'STARTED';
+      userTrainingSessionModelInstance.syncStatus = 'PENDING';
       trainingHasStarted = true;
 
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;

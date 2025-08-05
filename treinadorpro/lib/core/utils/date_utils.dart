@@ -1,4 +1,6 @@
 
+import 'package:intl/intl.dart';
+
 import '../data/models/contract_response_model.dart';
 
 String getCorrectTime(ContractResponseModel contract) {
@@ -24,4 +26,9 @@ String getDateTimeToDT(DateTime dt) {
   final date = dt.toString().split(' ');
   final time = date[1].split('.');
   return '${date[0]} ${time[0]}';
+}
+
+String getFormattedDate(String locale) {
+  DateTime now = DateTime.now();
+  return DateFormat.yMMMMEEEEd(locale).format(now);
 }

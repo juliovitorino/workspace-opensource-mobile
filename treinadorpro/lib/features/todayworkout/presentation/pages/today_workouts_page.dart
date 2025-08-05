@@ -74,15 +74,6 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
             SizedBox(height: 10),
             Row(
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.chat),
-                  label: Text('WhatsApp'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                ),
-                SizedBox(width: 8),
                 OutlinedButton.icon(
                   onPressed: () {
                     _contractTokenStorage.save(contract.externalId);

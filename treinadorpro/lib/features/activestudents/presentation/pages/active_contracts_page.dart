@@ -10,6 +10,8 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_data_sheet_pl
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
@@ -58,48 +60,34 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
   Widget _buildDays(ContractResponseModel contract) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      Row(
+        children: [
+          Icon(Icons.access_time),
+          SizedBox(width: 8,),
+          ProWidgetSectionTitle(title: 'Agenda de Treino')
+        ],
+      ),
       if(contract.monday != null)
-        Wrap(children: [
-          Text("Segunda"),
-          SizedBox(width: 8),
-          Text(contract.monday!),
-        ]),
+        ProWidgetInfoRow(label: 'Segunda', value: contract.monday!),
+
       if(contract.tuesday != null)
-        Wrap(children: [
-          Text("Terça"),
-          SizedBox(width: 8),
-          Text(contract.tuesday!),
-        ]),
+        ProWidgetInfoRow(label: 'Terça', value: contract.tuesday!),
+
       if(contract.wednesday != null)
-        Wrap(children: [
-          Text("Quarta"),
-          SizedBox(width: 8),
-          Text(contract.wednesday!),
-        ]),
+        ProWidgetInfoRow(label: 'Quarta', value: contract.wednesday!),
+
       if(contract.thursday != null)
-        Wrap(children: [
-          Text("Quinta"),
-          SizedBox(width: 8),
-          Text(contract.thursday!),
-        ]),
+        ProWidgetInfoRow(label: 'Quinta', value: contract.thursday!),
+
       if(contract.friday != null)
-        Wrap(children: [
-          Text("Sexta"),
-          SizedBox(width: 8),
-          Text(contract.friday!),
-        ]),
+        ProWidgetInfoRow(label: 'Sexta', value: contract.friday!),
+
       if(contract.saturday != null)
-        Wrap(children: [
-          Text("Sábado"),
-          SizedBox(width: 8),
-          Text(contract.saturday!),
-        ]),
+        ProWidgetInfoRow(label: 'Sábado', value: contract.saturday!),
+
       if(contract.sunday != null)
-        Wrap(children: [
-          Text("Domingo"),
-          SizedBox(width: 8),
-          Text(contract.sunday!),
-        ]),
+        ProWidgetInfoRow(label: 'Domingo', value: contract.sunday!),
+
     ],
   );
 
@@ -107,24 +95,19 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        title: Text(
-          contract.studentUser.name,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: ProWidgetSectionTitle(title: contract.studentUser.name),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Objetivo: ${contract.description}'),
-            Text('${contract.currency} ${contract.price}'),
-            Text('Pacote: ${contract.trainingPack.description}'),
-            Text('Modalidade: ${contract.trainingPack.modality?.namePt}'),
-            Text('Local do Treino: ${contract.workoutSite}'),
+            ProWidgetInfoRow(label: 'Objetivo', value: contract.description),
+            ProWidgetInfoRow(label: 'Valor combinado', value: '${contract.currency} ${contract.price}'),
+            ProWidgetInfoRow(label: 'Pacote', value: contract.trainingPack.description),
+            ProWidgetInfoRow(label: 'Modalidade', value: contract.trainingPack.modality!.namePt),
+            ProWidgetInfoRow(label: 'Local do Treino', value: contract.workoutSite!),
+            ProWidgetInfoRow(label: 'Contratado em', value: getDateTimeToDT(contract.createdAt)),
             SizedBox(width: 8, height: 10),
 
             _buildDays(contract),
-            SizedBox(width: 8, height: 10),
-
-            Text('Contratado em ${getDateTimeToDT(contract.createdAt)}'),
             SizedBox(width: 8, height: 10),
 
             Wrap(
@@ -139,7 +122,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                     );
                   },
                   icon: Icon(Icons.assignment),
-                  label: Text('Ver Treino'),
+                  label: Text('Ver Ficha'),
                 ),
 
                 SizedBox(width: 8, height: 40),

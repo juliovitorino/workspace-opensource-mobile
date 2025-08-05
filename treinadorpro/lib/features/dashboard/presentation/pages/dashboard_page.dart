@@ -4,6 +4,8 @@ import 'package:treinadorpro/core/data/models/user_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/trainer_user_storage_service.dart';
 import 'package:treinadorpro/core/provider/dashboard_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/utils/string_utils.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
@@ -95,7 +97,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               data: (user) {
                 _trainerStorage.save(user);
                 return Text(
-                  'Bem-vindo, ${user.name} 👋',
+                  'Bem-vindo, ${getFirstString(user.name)} 👋',
                   style: kWelcomeUserMessageTextStyle,
                 );
               },
@@ -104,7 +106,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             ),
 
             SizedBox(height: 8),
-            Text('📅 Hoje: Sexta-feira, 31 de Maio'),
+            Text('📅 Hoje: ${getFormattedDate('pt_BR')}'),
             SizedBox(height: 16),
 
             // today workout
