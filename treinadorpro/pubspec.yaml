@@ -42,6 +42,7 @@ dependencies:
   json_annotation: ^4.9.0
   uuid: ^4.0.1
   shared_preferences: ^2.2.2
+  audioplayers: ^5.2.1
 
   flutter_localizations:
     sdk: flutter
@@ -79,6 +80,7 @@ flutter:
     - assets/images/
     - assets/images/splash/
     - assets/icons/
+    - assets/sounds/
     - assets/env/application.properties-dev.env
     - assets/env/application.properties-prod.env
     - assets/env/application.properties-external.env

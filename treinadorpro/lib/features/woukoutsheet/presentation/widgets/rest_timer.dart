@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 
@@ -10,8 +11,16 @@ class RestTimer extends StatefulWidget {
 }
 
 class _RestTimerState extends State<RestTimer> {
+  late AudioPlayer _audioPlayer;
+
   Timer? _timer;
-  int _remainingSeconds = 60; // Tempo inicial em segundos (1 minuto)
+  int _remainingSeconds = 60;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+  }
 
   void _startTimer() {
     if (_timer != null && _timer!.isActive) return;
@@ -19,6 +28,8 @@ class _RestTimerState extends State<RestTimer> {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_remainingSeconds <= 0) {
         _stopTimer();
+        _playSound();
+
       } else {
         setState(() {
           _remainingSeconds--;
@@ -43,7 +54,12 @@ class _RestTimerState extends State<RestTimer> {
   @override
   void dispose() {
     _stopTimer();
+    _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> _playSound() async {
+    await _audioPlayer.play(AssetSource('sounds/triple_beep_x3.wav'));
   }
 
   @override
