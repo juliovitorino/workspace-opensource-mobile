@@ -166,7 +166,7 @@ class _SyncPageState extends ConsumerState<SyncPage> {
       );
 
       _userTrainingSessionStorage.clear(_contractToken);
-      Navigator.popAndPushNamed(context, AppRoutes.dashboard);
+      Navigator.of(context).pop();
     }
   }
 
