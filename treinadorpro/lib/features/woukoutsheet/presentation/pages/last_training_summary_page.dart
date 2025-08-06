@@ -114,6 +114,10 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
             value: getDateTimeToDT(trainingSession.finishedAt!),
           ),
           ProWidgetInfoRow(
+            label: 'Dia da Semana',
+            value: getDayOfWeekName('pt_BR', trainingSession.finishedAt!),
+          ),
+          ProWidgetInfoRow(
             label: 'Tempo de Treino',
             value: dateDifference(trainingSession.finishedAt!, trainingSession.startedAt!),
           ),

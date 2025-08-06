@@ -33,6 +33,11 @@ String getFormattedDate(String locale) {
   return DateFormat.yMMMMEEEEd(locale).format(now);
 }
 
+String getDayOfWeekName(String locale, DateTime dt) {
+  DateTime now = DateTime.now();
+  return DateFormat.EEEE(locale).format(dt);
+}
+
 String dateDifference(DateTime start, DateTime end) {
   final duration = end.difference(start).abs();
 
