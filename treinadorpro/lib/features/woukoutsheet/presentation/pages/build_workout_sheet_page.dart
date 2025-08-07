@@ -31,6 +31,7 @@ import 'package:treinadorpro/core/provider/goal_provider.dart';
 import 'package:treinadorpro/core/provider/program_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
+import 'package:treinadorpro/core/utils/alert.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_alert_close_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
@@ -483,15 +484,7 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
 
                     _userPlanDraft.save(draft, _contract.externalId);
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Exercício inserido no rascunho com sucesso!👍',
-                        ),
-                        duration: Duration(seconds: 3),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
+                    showAlertCloseDialog(context, 'Exercício inserido no rascunho de ${_workGroup.namePt} com sucesso!👍', null);
                   });
                 }
               },

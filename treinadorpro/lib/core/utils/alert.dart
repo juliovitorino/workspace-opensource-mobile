@@ -9,7 +9,7 @@ void showAlertCloseDialog(BuildContext context, String title, Function()? onClos
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (_) => ProWidgetAlertCloseDialog(title: title, onClose: onClose),
+    builder: (_) => ProWidgetAlertCloseDialog(title: title, onClose: onClose ?? () => Navigator.of(context).pop() ),
   );
 }
 
