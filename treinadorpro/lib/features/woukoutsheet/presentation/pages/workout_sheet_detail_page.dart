@@ -10,6 +10,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_training_stor
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/schedule_training_session.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
 import '../../../../config/app_config.dart';
@@ -208,15 +209,41 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           // start workout button
           SizedBox(height: 16),
           if (_isEnableStartTrainingButton)
-            ElevatedButton.icon(
-              onPressed: () => _showAlertDialogStartTraining(context),
-              icon: Icon(Icons.play_circle),
-              label: Text('Iniciar Sessão de Treino'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                minimumSize: Size.fromHeight(50),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => _showAlertDialogStartTraining(context),
+                  icon: Icon(Icons.play_circle),
+                  label: Text('Iniciar Sessão de Treino'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size.fromHeight(50),
+                  ),
+                ),
+                Text('OU'),
+                ElevatedButton.icon(
+                  onPressed: (){
+
+                    getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
+                      userTrainingSessionModel.startedAt = DateTime.now();
+
+                      _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
+                      _contractTokenStorage.save(_contractToken);
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleTrainingSession()));
+                    });
+                  }, //julio
+                  icon: Icon(Icons.calendar_month),
+                  label: Text('Programar Agenda de Treino'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size.fromHeight(50),
+                  ),
+                ),
+
+              ],
             ),
 
           // change workout plan button
@@ -331,7 +358,6 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
             userTrainingSessionModel.startedAt = DateTime.now();
 
-            print('userTrainingSessionModel => ${jsonEncode(userTrainingSessionModel)}');
             _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
             _contractTokenStorage.save(_contractToken);
             Navigator.popAndPushNamed(context, AppRoutes.trainingPage);
