@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
+import 'package:treinadorpro/core/data/models/booking_model_request.dart';
 import 'package:treinadorpro/core/data/models/response.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 
@@ -96,6 +97,40 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
     return ApiGenericResponse(
         Response(response['msgcode'], response['mensagem']),
         UserTrainingSessionModel.fromJson(objectResponse)
+    );
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> bookingTrainingSession(BookingModelRequest request) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/training/session/booking";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey,
+    };
+
+    final jsonResponse = await apiClient.post(
+      url,
+      headers: headers,
+      body: jsonEncode(request.toJson()),
+    );
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final bool objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
+import 'package:treinadorpro/core/data/models/booking_model_request.dart';
 
 import '../../data/models/api_generic_response.dart';
 import '../../data/models/user_training_session_model.dart';
@@ -29,6 +30,11 @@ class TrainingSessionRepository implements ITrainingSessionRepository{
   @override
   Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(String contractExternalId) async {
     return await datasource.findMostRecentTrainingSession(contractExternalId);
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> bookingTrainingSession(BookingModelRequest request) async {
+    return await datasource.bookingTrainingSession(request);
   }
 
 }

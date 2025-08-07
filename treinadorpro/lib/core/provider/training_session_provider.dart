@@ -6,6 +6,7 @@ import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 import 'package:treinadorpro/core/domain/repositories/itraining_session_repository.dart';
 import 'package:treinadorpro/core/domain/repositories/training_session_repository.dart';
 
+import '../viewmodel/booking_training_session_view_model.dart';
 import '../viewmodel/find_most_recent_training_session_view_model.dart';
 import '../viewmodel/save_training_session_view_model.dart';
 import 'app_config_provider.dart';
@@ -49,4 +50,12 @@ final findMostRecentTrainingSessionViewModelProvider =
       print('findMostRecentTrainingSessionViewModelProvider criado');
       final repository = ref.read(trainingSessionRepositoryProvider);
       return FindMostRecentTrainingSessionViewModel(repository);
+    });
+
+final bookingTrainingSessionViewModelProvider =
+    StateNotifierProvider<BookingTrainingSessionViewModel, AsyncValue<ApiGenericResponse<bool>>>((
+      ref,
+    ) {
+      final repository = ref.read(trainingSessionRepositoryProvider);
+      return BookingTrainingSessionViewModel(repository);
     });
