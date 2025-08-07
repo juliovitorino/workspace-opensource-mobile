@@ -238,7 +238,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
 
                       _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
                       _contractTokenStorage.save(_contractToken);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage())); //julio
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage()));
                       setState(() {
                         orderMap.forEach((key, value) => orderMap[key] = 0);
                         orderCounter = 0;
