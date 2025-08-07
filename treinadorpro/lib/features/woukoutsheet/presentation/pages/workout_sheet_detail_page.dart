@@ -10,7 +10,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_training_stor
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/pages/schedule_training_session.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_training_session_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
 import '../../../../config/app_config.dart';
@@ -231,7 +231,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
 
                       _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
                       _contractTokenStorage.save(_contractToken);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => ScheduleTrainingSession()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage()));
                     });
                   }, //julio
                   icon: Icon(Icons.calendar_month),
