@@ -154,6 +154,14 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                   icon: Icon(Icons.delete_forever),
                   label: Text('Apagar Rascunho Treino'),
                 ),
+
+                // Booking
+                SizedBox(width: 8, height: 40),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.calendar_month),
+                  label: Text('Agenda'),
+                ),
               ],
             ),
           ],

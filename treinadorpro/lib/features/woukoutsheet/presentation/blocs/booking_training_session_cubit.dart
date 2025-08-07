@@ -19,6 +19,8 @@ class BookingTrainingSessionCubit extends Cubit<HandlerState>{
     print(JsonEncoder.withIndent('   ').convert(request.toJson()));
 
     try {
+      request.trainingSession.startedAt = DateTime.now();
+      request.trainingSession.finishedAt = request.trainingSession.startedAt;
       final externalId = await _repository.bookingTrainingSession(request);
       emit(state.sendToListener(isLoading: false, objectResponse: externalId));
     } catch (e) {
