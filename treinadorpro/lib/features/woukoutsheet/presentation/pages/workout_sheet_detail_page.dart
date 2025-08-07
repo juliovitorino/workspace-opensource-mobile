@@ -182,14 +182,21 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   ],
                 ),
               ),
+              SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.calendar_month),
+                label: Text('Agenda'),
+              )
             ],
+
           ),
 
           // pin message
           SizedBox(height: 16),
           ProWidgetPin(
             pinMessage:
-                'Selecione abaixo os exercícios que você na ordem que deseja treinar com seu aluno',
+                'Selecione abaixo os exercícios na ordem que você deseja treinar com seu aluno',
           ),
 
           // exercise list
@@ -231,7 +238,11 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
 
                       _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
                       _contractTokenStorage.save(_contractToken);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage())); //julio
+                      setState(() {
+                        orderMap.forEach((key, value) => orderMap[key] = 0);
+                        orderCounter = 0;
+                      });
                     });
                   }, //julio
                   icon: Icon(Icons.calendar_month),
