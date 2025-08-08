@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class ProWidgetPin extends StatelessWidget {
   final String pinMessage;
+
   const ProWidgetPin({super.key, required this.pinMessage});
 
   @override
   Widget build(BuildContext context) {
-    return             Container(
+    return Container(
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(

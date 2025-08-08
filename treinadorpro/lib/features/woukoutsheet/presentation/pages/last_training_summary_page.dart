@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/last_training_session_storage_service.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
@@ -33,7 +34,9 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-      UserTrainingSessionStorageService();
+  UserTrainingSessionStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _lastTrainingSessionStorage =
+  LastTrainingSessionStorageService();
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
   void _initData() async {
     _contractToken = (await _contractTokenStorage.get())!;
     setState(() {
-      _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+      _userTrainingSessionModelFuture = _lastTrainingSessionStorage.get(_contractToken);
     });
   }
 
@@ -192,6 +195,7 @@ class _LastTrainingSummaryPageState extends ConsumerState<LastTrainingSummaryPag
     } else {
       // Now... we have data and we can call method
       _userTrainingSessionInstance = snapshot.data!;
+      _userTrainingSessionStorage.save(_userTrainingSessionInstance, _contractToken);
       return _buildSummaryView(snapshot.data!);
     }
   }
