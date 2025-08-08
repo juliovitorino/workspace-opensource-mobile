@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
+import 'package:treinadorpro/core/utils/alert.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
@@ -65,12 +66,13 @@ class _TrainingSummaryPageState extends ConsumerState<TrainingSummaryPage> {
           Navigator.popAndPushNamed(context, AppRoutes.syncPage);
         },
         onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('A ficha será enviada antes do próximo treino')));
           Navigator.of(context).pop();
-          Navigator.of(context).pop();
-        },
+          showAlertCloseDialog(context, 'A ficha será enviada antes do próximo treino', () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          });
+        }
+            ,
       ),
     );
   }

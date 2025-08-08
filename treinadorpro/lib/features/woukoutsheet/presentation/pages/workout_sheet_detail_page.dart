@@ -6,12 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/last_training_session_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_warning_message.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_training_session_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_summary_page.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/contract_response_model.dart';
@@ -51,11 +55,14 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   late ModalityModel? _modality; // = Modality.modalities.first;
   late GoalModel? _goal; // = Goal.goals.first;
   late UserDataSheetPlanModel _userDataSheetSaved;
+  late Future<UserTrainingSessionModel?> _lastTrainingSessionFuture;
+  late UserTrainingSessionModel? _lastTrainingSessionInstance;
 
   ProgramModel? _program; // = Program.programs.first;
   List<UserWorkoutPlanModel>? exerciseList;
   bool _isEnableStartTrainingButton = false;
   bool _isOrderMapStarted = false;
+  bool _isPendingSync = false;
 
   int orderCounter = 0;
   Map<String, int> orderMap = {};
@@ -66,6 +73,9 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
       UserTrainingStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
       UserTrainingSessionStorageService();
+
+  final KeyStorageService<UserTrainingSessionModel> _lastTrainingSessionStorage =
+      LastTrainingSessionStorageService();
 
   @override
   void initState() {
@@ -79,6 +89,8 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
       print('_contractToken => $_contractToken');
+      _lastTrainingSessionFuture = _userTrainingSessionStorage.get(_contractToken);
+
       ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
 
       ref
@@ -130,6 +142,54 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
     workgroupMap.forEach((key, value) => orderMap[key] = 0);
   }
 
+  Widget _buildLastTrainingSessionPanel(UserTrainingSessionModel? trainingSession) {
+    if (trainingSession == null) return SizedBox.shrink();
+    if (trainingSession.progressStatus == 'FINISHED' && trainingSession.syncStatus == 'SUCCESS')
+      return SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16),
+        ProWidgetWarningMessage(
+          pinMessage:
+              'Existe um treino realizado em ${getDateTimeToDate(trainingSession.finishedAt!)} e não foi enviado para a ficha do aluno ${trainingSession.progressStatus} Sync=${trainingSession.syncStatus}',
+          actionButtonLabel: 'SINCRONIZAR ÚLTIMO TREINO',
+          onWarningPressed: () {
+            _userTrainingSessionStorage.save(trainingSession, _contractToken);
+            Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (_) => TrainingSummaryPage()),
+            // ).then((onValue) => setState(() {
+            //   _isPendingSync = false;
+            // }));
+          },
+          actionButtonIcon: Icon(Icons.refresh),
+        ),
+      ],
+    );
+  }
+
+  Widget _lastTrainingSessionBuilder(
+    BuildContext context,
+    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
+  ) {
+    {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      } else if (!snapshot.hasData || snapshot.data == null) {
+        return SizedBox.shrink(); // No data found!
+      } else {
+        // Now... we have data and we can call method
+        _lastTrainingSessionInstance = snapshot.data!;
+        _isPendingSync = true;
+        return _buildLastTrainingSessionPanel(_lastTrainingSessionInstance);
+      }
+    }
+  }
+
   Widget _buildFormArea(HandlerState state, BuildContext context, AppConfig config) {
     final userDataSheetState = ref.watch(findUserWorkoutDataSheetPlanViewModelProvider);
     final contractState = ref.watch(findContractViewModelProvider);
@@ -158,8 +218,11 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                 data: (data) {
                   if (data != null) {
                     UserTrainingSessionModel trainingSessionModel = data.objectResponse;
-                    trainingSessionModel.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
-                    _userTrainingSessionStorage.save(trainingSessionModel, _contractToken);
+                    trainingSessionModel.userWorkoutPlanList?.forEach(
+                      (e) => e.trainingStatus = 'DONE',
+                    );
+                    // _userTrainingSessionStorage.save(trainingSessionModel, _contractToken);
+                    _lastTrainingSessionStorage.save(trainingSessionModel, _contractToken);
 
                     return ElevatedButton.icon(
                       onPressed: () => Navigator.push(
@@ -187,9 +250,8 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                 onPressed: () {},
                 icon: Icon(Icons.calendar_month),
                 label: Text('Agenda'),
-              )
+              ),
             ],
-
           ),
 
           // pin message
@@ -197,6 +259,12 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           ProWidgetPin(
             pinMessage:
                 'Selecione abaixo os exercícios na ordem que você deseja treinar com seu aluno',
+          ),
+
+          // sync pending
+          FutureBuilder(
+            future: _lastTrainingSessionFuture,
+            builder: (context, snapshot) => _lastTrainingSessionBuilder(context, snapshot),
           ),
 
           // exercise list
@@ -231,14 +299,16 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                 ),
                 Text('OU'),
                 ElevatedButton.icon(
-                  onPressed: (){
-
+                  onPressed: () {
                     getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
                       userTrainingSessionModel.startedAt = DateTime.now();
 
                       _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
                       _contractTokenStorage.save(_contractToken);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => BookingTrainingSessionPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => BookingTrainingSessionPage()),
+                      );
                       setState(() {
                         orderMap.forEach((key, value) => orderMap[key] = 0);
                         orderCounter = 0;
@@ -253,7 +323,6 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                     minimumSize: Size.fromHeight(50),
                   ),
                 ),
-
               ],
             ),
 

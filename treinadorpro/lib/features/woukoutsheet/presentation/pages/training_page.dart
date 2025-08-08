@@ -380,7 +380,19 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         userTrainingSessionModelInstance,
                         _contractToken,
                       );
-                      Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
+
+                      showAlertDialog(
+                        context,
+                        'Deseja realmente ENCERRAR a sessão de treino? ',
+                        () {
+                          Navigator.of(context).pop();
+                          Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
+                        },
+                        () {
+                          Navigator.of(context).pop();
+                          userTrainingSessionModelInstance.progressStatus = 'STARTED';
+                        },
+                      );
                     } else {
                       showAlertCloseDialog(
                         context,
