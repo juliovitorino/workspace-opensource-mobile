@@ -11,9 +11,11 @@ import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/utils/string_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_view_page.dart';
 
 import '../../../../core/utils/miscelaneous.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
@@ -58,32 +60,6 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
       },
     );
   }
-
-  // Widget _buildDays(ContractResponseModel contract) => Column(
-  //   crossAxisAlignment: CrossAxisAlignment.start,
-  //   children: [
-  //     Row(
-  //       children: [
-  //         Icon(Icons.access_time),
-  //         SizedBox(width: 8),
-  //         ProWidgetSectionTitle(title: 'Agenda de Treino'),
-  //       ],
-  //     ),
-  //     if (contract.monday != null) ProWidgetInfoRow(label: 'Segunda', value: contract.monday!),
-  //
-  //     if (contract.tuesday != null) ProWidgetInfoRow(label: 'Terça', value: contract.tuesday!),
-  //
-  //     if (contract.wednesday != null) ProWidgetInfoRow(label: 'Quarta', value: contract.wednesday!),
-  //
-  //     if (contract.thursday != null) ProWidgetInfoRow(label: 'Quinta', value: contract.thursday!),
-  //
-  //     if (contract.friday != null) ProWidgetInfoRow(label: 'Sexta', value: contract.friday!),
-  //
-  //     if (contract.saturday != null) ProWidgetInfoRow(label: 'Sábado', value: contract.saturday!),
-  //
-  //     if (contract.sunday != null) ProWidgetInfoRow(label: 'Domingo', value: contract.sunday!),
-  //   ],
-  // );
 
   Widget _buildCard(ContractResponseModel contract) {
     return Card(
@@ -158,7 +134,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                 // Booking
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BookingViewPage())),
                   icon: Icon(Icons.calendar_month),
                   label: Text('Agenda'),
                 ),
@@ -186,7 +162,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
       body: contractState.when(
         data: (data) => _buildListView(data),
         error: (e, _) => Center(child: Text("Error: $e")),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => Center(child: ProWidgetCustomLoadingIndicator()),
       ),
     );
   }

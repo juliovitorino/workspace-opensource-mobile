@@ -10,6 +10,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/last_training_sess
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_warning_message.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
@@ -157,12 +158,6 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           onWarningPressed: () {
             _userTrainingSessionStorage.save(trainingSession, _contractToken);
             Navigator.popAndPushNamed(context, AppRoutes.trainingSummaryPage);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (_) => TrainingSummaryPage()),
-            // ).then((onValue) => setState(() {
-            //   _isPendingSync = false;
-            // }));
           },
           actionButtonIcon: Icon(Icons.refresh),
         ),
@@ -176,7 +171,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   ) {
     {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: ProWidgetCustomLoadingIndicator());
       } else if (snapshot.hasError) {
         return Center(child: Text('Error: ${snapshot.error}'));
       } else if (!snapshot.hasData || snapshot.data == null) {
@@ -207,7 +202,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
               return _buildContractCard(contract.objectResponse);
             },
             error: (e, _) => Center(child: Text('error: $e')),
-            loading: () => Center(child: CircularProgressIndicator()),
+            loading: () => Center(child: ProWidgetCustomLoadingIndicator()),
           ),
 
           // latest workout session
@@ -241,7 +236,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   children: [
                     Text('buscando último treino'),
                     SizedBox(width: 8),
-                    CircularProgressIndicator(),
+                    ProWidgetCustomLoadingIndicator(),
                   ],
                 ),
               ),
