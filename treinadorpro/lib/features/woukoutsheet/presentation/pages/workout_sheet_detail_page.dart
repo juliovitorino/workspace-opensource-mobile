@@ -144,7 +144,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   }
 
   Widget _buildLastTrainingSessionPanel(UserTrainingSessionModel? trainingSession) {
-    if (trainingSession == null) return SizedBox.shrink();
+    if (trainingSession == null || trainingSession.finishedAt == null) return SizedBox.shrink();
     if (trainingSession.progressStatus == 'FINISHED' && trainingSession.syncStatus == 'SUCCESS')
       return SizedBox.shrink();
     return Column(

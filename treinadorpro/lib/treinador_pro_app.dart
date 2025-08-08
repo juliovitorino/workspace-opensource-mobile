@@ -56,6 +56,7 @@ class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
 
     return MaterialApp(
       title: 'Treinador Pro',
+      debugShowCheckedModeBanner: false,
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
