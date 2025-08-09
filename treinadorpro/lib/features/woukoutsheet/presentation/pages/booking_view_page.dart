@@ -57,12 +57,10 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
 
-  // final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
-  //     UserTrainingStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-  UserTrainingSessionStorageService();
+      UserTrainingSessionStorageService();
   final KeyStorageService<UserTrainingSessionModel> _lastTrainingSessionStorage =
-  LastTrainingSessionStorageService();
+      LastTrainingSessionStorageService();
 
   final List<DateTime> _selectedDate = [];
 
@@ -90,13 +88,12 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     }); //END Future.microtask
   }
 
-  void _initData() async{
+  void _initData() async {
     ref
         .read(findAllTrainingSessionCalendarViewModelProvider.notifier)
         .findAllTrainingSessionCalendar(
-      FindAllTrainingSessionCalendarRequestModel(_contractToken, startDate, endDate),
-    );
-
+          FindAllTrainingSessionCalendarRequestModel(_contractToken, startDate, endDate),
+        );
   }
 
   Widget _buildCard(ContractResponseModel contract) {
@@ -140,9 +137,9 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     );
   }
 
-  Widget _buildTrainingSessionCalendar(List<UserTrainingSessionModel?> trainingSessionList) {
+  Widget _buildTrainingSessionCalendar() {
     return ProWidgetBookingViewCalendar(
-      trainingSessionList: trainingSessionList,
+      trainingSessionList: _trainingSessionList,
       onDatePressed: (trainingSession) async {
         if (trainingSession != null) {
           if (trainingSession.progressStatus == 'FINISHED') {
@@ -152,24 +149,41 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
           }
           if (trainingSession.progressStatus == 'BOOKING') {
             if (getDateTimeToDate(DateTime.now()) == getDateTimeToDate(trainingSession.booking!)) {
-              showAlertDialog(context, 'Vamos Treinar Agora?', () async {
-                Navigator.of(context).pop();
-                trainingSession.progressStatus = 'STARTED';
-                trainingSession.bookingExternalId = trainingSession.externalId;
-                await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-                Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((onValue) {
-                  setState(() {
-                    trainingSession.progressStatus = 'BOOKING';
-                    _initData();
+              showAlertDialog(
+                context,
+                'Vamos Treinar Agora?',
+                () async {
+                  Navigator.of(context).pop();
+                  trainingSession.progressStatus = 'STARTED';
+                  trainingSession.bookingExternalId = trainingSession.externalId;
+                  await _userTrainingSessionStorage.save(trainingSession, _contractToken);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((
+                    onValue,
+                  ) {
+                    setState(() async {
+                      trainingSession.progressStatus = 'BOOKING';
+                      _initData();
+                    });
                   });
-                });
-              }, () {
-                Navigator.of(context).pop();
-              });
+                },
+                () {
+                  Navigator.of(context).pop();
+                },
+              );
             } else {
               trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
               await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((
+                onValue,
+              ) {
+                setState(() async {
+                  if (onValue == 1) {
+                    await _userTrainingSessionStorage.clear(_contractToken);
+                    _trainingSessionList.remove(trainingSession);
+                    _initData();
+                  }
+                });
+              });
             }
           }
         }
@@ -184,10 +198,7 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery
-            .of(context)
-            .size
-            .height),
+        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: Column(
           children: [
             // contract card
@@ -199,19 +210,24 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
 
             // training session calendar
             trainingSessionState.when(
-              data: (data) => _buildTrainingSessionCalendar(data.objectResponse),
+              data: (data) {
+                _trainingSessionList = data.objectResponse;
+                // return _buildTrainingSessionCalendar(_trainingSessionList);
+                return _buildTrainingSessionCalendar();
+              },
               error: (e, _) => Text('Error: $e'),
               loading: () => ProWidgetCustomLoadingIndicator(),
             ),
-
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMessagebuilder(BuildContext context,
-      AsyncSnapshot<UserTrainingSessionModel?> snapshot,) {
+  Widget _buildMessagebuilder(
+    BuildContext context,
+    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
+  ) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
@@ -225,8 +241,10 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     }
   }
 
-  Future<void> _processFormListenerFromCubitStateChanged(BuildContext context,
-      HandlerState state,) async {
+  Future<void> _processFormListenerFromCubitStateChanged(
+    BuildContext context,
+    HandlerState state,
+  ) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 

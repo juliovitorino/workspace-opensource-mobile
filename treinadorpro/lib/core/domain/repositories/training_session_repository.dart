@@ -46,4 +46,9 @@ class TrainingSessionRepository implements ITrainingSessionRepository {
   ) async {
     return await datasource.findTrainingSessionCalendar(request);
   }
+
+  @override
+  Future<ApiGenericResponse<bool>> deleteTrainingSession(String contractExternalId, String trainingSessionExternalId) async {
+    return await datasource.deleteTrainingSession(contractExternalId, trainingSessionExternalId);
+  }
 }

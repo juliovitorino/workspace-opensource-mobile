@@ -16,4 +16,9 @@ abstract class ITrainingSessionDatasource extends IRemoteDatasource<UserTraining
   Future<ApiGenericResponse<List<UserTrainingSessionModel>>> findTrainingSessionCalendar(
     FindAllTrainingSessionCalendarRequestModel request,
   );
+
+  Future<ApiGenericResponse<bool>> deleteTrainingSession(
+      String contractExternalId,
+      String trainingSessionExternalId,
+      );
 }

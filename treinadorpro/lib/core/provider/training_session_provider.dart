@@ -7,6 +7,7 @@ import 'package:treinadorpro/core/domain/repositories/itraining_session_reposito
 import 'package:treinadorpro/core/domain/repositories/training_session_repository.dart';
 
 import '../viewmodel/booking_training_session_view_model.dart';
+import '../viewmodel/delete_training_session_view_model.dart';
 import '../viewmodel/find_all_training_session_calendar_view_model.dart';
 import '../viewmodel/find_most_recent_training_session_view_model.dart';
 import '../viewmodel/save_training_session_view_model.dart';
@@ -66,7 +67,15 @@ final findAllTrainingSessionCalendarViewModelProvider =
       FindAllTrainingSessionCalendarViewModel,
       AsyncValue<ApiGenericResponse<List<UserTrainingSessionModel>>>
     >((ref) {
-
       final repository = ref.read(trainingSessionRepositoryProvider);
       return FindAllTrainingSessionCalendarViewModel(repository);
     });
+
+final deleteTrainingSessionViewModelProvider =
+    StateNotifierProvider<DeleteTrainingSessionViewModel, AsyncValue<ApiGenericResponse<bool>>>(
+      (ref) {
+
+        final repository = ref.read(trainingSessionRepositoryProvider);
+        return DeleteTrainingSessionViewModel(repository);
+      },
+    );
