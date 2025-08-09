@@ -1,13 +1,14 @@
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
 import 'package:treinadorpro/core/data/models/booking_model_request.dart';
+import 'package:treinadorpro/core/data/models/find_all_training_session_calendar_request_model.dart';
 
 import '../../data/models/api_generic_response.dart';
 import '../../data/models/user_training_session_model.dart';
 import 'itraining_session_repository.dart';
 
-class TrainingSessionRepository implements ITrainingSessionRepository{
-
+class TrainingSessionRepository implements ITrainingSessionRepository {
   final ITrainingSessionDatasource datasource;
+
   TrainingSessionRepository(this.datasource);
 
   @override
@@ -28,7 +29,9 @@ class TrainingSessionRepository implements ITrainingSessionRepository{
   }
 
   @override
-  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(String contractExternalId) async {
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentTrainingSession(
+    String contractExternalId,
+  ) async {
     return await datasource.findMostRecentTrainingSession(contractExternalId);
   }
 
@@ -37,4 +40,15 @@ class TrainingSessionRepository implements ITrainingSessionRepository{
     return await datasource.bookingTrainingSession(request);
   }
 
+  @override
+  Future<ApiGenericResponse<List<UserTrainingSessionModel>>> findTrainingSessionCalendar(
+    FindAllTrainingSessionCalendarRequestModel request,
+  ) async {
+    return await datasource.findTrainingSessionCalendar(request);
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> deleteTrainingSession(String contractExternalId, String trainingSessionExternalId) async {
+    return await datasource.deleteTrainingSession(contractExternalId, trainingSessionExternalId);
+  }
 }

@@ -11,6 +11,7 @@ UserTrainingSessionModel _$UserTrainingSessionModelFromJson(
     UserTrainingSessionModel(
       id: (json['id'] as num?)?.toInt(),
       externalId: json['externalId'] as String?,
+      bookingExternalId: json['bookingExternalId'] as String?,
       contract: ContractResponseModel.fromJson(
           json['contract'] as Map<String, dynamic>),
       startedAt: json['startedAt'] == null
@@ -19,6 +20,9 @@ UserTrainingSessionModel _$UserTrainingSessionModelFromJson(
       finishedAt: json['finishedAt'] == null
           ? null
           : DateTime.parse(json['finishedAt'] as String),
+      booking: json['booking'] == null
+          ? null
+          : DateTime.parse(json['booking'] as String),
       progressStatus: json['progressStatus'] as String? ?? 'NOT_STARTED',
       syncStatus: json['syncStatus'] as String? ?? 'NOT_STARTED',
       status: json['status'] as String?,
@@ -39,9 +43,11 @@ Map<String, dynamic> _$UserTrainingSessionModelToJson(
     <String, dynamic>{
       'id': instance.id,
       'externalId': instance.externalId,
+      'bookingExternalId': instance.bookingExternalId,
       'contract': instance.contract,
       'startedAt': instance.startedAt?.toIso8601String(),
       'finishedAt': instance.finishedAt?.toIso8601String(),
+      'booking': instance.booking?.toIso8601String(),
       'progressStatus': instance.progressStatus,
       'syncStatus': instance.syncStatus,
       'status': instance.status,

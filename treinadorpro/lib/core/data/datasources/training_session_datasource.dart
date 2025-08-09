@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/booking_model_request.dart';
+import 'package:treinadorpro/core/data/models/find_all_training_session_calendar_request_model.dart';
 import 'package:treinadorpro/core/data/models/response.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 
@@ -77,7 +79,6 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
 
     if (config.isDebugMode) {
       print('$module :: call url = $url');
-      print('filho da puta');
     }
 
     Map<String, String> headers = {
@@ -120,6 +121,71 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
       url,
       headers: headers,
       body: jsonEncode(request.toJson()),
+    );
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final bool objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
+    );
+  }
+
+  @override
+  Future<ApiGenericResponse<List<UserTrainingSessionModel>>> findTrainingSessionCalendar(FindAllTrainingSessionCalendarRequestModel request) async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/training/session/calendar";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey,
+    };
+
+    final jsonResponse = await apiClient.post(url, headers: headers, body: jsonEncode(request.toJson()));
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final List<dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse.map((e) => UserTrainingSessionModel.fromJson(e))
+        .toList()
+    );
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> deleteTrainingSession(String contractExternalId, String trainingSessionExternalId)  async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/training/session/${contractExternalId}/${trainingSessionExternalId}";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey,
+    };
+
+    final jsonResponse = await apiClient.delete(
+      url,
+      headers: headers
     );
     if (config.isDebugMode) {
       print("$module :: jsonResponse = $jsonResponse");

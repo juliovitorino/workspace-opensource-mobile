@@ -9,9 +9,11 @@ class UserTrainingSessionModel {
 
   final int? id;
   final String? externalId;
+  String? bookingExternalId;
   final ContractResponseModel contract;
   DateTime? startedAt;
   DateTime? finishedAt;
+  DateTime? booking;
   String progressStatus;
   String syncStatus;
   final String? status;
@@ -23,9 +25,11 @@ class UserTrainingSessionModel {
   UserTrainingSessionModel({
     this.id,
     this.externalId,
+    this.bookingExternalId,
     required this.contract,
     this.startedAt,
     this.finishedAt,
+    this.booking,
     this.progressStatus = 'NOT_STARTED',
     this.syncStatus = 'NOT_STARTED',
     this.status,
@@ -39,4 +43,5 @@ class UserTrainingSessionModel {
       _$UserTrainingSessionModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserTrainingSessionModelToJson(this);
+
 }

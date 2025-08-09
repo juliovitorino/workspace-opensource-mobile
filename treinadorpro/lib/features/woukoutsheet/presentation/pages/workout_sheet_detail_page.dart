@@ -39,6 +39,7 @@ import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../blocs/build_workout_sheet_cubit.dart';
 import '../widgets/workout_group_card.dart';
+import 'booking_view_page.dart';
 
 class WorkoutSheetDetailPage extends ConsumerStatefulWidget {
   const WorkoutSheetDetailPage({super.key});
@@ -180,7 +181,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
         // Now... we have data and we can call method
         _lastTrainingSessionInstance = snapshot.data!;
         _isPendingSync = true;
-        return _buildLastTrainingSessionPanel(_lastTrainingSessionInstance);
+        return _lastTrainingSessionInstance?.progressStatus == 'BOOKING' ? SizedBox.shrink() : _buildLastTrainingSessionPanel(_lastTrainingSessionInstance);
       }
     }
   }
@@ -240,9 +241,8 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   ],
                 ),
               ),
-              SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: () {},
+              SizedBox(width: 8),ElevatedButton.icon(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BookingViewPage())),
                 icon: Icon(Icons.calendar_month),
                 label: Text('Agenda'),
               ),

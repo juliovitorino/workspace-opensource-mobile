@@ -5,10 +5,14 @@ import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
+import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_warning_message.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
@@ -22,8 +26,6 @@ import '../../../../core/infrastructure/localstorage/user_training_session_stora
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/utils/alert.dart';
-import '../../../../core/widgets/pro_widget_alert_close_dialog.dart';
-import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../blocs/training_page_cubit.dart';
 
@@ -78,6 +80,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   }
 
   Widget _buildExercisesListView(List<UserWorkoutPlanModel>? trainingList, DateTime trainingDate) {
+    final deleteTrainingSessionState = ref.watch(deleteTrainingSessionViewModelProvider);
     _updateProgressIndicator(trainingList!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +112,56 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             borderColor: Colors.red,
           ),
         ),
-        if (userTrainingSessionModelInstance.progressStatus != 'FINISHED')
+
+        // booking delete button
+        if (userTrainingSessionModelInstance.progressStatus == 'BOOKING')
+          ElevatedButton.icon(
+            onPressed: () {
+              showAlertDialog(
+                context,
+                'TEM CERTEZA DE EXCLUIR ESTA AGENDA DE TREINO RESERVADA?',
+                () {
+                  setState(() {
+                    ref
+                        .read(deleteTrainingSessionViewModelProvider.notifier)
+                        .deleteTerainingSession(
+                          _contractToken,
+                          userTrainingSessionModelInstance.externalId!,
+                        );
+                  });
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(1);
+                },
+                () => Navigator.of(context).pop(),
+              );
+            },
+            icon: Icon(Icons.delete_forever),
+            label: Text('EXCLUIR AGENDA DE TREINO'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              minimumSize: Size.fromHeight(50),
+            ),
+          ),
+
+        // Delete message area
+        if (userTrainingSessionModelInstance.progressStatus == "BOOKING")
+          deleteTrainingSessionState.when(
+            data: (data) {
+              // showAlertCloseDialog(context, 'A reserva de treina na agenda foi excluída', (){
+              //   Navigator.of(context).pop();
+              //   Navigator.of(context).pop();
+              // });
+              return SizedBox.shrink();
+
+            },
+            error: (e, _) => Text('Error: $e'),
+            loading: () => SizedBox.shrink(),
+          ),
+
+        // Performance exercise card
+        if (userTrainingSessionModelInstance.progressStatus != 'FINISHED' &&
+            userTrainingSessionModelInstance.progressStatus != 'BOOKING')
           ExerciseProgressCard(
             completed: totalCompletedExercise,
             total: totalExercise,
@@ -250,7 +302,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       userTrainingSessionModelInstance = snapshot.data!;
 
       if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
-        userTrainingSessionModelInstance.progressStatus = 'STARTED';
+        // userTrainingSessionModelInstance.progressStatus = 'STARTED';
         userTrainingSessionModelInstance.syncStatus = 'PENDING';
         trainingHasStarted = true;
       }
@@ -320,7 +372,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   }
 
   void _checkExitPage(BuildContext context) {
-    if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
+    if (userTrainingSessionModelInstance.progressStatus == 'STARTED') {
       showAlertDialog(
         context,
         'Existe um treino em andamento. Fazendo isso o treino será perdido. Você tem certeza de sair?',
@@ -372,7 +424,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                 )
               : ElevatedButton.icon(
                   onPressed: () {
-                    if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
+                    if (userTrainingSessionModelInstance.progressStatus != 'FINISHED' &&
+                        userTrainingSessionModelInstance.progressStatus != 'BOOKING') {
                       userTrainingSessionModelInstance.finishedAt = DateTime.now();
                       userTrainingSessionModelInstance.progressStatus = 'FINISHED';
                       userTrainingSessionModelInstance.syncStatus = 'PENDING';
@@ -396,7 +449,9 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     } else {
                       showAlertCloseDialog(
                         context,
-                        'Treino já está encerrado',
+                        userTrainingSessionModelInstance.progressStatus == 'FINISHED'
+                            ? 'Treino já está encerrado'
+                            : 'Apenas para visualização',
                         () => Navigator.of(context).pop(),
                       );
                       setState(() {
