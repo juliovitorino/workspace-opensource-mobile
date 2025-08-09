@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../data/models/user_training_session_model.dart';
+
 class ProWidgetBookingViewCalendar extends StatefulWidget {
-  final List<DateTime> highlightedDates;
-  final void Function(DateTime date)? onDatePressed;
+  final List<UserTrainingSessionModel?> trainingSessionList;
+  final void Function(UserTrainingSessionModel? trainingSession)? onDatePressed;
 
   const ProWidgetBookingViewCalendar({
     super.key,
-    required this.highlightedDates,
+    required this.trainingSessionList,
     this.onDatePressed,
   });
 
@@ -50,6 +52,7 @@ class _ProWidgetBookingViewCalendarState extends State<ProWidgetBookingViewCalen
     final daysInMonth = lastDayOfMonth.day;
 
     final List<Widget> dayButtons = [];
+    List<ValueKey<UserTrainingSessionModel?>> valueKey = List.filled(32, ValueKey<UserTrainingSessionModel?>(null), growable: false);
 
     // Espaços antes do primeiro dia
     for (int i = 0; i < startWeekday; i++) {
@@ -59,17 +62,27 @@ class _ProWidgetBookingViewCalendarState extends State<ProWidgetBookingViewCalen
     // Dias do mês
     for (int day = 1; day <= daysInMonth; day++) {
       final currentDate = DateTime(year, month, day);
-      final isHighlighted = widget.highlightedDates.any(
-            (d) => _isSameDay(d, currentDate),
+      final isHighlighted = widget.trainingSessionList.any(
+        (d) => d!.progressStatus == 'FINISHED'
+            ? _isSameDay(d.startedAt!, currentDate)
+            : _isSameDay(d.booking!, currentDate),
       );
+      final trainingSession = widget.trainingSessionList.where(
+        (d) => d!.progressStatus == 'FINISHED'
+            ? _isSameDay(d.startedAt!, currentDate)
+            : _isSameDay(d.booking!, currentDate),
+      ).firstOrNull;
+
+      valueKey[day] = ValueKey<UserTrainingSessionModel?>(trainingSession);
 
       dayButtons.add(
         GestureDetector(
-          onTap: () => widget.onDatePressed?.call(currentDate),
+          key: valueKey[day],
+          onTap: () => widget.onDatePressed?.call(valueKey[day].value),
           child: Container(
             margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: isHighlighted ? Colors.blue : Colors.grey.shade200,
+              color: isHighlighted ? trainingSession?.progressStatus == 'FINISHED' ? Colors.green : Colors.blue : Colors.grey.shade200,
               borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.center,
@@ -104,7 +117,13 @@ class _ProWidgetBookingViewCalendarState extends State<ProWidgetBookingViewCalen
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: const [
-            Text('D'), Text('S'), Text('T'), Text('Q'), Text('Q'), Text('S'), Text('S'),
+            Text('D'),
+            Text('S'),
+            Text('T'),
+            Text('Q'),
+            Text('Q'),
+            Text('S'),
+            Text('S'),
           ],
         ),
         const SizedBox(height: 4),

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
+import 'package:treinadorpro/core/data/models/find_all_training_session_calendar_request_model.dart';
 import 'package:treinadorpro/core/domain/repositories/itraining_session_repository.dart';
-import 'package:treinadorpro/core/domain/repositories/training_session_repository.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/last_training_session_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/utils/alert.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_booking_view_calendar.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_monthly_calendar.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
 import '../../../../config/app_config.dart';
-import '../../../../core/data/models/booking_model_request.dart';
 import '../../../../core/data/models/contract_response_model.dart';
 import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/user_training_session_model.dart';
 import '../../../../core/data/models/user_workout_plan_model.dart';
-import '../../../../core/domain/repositories/icontract_repository.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_data_sheet_plan_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
-import '../../../../core/infrastructure/localstorage/user_training_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
@@ -47,16 +46,23 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
   late Map<String, List<UserWorkoutPlanModel>> userWorkoutPlanData;
   late String _contractToken;
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
+
+  late List<UserTrainingSessionModel?> _trainingSessionList;
   late UserTrainingSessionModel? _userTrainingSessionModel;
+  late DateTime startDate;
+  late DateTime endDate;
 
   List<UserWorkoutPlanModel>? exerciseList;
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
   final UserDataSheetPlanStorageService _userPlanDraft = UserDataSheetPlanStorageService();
-  final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
-      UserTrainingStorageService();
+
+  // final KeyStorageService<List<UserWorkoutPlanModel>> _userTrainingStorage =
+  //     UserTrainingStorageService();
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
-      UserTrainingSessionStorageService();
+  UserTrainingSessionStorageService();
+  final KeyStorageService<UserTrainingSessionModel> _lastTrainingSessionStorage =
+  LastTrainingSessionStorageService();
 
   final List<DateTime> _selectedDate = [];
 
@@ -66,10 +72,14 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     config = ref.read(appConfigProvider);
     userWorkoutPlanData = {};
     _trainingSessionRepository = ref.read(trainingSessionRepositoryProvider);
+    startDate = getFirstDayAtMidnight(DateTime.now());
+    endDate = getEndOfMonth(DateTime.now());
 
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
       _userTrainingSessionModelFuture = _userTrainingSessionStorage.get(_contractToken);
+
+      _initData();
 
       print('_contractToken => $_contractToken');
       ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
@@ -78,6 +88,15 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
           .read(findUserWorkoutDataSheetPlanViewModelProvider.notifier)
           .findUserWorkoutDataSheetPlan(_contractToken);
     }); //END Future.microtask
+  }
+
+  void _initData() async{
+    ref
+        .read(findAllTrainingSessionCalendarViewModelProvider.notifier)
+        .findAllTrainingSessionCalendar(
+      FindAllTrainingSessionCalendarRequestModel(_contractToken, startDate, endDate),
+    );
+
   }
 
   Widget _buildCard(ContractResponseModel contract) {
@@ -121,13 +140,54 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     );
   }
 
+  Widget _buildTrainingSessionCalendar(List<UserTrainingSessionModel?> trainingSessionList) {
+    return ProWidgetBookingViewCalendar(
+      trainingSessionList: trainingSessionList,
+      onDatePressed: (trainingSession) async {
+        if (trainingSession != null) {
+          if (trainingSession.progressStatus == 'FINISHED') {
+            trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
+            await _lastTrainingSessionStorage.save(trainingSession, _contractToken);
+            Navigator.push(context, MaterialPageRoute(builder: (_) => LastTrainingSummaryPage()));
+          }
+          if (trainingSession.progressStatus == 'BOOKING') {
+            if (getDateTimeToDate(DateTime.now()) == getDateTimeToDate(trainingSession.booking!)) {
+              showAlertDialog(context, 'Vamos Treinar Agora?', () async {
+                Navigator.of(context).pop();
+                trainingSession.progressStatus = 'STARTED';
+                trainingSession.bookingExternalId = trainingSession.externalId;
+                await _userTrainingSessionStorage.save(trainingSession, _contractToken);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((onValue) {
+                  setState(() {
+                    trainingSession.progressStatus = 'BOOKING';
+                    _initData();
+                  });
+                });
+              }, () {
+                Navigator.of(context).pop();
+              });
+            } else {
+              trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
+              await _userTrainingSessionStorage.save(trainingSession, _contractToken);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+            }
+          }
+        }
+      },
+    );
+  }
+
   Widget _buildFormArea(BuildContext context, HandlerState state, AppConfig config) {
     final contractState = ref.watch(findContractViewModelProvider);
+    final trainingSessionState = ref.watch(findAllTrainingSessionCalendarViewModelProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        constraints: BoxConstraints(minHeight: MediaQuery
+            .of(context)
+            .size
+            .height),
         child: Column(
           children: [
             // contract card
@@ -137,57 +197,21 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
               loading: () => CircularProgressIndicator(),
             ),
 
-            ProWidgetBookingViewCalendar(
-              highlightedDates: [
-                DateTime(2025, 08, 28),
-                DateTime(2025, 08, 16),
-                DateTime(2025, 08, 11),
-              ],
-              onDatePressed: (date) => print('Date pressed $date'),
+            // training session calendar
+            trainingSessionState.when(
+              data: (data) => _buildTrainingSessionCalendar(data.objectResponse),
+              error: (e, _) => Text('Error: $e'),
+              loading: () => ProWidgetCustomLoadingIndicator(),
             ),
 
-            // FutureBuilder(
-            //   future: _userTrainingSessionModelFuture,
-            //   builder: (context, snapshot) => _buildMessagebuilder(context, snapshot),
-            // ),
-
-            // // monthly calendar
-            // ProWidgetMonthlyCalendar(
-            //   onDateSelected: (date) => _selectedDate.add(date),
-            //   onDateUnselected: (date) => _selectedDate.remove(date),
-            // ),
-
-            // Action button
-            // Padding(
-            //   padding: const EdgeInsets.all(16.0),
-            //   child: ElevatedButton.icon(
-            //     onPressed: () {
-            //       final request = BookingModelRequest(
-            //         contractExternalId: _contractToken,
-            //         bookingList: _selectedDate,
-            //         trainingSession: _userTrainingSessionModel!,
-            //       );
-            //       context.read<BookingTrainingSessionCubit>().bookingTrainingSession(request);
-            //     },
-            //     icon: Icon(Icons.check),
-            //     label: Text('SALVAR AGENDA DE TREINO'),
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: Colors.green,
-            //       foregroundColor: Colors.white,
-            //       minimumSize: Size.fromHeight(50),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMessagebuilder(
-    BuildContext context,
-    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
-  ) {
+  Widget _buildMessagebuilder(BuildContext context,
+      AsyncSnapshot<UserTrainingSessionModel?> snapshot,) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
@@ -201,10 +225,8 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
     }
   }
 
-  Future<void> _processFormListenerFromCubitStateChanged(
-    BuildContext context,
-    HandlerState state,
-  ) async {
+  Future<void> _processFormListenerFromCubitStateChanged(BuildContext context,
+      HandlerState state,) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 
@@ -228,9 +250,7 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('AGENDA DE TREINOS'),
-          actions: [
-            ProWidgetInfoAlertDialog(title: 'page', text: 'booking_view_page.dart'),
-          ],
+          actions: [ProWidgetInfoAlertDialog(title: 'page', text: 'booking_view_page.dart')],
         ),
         body: BlocConsumer<BookingTrainingSessionCubit, HandlerState>(
           builder: (context, state) => _buildFormArea(context, state, config),

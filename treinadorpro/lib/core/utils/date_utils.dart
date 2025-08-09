@@ -1,4 +1,3 @@
-
 import 'package:intl/intl.dart';
 
 import '../data/models/contract_response_model.dart';
@@ -60,3 +59,24 @@ String dateDifference(DateTime start, DateTime end) {
   final last = parts.removeLast();
   return '${parts.join(', ')} e $last';
 }
+
+DateTime getFirstDayAtMidnight(DateTime date) {
+  return DateTime(date.year, date.month, 1);
+}
+
+DateTime getEndOfMonth(DateTime date) {
+  DateTime firstDayNextMonth = DateTime(date.year, date.month + 1, 1);
+
+  DateTime lastDay = firstDayNextMonth.subtract(Duration(days: 1));
+
+  return DateTime(
+    lastDay.year,
+    lastDay.month,
+    lastDay.day,
+    23,
+    59,
+    59,
+    999,
+  );
+}
+
