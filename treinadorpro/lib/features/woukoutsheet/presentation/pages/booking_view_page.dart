@@ -155,6 +155,7 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
                 () async {
                   Navigator.of(context).pop();
                   trainingSession.progressStatus = 'STARTED';
+                  trainingSession.startedAt = DateTime.now();
                   trainingSession.bookingExternalId = trainingSession.externalId;
                   await _userTrainingSessionStorage.save(trainingSession, _contractToken);
                   Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((
