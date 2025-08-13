@@ -226,9 +226,9 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ProWidgetCircleSubtitles(cor: Colors.green, texto: 'Treino Executado'),
+                ProWidgetCircleSubtitles(cor: Colors.green, texto: 'Executado'),
                 SizedBox(width: 10),
-                ProWidgetCircleSubtitles(cor: Colors.blue, texto: 'Treino Agendado'),
+                ProWidgetCircleSubtitles(cor: Colors.blue, texto: 'Agendado'),
                 SizedBox(width: 10),
                 ProWidgetCircleSubtitles(cor: Colors.grey, texto: 'Dia Livre'),
               ],
