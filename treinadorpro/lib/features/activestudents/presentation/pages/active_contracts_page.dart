@@ -131,13 +131,6 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                   label: Text('Apagar Rascunho Treino'),
                 ),
 
-                // Booking
-                SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BookingViewPage())),
-                  icon: Icon(Icons.calendar_month),
-                  label: Text('Agenda'),
-                ),
               ],
             ),
           ],
