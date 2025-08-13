@@ -77,7 +77,6 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
   }
 
   Widget _buildExercisesListView(List<UserWorkoutPlanModel>? trainingList, DateTime trainingDate) {
-    final deleteTrainingSessionState = ref.watch(deleteTrainingSessionViewModelProvider);
     _updateProgressIndicator(trainingList!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,6 +89,10 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
         ProWidgetInfoRow(
           label: 'Modalidade',
           value: userTrainingSessionModelInstance.contract.trainingPack.modality!.namePt,
+        ),
+        ProWidgetInfoRow(
+          label: 'Programa',
+          value: userTrainingSessionModelInstance.userWorkoutPlanList?[0].customProgram ?? userTrainingSessionModelInstance.userWorkoutPlanList![0].program!.namePt,
         ),
         ProWidgetInfoRow(
           label: 'Status Treino',
@@ -119,7 +122,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
               'TEM CERTEZA DE EXCLUIR ESTA AGENDA DE TREINO RESERVADA?',
               () {
                 setState(() {
-                  ref
+                 ref
                       .read(deleteTrainingSessionViewModelProvider.notifier)
                       .deleteTerainingSession(
                         _contractToken,
@@ -141,16 +144,6 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
           ),
         ),
 
-        // Delete message area
-        deleteTrainingSessionState.when(
-          data: (data) {
-            return SizedBox.shrink();
-          },
-          error: (e, _) => Text('Error: $e'),
-          loading: () => SizedBox.shrink(),
-        ),
-
-
         SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true,
@@ -162,25 +155,6 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
       ],
     );
   }
-  //
-  // void _deleteExerciseButtonPressed(UserWorkoutPlanModel exerciseToDelete) {
-  //   final String exerciseName =
-  //       exerciseToDelete.customExercise ?? exerciseToDelete.exercise!.namePt;
-  //   showAlertDialog(
-  //     context,
-  //     'Tem certeza de excluir o exercício $exerciseName do treino de hoje?',
-  //     () {
-  //       setState(() {
-  //         userTrainingSessionModelInstance.userWorkoutPlanList?.removeWhere(
-  //           (e) => e.control == exerciseToDelete.control,
-  //         );
-  //       });
-  //       _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
-  //       Navigator.of(context).pop();
-  //     },
-  //     null,
-  //   );
-  // }
 
   Widget? _buildExerciseCard(
     BuildContext context,
@@ -221,38 +195,6 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
                   ),
                   SizedBox(height: 8),
                   Chip(label: Text(training.executionMethod.toString())),
-                  // training.trainingStatus == 'DONE' ||
-                  //         userTrainingSessionModelInstance.progressStatus == 'FINISHED'
-                  //     ? SizedBox.shrink()
-                  //     : Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           SizedBox(height: 8),
-                  //           ElevatedButton.icon(
-                  //             onPressed: () {
-                  //               _userWorkoutPlanStorageService.save(training, _contractToken);
-                  //               Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(builder: (_) => ExerciseExecutionPage()),
-                  //               ).then((result) {
-                  //                 if (result) {
-                  //                   setState(() {
-                  //                     _userTrainingSessionModelFuture = _userTrainingSessionStorage
-                  //                         .get(_contractToken);
-                  //                   });
-                  //                 }
-                  //               });
-                  //             },
-                  //             icon: Icon(Icons.play_arrow),
-                  //             label: Text('INICIAR O EXERCÍCIO'),
-                  //             style: ElevatedButton.styleFrom(
-                  //               backgroundColor: Colors.green,
-                  //               foregroundColor: Colors.white,
-                  //               minimumSize: Size.fromHeight(50),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
                 ],
               ),
             ),
@@ -275,18 +217,8 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
     } else {
       // Now... we have data and we can call method
       userTrainingSessionModelInstance = snapshot.data!;
-      //
-      // if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
-      //   // userTrainingSessionModelInstance.progressStatus = 'STARTED';
-      //   userTrainingSessionModelInstance.syncStatus = 'PENDING';
-      //   trainingHasStarted = true;
-      // }
 
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;
-      // trainingTime = 0;
-      // userWorkoutPlanList?.forEach(
-      //   (e) => trainingTime += int.parse(e.executionTime!) + int.parse(e.restTime!),
-      // );
       return _buildExercisesListView(userWorkoutPlanList, snapshot.data!.startedAt!);
     }
   }

@@ -7,6 +7,7 @@ import 'package:treinadorpro/core/infrastructure/localstorage/last_training_sess
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/utils/alert.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_booking_view_calendar.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_circle_subtitles.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_detail_view_page.dart';
@@ -220,27 +221,22 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
               error: (e, _) => Text('Error: $e'),
               loading: () => ProWidgetCustomLoadingIndicator(),
             ),
+
+            // subtitles for calendar
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ProWidgetCircleSubtitles(cor: Colors.green, texto: 'Treino Executado'),
+                SizedBox(width: 10),
+                ProWidgetCircleSubtitles(cor: Colors.blue, texto: 'Treino Agendado'),
+                SizedBox(width: 10),
+                ProWidgetCircleSubtitles(cor: Colors.grey, texto: 'Dia Livre'),
+              ],
+            )
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildMessagebuilder(
-    BuildContext context,
-    AsyncSnapshot<UserTrainingSessionModel?> snapshot,
-  ) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-      return Center(child: Text('Erro: ${snapshot.error}'));
-    } else if (!snapshot.hasData || snapshot.data == null) {
-      return const Center(child: Text('Nenhum dado encontrado.'));
-    } else {
-      // Now... we have data and we can call method
-      _userTrainingSessionModel = snapshot.data!;
-      return Text('Treino carregado');
-    }
   }
 
   Future<void> _processFormListenerFromCubitStateChanged(

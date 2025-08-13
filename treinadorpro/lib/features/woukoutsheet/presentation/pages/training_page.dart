@@ -148,12 +148,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
         if (userTrainingSessionModelInstance.progressStatus == "BOOKING")
           deleteTrainingSessionState.when(
             data: (data) {
-              // showAlertCloseDialog(context, 'A reserva de treina na agenda foi excluída', (){
-              //   Navigator.of(context).pop();
-              //   Navigator.of(context).pop();
-              // });
               return SizedBox.shrink();
-
             },
             error: (e, _) => Text('Error: $e'),
             loading: () => SizedBox.shrink(),
@@ -302,7 +297,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       userTrainingSessionModelInstance = snapshot.data!;
 
       if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
-        // userTrainingSessionModelInstance.progressStatus = 'STARTED';
         userTrainingSessionModelInstance.syncStatus = 'PENDING';
         trainingHasStarted = true;
       }
@@ -367,7 +361,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
         builder: (_) => AlertDialog(title: Text('Sucesso'), content: Text("Plano Salvo")),
       );
 
-      // Navigator.popAndPushNamed(context, AppRoutes.workoutSheetPage);
     }
   }
 
