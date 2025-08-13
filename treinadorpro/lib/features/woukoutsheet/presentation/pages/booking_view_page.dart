@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/utils/alert.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_booking_view_calendar.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_detail_view_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/last_training_summary_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/training_page.dart';
 
@@ -172,9 +173,9 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
                 },
               );
             } else {
-              trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
+              // trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
               await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((
+              Navigator.push(context, MaterialPageRoute(builder: (_) => BookingDetailViewPage())).then((
                 onValue,
               ) {
                 setState(() async {

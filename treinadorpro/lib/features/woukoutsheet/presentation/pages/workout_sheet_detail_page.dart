@@ -242,9 +242,9 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                 ),
               ),
               SizedBox(width: 8),ElevatedButton.icon(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => BookingViewPage())),
+                onPressed: () => Navigator.popAndPushNamed(context, AppRoutes.bookingViewPage),
                 icon: Icon(Icons.calendar_month),
-                label: Text('Agenda'),
+                label: Text('Agenda de Treinos'),
               ),
             ],
           ),
