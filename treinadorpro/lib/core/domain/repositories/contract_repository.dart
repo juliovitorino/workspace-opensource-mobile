@@ -7,6 +7,8 @@ import 'package:treinadorpro/core/data/models/student_payment_response_model.dar
 import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 
+import '../../data/models/student_payments_transaction_response_model.dart';
+
 class ContractRepository implements IContractRespository{
 
   final IContractDatasource datasource;
@@ -45,7 +47,7 @@ class ContractRepository implements IContractRespository{
   }
 
   @override
-  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentReceivedPayment() async {
+  Future<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>> findAllStudentReceivedPayment() async {
     return await datasource.findAllStudentReceivedPayment();
   }
 
