@@ -1,3 +1,4 @@
+import 'package:treinadorpro/core/data/requests/receive_student_payment_request_model.dart';
 import 'package:treinadorpro/core/domain/repositories/repository.dart';
 
 import '../../data/models/api_generic_response.dart';
@@ -17,4 +18,5 @@ abstract class IContractRespository extends Repository<ExternalIdResponseModel, 
   Future<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>> findAllStudentReceivedPayment();
   Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request);
   Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId);
+  Future<ApiGenericResponse<bool>> receiveStudentPayment(String studentPaymentExternalId, ReceiveStudentPaymentRequestModel request);
 }

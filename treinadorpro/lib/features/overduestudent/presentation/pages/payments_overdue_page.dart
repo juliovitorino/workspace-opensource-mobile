@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
@@ -7,6 +9,9 @@ import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/features/registerpayment/presentation/pages/register_payment_page.dart';
 
+import '../../../../core/infrastructure/localstorage/bill_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/key_storage_service.dart';
+import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 
 class PaymentsOverduePage extends ConsumerStatefulWidget {
@@ -20,6 +25,8 @@ class PaymentsOverduePage extends ConsumerStatefulWidget {
 class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
 
   late AppConfig config;
+  final StorageService<StudentPaymentResponseModel> _billStorage = BillStorageService();
+
 
   @override
   void initState() {
@@ -40,6 +47,8 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
   }
 
   Widget _buildCard(StudentPaymentResponseModel overduePayment) {
+    double _earlyPayments = 0.00;
+    overduePayment.studentPaymentsTransactions?.forEach((e) => _earlyPayments += e.receivedAmount!);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -55,7 +64,7 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'BRL \$ ${overduePayment.amount.toStringAsFixed(2)}',
+                  'BRL \$ ${(overduePayment.amount - _earlyPayments).toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.redAccent,
@@ -84,11 +93,17 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
                 ),
                 SizedBox(width: 8, height: 40),
                 OutlinedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
+                    await _billStorage.save(overduePayment);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => RegisterPaymentPage()),
-                    );
+                    ).then((onValue) => setState(() async {
+                      await ref
+                          .read(findAllStudentOverduePaymentViewModelProvider.notifier)
+                          .findAllStudentOverduePayment();
+print('1');
+                    }));
                   },
                   icon: Icon(Icons.check_circle_outline),
                   label: Text('Registrar Pagamento'),

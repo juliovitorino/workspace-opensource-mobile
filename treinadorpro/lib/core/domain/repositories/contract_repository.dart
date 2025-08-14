@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/data/models/create_new_student_contract_reques
 import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
+import 'package:treinadorpro/core/data/requests/receive_student_payment_request_model.dart';
 import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart';
 
 import '../../data/models/student_payments_transaction_response_model.dart';
@@ -65,4 +66,10 @@ class ContractRepository implements IContractRespository{
   Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId) async {
     return await datasource.findUserWorkoutDataSheetPlan(contractExternalId);
   }
+
+  @override
+  Future<ApiGenericResponse<bool>> receiveStudentPayment(String studentPaymentExternalId, ReceiveStudentPaymentRequestModel request) async {
+    return await datasource.receiveStudentPayment(studentPaymentExternalId, request);
+  }
+
 }

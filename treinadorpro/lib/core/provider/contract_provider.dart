@@ -16,6 +16,7 @@ import '../viewmodel/find_all_active_contracts_view_model.dart';
 import '../viewmodel/find_all_contract_today_workout_view_model.dart';
 import '../viewmodel/find_all_student_received_payment_view_model.dart';
 import '../viewmodel/find_user_workout_data_sheet_plan_view_model.dart';
+import '../viewmodel/register_student_payment_view_model.dart';
 import 'app_config_provider.dart';
 import 'http_api_client_provider.dart';
 
@@ -37,11 +38,10 @@ final contractRepositoryProvider = Provider<IContractRespository>((ref) {
 //---------------------------
 // view model provider
 //--------------------------
-final newStudentViewModel =
-    StateNotifierProvider<NewStudentViewModel, AsyncValue<String>>((ref) {
-      final repository = ref.read(contractRepositoryProvider);
-      return NewStudentViewModel(repository);
-    });
+final newStudentViewModel = StateNotifierProvider<NewStudentViewModel, AsyncValue<String>>((ref) {
+  final repository = ref.read(contractRepositoryProvider);
+  return NewStudentViewModel(repository);
+});
 
 final findAllActiveContractsViewModelProvider =
     StateNotifierProvider<
@@ -96,3 +96,12 @@ final findUserWorkoutDataSheetPlanViewModelProvider =
       final repository = ref.read(contractRepositoryProvider);
       return FindUserWorkoutDataSheetPlanViewModel(repository);
     });
+
+final registerStudentPaymentViewModelProvider =
+    StateNotifierProvider<RegisterStudentPaymentViewModel, AsyncValue<ApiGenericResponse<bool>>>(
+      (ref) {
+
+        final repository = ref.read(contractRepositoryProvider);
+        return RegisterStudentPaymentViewModel(repository);
+      },
+    );
