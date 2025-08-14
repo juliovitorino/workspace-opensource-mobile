@@ -11,6 +11,7 @@ import 'package:treinadorpro/core/viewmodel/find_all_student_overdue_payment_vie
 import 'package:treinadorpro/core/viewmodel/find_contract_view_model.dart';
 import 'package:treinadorpro/core/viewmodel/new_student_view_model.dart';
 
+import '../data/models/student_payments_transaction_response_model.dart';
 import '../viewmodel/find_all_active_contracts_view_model.dart';
 import '../viewmodel/find_all_contract_today_workout_view_model.dart';
 import '../viewmodel/find_all_student_received_payment_view_model.dart';
@@ -72,7 +73,7 @@ final findAllStudentOverduePaymentViewModelProvider =
 final findAllStudentReceivedPaymentViewModelProvider =
     StateNotifierProvider<
       FindAllStudentReceivedPaymentViewModel,
-      AsyncValue<ApiGenericResponse<List<StudentPaymentResponseModel>>>
+      AsyncValue<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>>
     >((ref) {
       final repository = ref.read(contractRepositoryProvider);
       return FindAllStudentReceivedPaymentViewModel(repository);

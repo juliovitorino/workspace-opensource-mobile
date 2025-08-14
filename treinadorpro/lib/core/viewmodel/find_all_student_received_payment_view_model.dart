@@ -3,9 +3,10 @@ import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
 import 'package:treinadorpro/core/viewmodel/iview_model.dart';
 
+import '../data/models/student_payments_transaction_response_model.dart';
 import '../domain/repositories/icontract_repository.dart';
 
-class FindAllStudentReceivedPaymentViewModel extends IViewModel<ApiGenericResponse<List<StudentPaymentResponseModel>>> {
+class FindAllStudentReceivedPaymentViewModel extends IViewModel<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>> {
 
   final IContractRespository _repository;
   FindAllStudentReceivedPaymentViewModel(this._repository):super(_repository);

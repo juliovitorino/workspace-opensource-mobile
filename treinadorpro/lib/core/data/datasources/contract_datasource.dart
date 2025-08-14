@@ -14,6 +14,8 @@ import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_serv
 import 'package:treinadorpro/core/network/api_client.dart';
 import 'package:treinadorpro/core/network/api_exception.dart';
 
+import '../models/student_payments_transaction_response_model.dart';
+
 class ContractDatasource implements IContractDatasource {
   final ApiClient apiClient;
   final AppConfig config;
@@ -164,7 +166,7 @@ class ContractDatasource implements IContractDatasource {
 
   @override
   Future<ApiGenericResponse<List<
-      StudentPaymentResponseModel>>> findAllStudentReceivedPayment() async {
+      StudentPaymentsTransactionResponseModel>>> findAllStudentReceivedPayment() async {
     final String url = "${config
         .apiBackendUrl}/v1/api/business/contract/trainer/student/received-payments";
 
@@ -191,7 +193,7 @@ class ContractDatasource implements IContractDatasource {
     return ApiGenericResponse(
         Response(response['msgcode'], response['mensagem']),
         objectResponse
-            .map((contract) => StudentPaymentResponseModel.fromJson(contract))
+            .map((contract) => StudentPaymentsTransactionResponseModel.fromJson(contract))
             .toList());
   }
 

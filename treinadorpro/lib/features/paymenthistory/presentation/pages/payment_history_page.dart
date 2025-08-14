@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/utils/date_utils.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/student_payment_response_model.dart';
+import '../../../../core/data/models/student_payments_transaction_response_model.dart';
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../registerpayment/presentation/pages/register_payment_page.dart';
@@ -32,7 +33,7 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
     });
   }
 
-  Widget _buildCard(StudentPaymentResponseModel payment) {
+  Widget _buildCard(StudentPaymentsTransactionResponseModel payment) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -44,24 +45,24 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  payment.contract.studentUser.name,
+                  payment.studentPayment!.contract.studentUser.name,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'BRL \$ ${payment.amount.toStringAsFixed(2)}',
+                  'BRL \$ ${payment.receivedAmount?.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.redAccent,
+                    color: Colors.blueAccent,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
             SizedBox(height: 4),
-            Text('${payment.contract.description} | ${payment.contract.trainingPack.description}'),
+            Text('${payment.studentPayment!.contract.description} | ${payment.studentPayment!.contract.trainingPack.description}'),
             SizedBox(height: 4),
             Text(
-              'Vencimento: ${getDateTimeToDate(payment.dueDate)} ',
+              'Vencimento: ${getDateTimeToDate(payment.studentPayment!.dueDate)} ',
               style: TextStyle(color: Colors.grey[700]),
             ),
             SizedBox(height: 4),
@@ -69,17 +70,14 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
               'Pago em: ${getDateTimeToDate(payment.paymentDate!)} ',
               style: TextStyle(color: Colors.grey[700]),
             ),
+            SizedBox(height: 4),
+            Text(
+              'Forma de Pagamento: ${payment.paymentMethod!} ',
+              style: TextStyle(color: Colors.grey[700]),
+            ),
             SizedBox(height: 12),
             Wrap(
               children: [
-                // ElevatedButton.icon(
-                //   onPressed: () {},
-                //   icon: Icon(Icons.chat),
-                //   label: Text('WhatsApp'),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.green,
-                //   ),
-                // ),
                 SizedBox(width: 8, height: 40),
                 OutlinedButton.icon(
                   onPressed: () {},
@@ -94,8 +92,8 @@ class _PaymentHistoryPageState extends ConsumerState<PaymentHistoryPage> {
     );
   }
 
-  Widget _buildListView(List<StudentPaymentResponseModel> data) {
-    double total = data.fold(0.0, (sum, item) => sum + item.amount);
+  Widget _buildListView(List<StudentPaymentsTransactionResponseModel> data) {
+    double total = data.fold(0.0, (sum, item) => sum + item.receivedAmount!);
 
     return Column(
       children: [
