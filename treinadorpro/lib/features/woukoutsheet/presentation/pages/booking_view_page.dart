@@ -176,16 +176,14 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
             } else {
               // trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
               await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => BookingDetailViewPage())).then((
-                onValue,
-              ) {
-                setState(() async {
-                  if (onValue == 1) {
-                    await _userTrainingSessionStorage.clear(_contractToken);
-                    _trainingSessionList.remove(trainingSession);
-                    _initData();
-                  }
-                });
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => BookingDetailViewPage()),
+              ).then((onValue) {
+                _userTrainingSessionStorage.clear(_contractToken);
+                _trainingSessionList.remove(trainingSession);
+                _initData();
+                setState(() {});
               });
             }
           }
@@ -232,7 +230,7 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
                 SizedBox(width: 10),
                 ProWidgetCircleSubtitles(cor: Colors.grey, texto: 'Dia Livre'),
               ],
-            )
+            ),
           ],
         ),
       ),
