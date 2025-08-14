@@ -24,7 +24,7 @@ class WorkgroupModel extends Workgroup implements IName{
   );
 
   factory WorkgroupModel.fromJson(Map<String, dynamic> json) {
-    print('WorkGroup_model :: parsing fromJson');
+    // print('WorkGroup_model :: parsing fromJson');
 
     final response = WorkgroupModel(
       id: json['id'],
@@ -36,7 +36,7 @@ class WorkgroupModel extends Workgroup implements IName{
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('WorkGroup_model :: parsing fromJson was finished successfully');
+    // print('WorkGroup_model :: parsing fromJson was finished successfully');
 
     return response;
   }

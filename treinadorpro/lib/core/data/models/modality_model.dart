@@ -23,7 +23,7 @@ class ModalityModel extends Modality implements IName {
   );
 
   factory ModalityModel.fromJson(Map<String, dynamic> json) {
-    print('modality_model :: parsing fromJson');
+    // print('modality_model :: parsing fromJson');
 
     final response = ModalityModel(
       id: json['id'],
@@ -34,7 +34,7 @@ class ModalityModel extends Modality implements IName {
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('modality_model :: parsing fromJson was finished successfully');
+    // print('modality_model :: parsing fromJson was finished successfully');
 
     return response;
   }

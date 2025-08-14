@@ -21,7 +21,7 @@ class GoalModel extends Goal implements IName{
   );
 
   factory GoalModel.fromJson(Map<String, dynamic> json) {
-    print('goal_model :: parsing fromJson');
+    // print('goal_model :: parsing fromJson');
 
     final response = GoalModel(
       id: json['id'],
@@ -32,7 +32,7 @@ class GoalModel extends Goal implements IName{
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('goal_model :: parsing fromJson was finished successfully');
+    // print('goal_model :: parsing fromJson was finished successfully');
 
     return response;
   }

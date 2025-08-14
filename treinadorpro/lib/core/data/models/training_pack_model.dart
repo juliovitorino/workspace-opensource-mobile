@@ -38,7 +38,7 @@ class TrainingPackModel extends TrainingPack implements IName{
   );
 
   factory TrainingPackModel.fromJson(Map<String, dynamic> json) {
-    print('training_pack_model :: parsing fromJson has just started');
+    // print('training_pack_model :: parsing fromJson has just started');
     print(json['personalTrainer']);
     final response = TrainingPackModel(
       id: json['id'],
@@ -55,7 +55,7 @@ class TrainingPackModel extends TrainingPack implements IName{
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('training_pack_model :: parsing fromJson has been just finished successfully');
+    // print('training_pack_model :: parsing fromJson has been just finished successfully');
 
     return response;
   }

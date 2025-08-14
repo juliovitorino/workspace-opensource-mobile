@@ -32,7 +32,7 @@ class ExerciseModel extends Exercise implements IName {
 
 
   factory ExerciseModel.fromJson(Map<String, dynamic> json) {
-    print('exercise_model :: parsing fromJson');
+    // print('exercise_model :: parsing fromJson');
 
     final response = ExerciseModel(
       id: json['id'],
@@ -48,7 +48,7 @@ class ExerciseModel extends Exercise implements IName {
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('exercise_model :: END parsing fromJson successfully');
+    // print('exercise_model :: END parsing fromJson successfully');
 
     return response;
   }

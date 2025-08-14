@@ -41,7 +41,7 @@ class UserModel extends User {
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    print('user_model :: parsing fromJson has just started');
+    // print('user_model :: parsing fromJson has just started');
     final response = UserModel(
         id: json['id'],
         uuidId: json['uuidId'],
@@ -60,7 +60,7 @@ class UserModel extends User {
         updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
         personalFeature: json['personalFeature'] != null ? PersonalFeatureModel.fromJson(json['personalFeature']) : null,
     );
-    print('user_model :: parsing fromJson has been just finished successfully');
+    // print('user_model :: parsing fromJson has been just finished successfully');
 
     return response;
   }

@@ -16,7 +16,7 @@ class StudentsFromTrainerResponseModel implements IName {
   static String module = "StudentsFromTrainerResponse";
 
   factory StudentsFromTrainerResponseModel.fromJson(Map<String, dynamic> json) {
-    print('$module :: parsing fromJson');
+    // print('$module :: parsing fromJson');
 
     final response = StudentsFromTrainerResponseModel(
       externalId: json['externalId'],
@@ -24,7 +24,7 @@ class StudentsFromTrainerResponseModel implements IName {
       email: json['email'],
       phone: json['phone'],
     );
-    print('$module :: parsing fromJson was finished successfully');
+    // print('$module :: parsing fromJson was finished successfully');
 
     return response;
   }

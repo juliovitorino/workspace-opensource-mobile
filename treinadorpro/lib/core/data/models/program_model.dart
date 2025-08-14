@@ -24,7 +24,7 @@ class ProgramModel extends Program implements IName{
   );
 
   factory ProgramModel.fromJson(Map<String, dynamic> json) {
-    print('Program_model :: parsing fromJson');
+    // print('Program_model :: parsing fromJson');
 
     final response = ProgramModel(
       id: json['id'],
@@ -36,7 +36,7 @@ class ProgramModel extends Program implements IName{
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
-    print('Program_model :: parsing fromJson was finished successfully');
+    // print('Program_model :: parsing fromJson was finished successfully');
 
     return response;
   }
