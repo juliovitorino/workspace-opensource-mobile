@@ -11,5 +11,6 @@ class AppRoutes {
   static const syncPage = 'syncPage';
   static const trainingSummaryPage = 'TrainingSummaryPage';
   static const bookingViewPage = 'BookingViewPage';
+  static const addTrainingPackagePage = 'AddTrainingPackagePage';
 // add more routes if necessary
 }

@@ -82,8 +82,8 @@ class _RegisterPaymentPageState extends ConsumerState<RegisterPaymentPage> {
           decoration: InputDecoration(prefixIcon: Icon(Icons.date_range), hintText: 'AAAA-MM-DD'),
           keyboardType: TextInputType.datetime,
         ),
-        SizedBox(height: 16),
 
+        SizedBox(height: 16),
         Text('Valor Recebido'),
         TextFormField(
           controller: _amountController,

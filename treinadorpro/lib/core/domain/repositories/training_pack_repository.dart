@@ -1,4 +1,6 @@
 import 'package:treinadorpro/core/data/datasources/itraining_pack_remote_datasource.dart';
+import 'package:treinadorpro/core/data/models/add_training_pack_request_model.dart';
+import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/page_result_response_model.dart';
 import 'package:treinadorpro/core/data/models/students_from_trainer_response_model.dart';
 import 'package:treinadorpro/core/data/models/training_pack_model.dart';
@@ -25,10 +27,10 @@ class TrainingPackRepository implements ITrainingPackRepository {
   }
 
   @override
-  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(String uuid, int page, int size) async {
-    print("$module :: uuid = $uuid");
+  Future<PageResultResponseModel<TrainingPackModel>> findAllTrainingPackByPersonalExternalId(int page, int size) async {
+    print("$module :: ok");
 
-    return await _trainingPackRemoteDatasource.findAllTrainingPackByPersonalExternalId(uuid, page, size);
+    return await _trainingPackRemoteDatasource.findAllTrainingPackByPersonalExternalId(page, size);
   }
 
   @override
@@ -43,6 +45,11 @@ class TrainingPackRepository implements ITrainingPackRepository {
     print("$module :: externalID = $externalId");
 
     return await _trainingPackRemoteDatasource.findAllStudentsFromTrainer(externalId);
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> addTrainingPack(AddTrainingPackRequestModel request) async {
+    return await _trainingPackRemoteDatasource.addTrainingPack(request);
   }
 
 

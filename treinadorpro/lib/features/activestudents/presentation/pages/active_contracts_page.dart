@@ -17,7 +17,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_view_page.dart';
 
-import '../../../../core/utils/miscelaneous.dart';
+import '../../../../core/utils/global.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 import '../../../woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
@@ -83,7 +83,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
               label: 'Status',
               value: '...',
               widget: ProWidgetTag(
-                text: getContractStatus(contract.status) ?? contract.status,
+                text: decodeStatus(contract.status) ?? contract.status,
                 borderColor: Colors.green,
                 backgroundColor: Colors.white,
               ),

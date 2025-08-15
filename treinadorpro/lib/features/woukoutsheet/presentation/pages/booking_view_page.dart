@@ -28,7 +28,7 @@ import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/utils/date_utils.dart';
-import '../../../../core/utils/miscelaneous.dart';
+import '../../../../core/utils/global.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_row.dart';
@@ -122,7 +122,7 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
                 label: 'Status',
                 value: '...',
                 widget: ProWidgetTag(
-                  text: getContractStatus(contract.status) ?? contract.status,
+                  text: decodeStatus(contract.status) ?? contract.status,
                   borderColor: Colors.green,
                   backgroundColor: Colors.white,
                 ),
