@@ -11,5 +11,7 @@ abstract class ITrainingPackRemoteDatasource extends IRemoteDatasource<TrainingP
   Future<List<TrainingPackModel>> findAllTrainingPackByTrainerExternalId(String id);
   Future<List<StudentsFromTrainerResponseModel>> findAllStudentsFromTrainer(String externalId);
   Future<ApiGenericResponse<bool>> addTrainingPack(AddTrainingPackRequestModel request);
+  Future<void> changeStatusTrash(String externalId);
+  Future<void> changeStatusRecover(String externalId);
 
 }

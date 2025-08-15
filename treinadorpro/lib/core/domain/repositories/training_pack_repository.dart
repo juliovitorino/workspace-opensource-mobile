@@ -52,5 +52,15 @@ class TrainingPackRepository implements ITrainingPackRepository {
     return await _trainingPackRemoteDatasource.addTrainingPack(request);
   }
 
+  @override
+  Future<void> changeStatusRecover(String externalId)  async {
+    await _trainingPackRemoteDatasource.changeStatusRecover(externalId);
+  }
+
+  @override
+  Future<void> changeStatusTrash(String externalId) async {
+    await _trainingPackRemoteDatasource.changeStatusTrash(externalId);
+  }
+
 
 }
