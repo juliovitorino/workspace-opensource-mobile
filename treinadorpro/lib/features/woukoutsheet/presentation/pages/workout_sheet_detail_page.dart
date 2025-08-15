@@ -432,6 +432,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           Navigator.of(context).pop();
           getInstanceUserTrainingSessionModel().then((userTrainingSessionModel) {
             userTrainingSessionModel.startedAt = DateTime.now();
+            userTrainingSessionModel.progressStatus = 'STARTED';
 
             _userTrainingSessionStorage.save(userTrainingSessionModel, _contractToken);
             _contractTokenStorage.save(_contractToken);
