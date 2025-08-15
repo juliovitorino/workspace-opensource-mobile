@@ -78,6 +78,8 @@ class HttpApiClient implements ApiClient {
       return jsonDecode(response.body);
     }
 
+    if(response.statusCode == 204) return {};
+
     if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = jsonDecode(response.body);
       throw ApiException(response.statusCode, responseBody);

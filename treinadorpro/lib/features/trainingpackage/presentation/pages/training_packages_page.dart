@@ -56,10 +56,7 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
   Future<PageResultResponseModel<TrainingPackModel>?> _loadPage() async {
     final response = await ref
         .read(trainingPackPageResultViewModelProvider.notifier)
-        .findAllTrainingPackByPersonalExternalId(
-          _currentPage,
-          _pageSize,
-        );
+        .findAllTrainingPackByPersonalExternalId(_currentPage, _pageSize);
 
     if (response != null && response.content.length < _pageSize) {
       _hasMoreData = false;
@@ -104,10 +101,13 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
         padding: const EdgeInsets.all(16),
         child: ElevatedButton.icon(
           onPressed: () =>
-              Navigator.push(context, MaterialPageRoute(builder: (_) => AddTrainingPackagePage()))
-          .then((onValue) => setState(() {
-
-          })),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddTrainingPackagePage()),
+              ).then((onValue) {
+                _loadPage();
+                setState(() {});
+              }),
           icon: Icon(Icons.add),
           label: Text('Adicionar Novo Pacote'),
           style: ElevatedButton.styleFrom(

@@ -152,4 +152,50 @@ class TrainingPackRemoteDatasource implements ITrainingPackRemoteDatasource {
     return ApiGenericResponse(Response(response['msgcode'], response['mensagem']), result);
   }
 
+  @override
+  Future<void> changeStatusTrash(String externalId) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/trainingpack/$externalId/trash";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    String? token = await _tokenStorage.get();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.patch(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+  }
+
+  @override
+  Future<void> changeStatusRecover(String externalId) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/trainingpack/$externalId/recover";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    String? token = await _tokenStorage.get();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.patch(url, headers: headers);
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+  }
+
 }

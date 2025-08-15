@@ -248,7 +248,7 @@ class _AddTrainingPackagePageState extends ConsumerState<AddTrainingPackagePage>
       child: Scaffold(
         appBar: AppBar(
           title: Text('ADICIONAR PACOTE'),
-          actions: [ProWidgetInfoAlertDialog(title: 'page', text: 'build_workout_sheet_page.dart')],
+          actions: [ProWidgetInfoAlertDialog(title: 'page', text: 'add_training_package_page.dart')],
         ),
         body: BlocConsumer<AddTrainingPackageCubit, HandlerState>(
           builder: (context, state) => _buildForm(context, state, config),
