@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/training_pack_provider.dart';
 import 'package:treinadorpro/core/viewmodel/training_pack_page_result_view_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_alert_dialog.dart';
+import 'package:treinadorpro/features/trainingpackage/presentation/pages/add_training_package_page.dart';
 import 'package:treinadorpro/features/trainingpackage/presentation/widgets/pro_widget_card_pack_training.dart';
 
 import '../../../../core/data/models/training_pack_model.dart';
@@ -17,8 +18,7 @@ class TrainingPackagePage extends ConsumerStatefulWidget {
   const TrainingPackagePage({super.key});
 
   @override
-  ConsumerState<TrainingPackagePage> createState() =>
-      _TrainingPackagePageState();
+  ConsumerState<TrainingPackagePage> createState() => _TrainingPackagePageState();
 }
 
 class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
@@ -46,8 +46,7 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
       if (!_isLoadingMore && _hasMoreData) {
         _loadPage();
       }
@@ -58,7 +57,6 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
     final response = await ref
         .read(trainingPackPageResultViewModelProvider.notifier)
         .findAllTrainingPackByPersonalExternalId(
-          '39c0fd19-dbd2-4c74-8104-7105ca159c7b',
           _currentPage,
           _pageSize,
         );
@@ -87,25 +85,14 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
 
   @override
   Widget build(BuildContext context) {
-    final trainingPackPageResultState = ref.watch(
-      trainingPackPageResultViewModelProvider,
-    );
+    final trainingPackPageResultState = ref.watch(trainingPackPageResultViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Pacotes de Treino'),
         actions: [
           if (config.isDebugMode)
-            ProWidgetInfoAlertDialog(
-              title: "Page",
-              text: "training_packages_page.dart",
-            ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              // Navegar para AddTrainingPackagePage (a ser implementado)
-            },
-          ),
+            ProWidgetInfoAlertDialog(title: "Page", text: "training_packages_page.dart"),
         ],
       ),
       body: trainingPackPageResultState.when(
@@ -113,10 +100,22 @@ class _TrainingPackagePageState extends ConsumerState<TrainingPackagePage> {
         error: (e, _) => Center(child: Text('Error: $e')),
         loading: () => Center(child: CircularProgressIndicator()),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Adicionar novo pacote',
-        child: Icon(Icons.add),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ElevatedButton.icon(
+          onPressed: () =>
+              Navigator.push(context, MaterialPageRoute(builder: (_) => AddTrainingPackagePage()))
+          .then((onValue) => setState(() {
+
+          })),
+          icon: Icon(Icons.add),
+          label: Text('Adicionar Novo Pacote'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            minimumSize: Size.fromHeight(50),
+          ),
+        ),
       ),
     );
   }

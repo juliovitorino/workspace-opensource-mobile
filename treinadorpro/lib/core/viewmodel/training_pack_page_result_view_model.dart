@@ -12,18 +12,17 @@ class TrainingPackPageResultViewModel
 
   Future<PageResultResponseModel<TrainingPackModel>?>
   findAllTrainingPackByPersonalExternalId(
-    String uuid,
     int page,
     int size,
   ) async {
     try {
-      print('training_pack_view_model :: uuid = $uuid');
+      print('training_pack_view_model :: ok');
       final previous = state.valueOrNull;
       print("previous: ${previous?.content.length ?? 0}");
 
       state = const AsyncValue.loading();
       final pageResponse = await _repository
-          .findAllTrainingPackByPersonalExternalId(uuid, page, size);
+          .findAllTrainingPackByPersonalExternalId(page, size);
 
       final List<TrainingPackModel> combined = [
         if (previous != null && page > 1) ...previous.content,

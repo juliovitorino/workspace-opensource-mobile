@@ -665,10 +665,6 @@ class _BuildWorkoutSheetPageState extends ConsumerState<BuildWorkoutSheetPage> {
               title: 'page',
               text: 'build_workout_sheet_page.dart',
             ),
-            IconButton(
-              onPressed: () => _userPlanDraft.clear(_contractToken),
-              icon: Icon(Icons.delete),
-            ),
           ],
         ),
         body: BlocConsumer<BuildWorkoutSheetCubit, HandlerState>(

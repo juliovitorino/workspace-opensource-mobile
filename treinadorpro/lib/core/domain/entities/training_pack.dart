@@ -22,7 +22,7 @@ class TrainingPack {
   final String notes;
   final double price;
   final String? currency;
-  final String status; // 'A', 'B', 'I', 'P'
+  final String? status; // 'A', 'B', 'I', 'P'
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -37,7 +37,7 @@ class TrainingPack {
     required this.notes,
     required this.price,
     this.currency,
-    required this.status,
+    this.status,
     this.createdAt,
     this.updatedAt,
   });

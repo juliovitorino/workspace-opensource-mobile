@@ -1,8 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 
 import '../data/models/contract_response_model.dart';
+import '../data/models/modality_model.dart';
 import '../widgets/pro_widget_info_row.dart';
 import '../widgets/pro_widget_section_title.dart';
 
@@ -31,3 +33,26 @@ Widget buildDays(ContractResponseModel contract) => Column(
     if (contract.sunday != null) ProWidgetInfoRow(label: 'Domingo', value: contract.sunday!),
   ],
 );
+
+
+String decodeStatus(String? status) {
+  Map<String, String> mapStatus = {
+    'A': 'ATIVO',
+    'B': 'BLOQUEADO',
+    'V': 'VENCIDO',
+    'D': 'DELETADO',
+    'I': 'INATIVO'
+  };
+  return mapStatus[status] ?? 'NOT FOUND';
+}
+
+Widget getStatus(String? status){
+  Map<String, Function()> mapStatus = {
+    'A': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.green, backgroundColor: Colors.white),
+    'B': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.red, backgroundColor: Colors.redAccent),
+    'V': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.red, backgroundColor: Colors.white),
+    'D': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.red, backgroundColor: Colors.redAccent),
+    'I': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.red, backgroundColor: Colors.white),
+  };
+  return mapStatus[status]?.call() ?? ProWidgetTag(text: 'NOT FOUND', borderColor: Colors.red, backgroundColor: Colors.red);
+}

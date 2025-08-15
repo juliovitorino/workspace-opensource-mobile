@@ -97,7 +97,12 @@ int _trainingPackEstimateSize(
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.externalId.length * 3;
   bytesCount += 3 + object.notes.length * 3;
-  bytesCount += 3 + object.status.length * 3;
+  {
+    final value = object.status;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -134,7 +139,7 @@ TrainingPack _trainingPackDeserialize(
     id: id,
     notes: reader.readString(offsets[5]),
     price: reader.readDouble(offsets[6]),
-    status: reader.readString(offsets[7]),
+    status: reader.readStringOrNull(offsets[7]),
     updatedAt: reader.readDateTimeOrNull(offsets[8]),
     weeklyFrequency: reader.readLong(offsets[9]),
   );
@@ -163,7 +168,7 @@ P _trainingPackDeserializeProp<P>(
     case 6:
       return (reader.readDouble(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 9:
@@ -1088,8 +1093,26 @@ extension TrainingPackQueryFilter
     });
   }
 
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
+      statusIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'status',
+      ));
+    });
+  }
+
+  QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
+      statusIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'status',
+      ));
+    });
+  }
+
   QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> statusEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1103,7 +1126,7 @@ extension TrainingPackQueryFilter
 
   QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1119,7 +1142,7 @@ extension TrainingPackQueryFilter
 
   QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition>
       statusLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1134,8 +1157,8 @@ extension TrainingPackQueryFilter
   }
 
   QueryBuilder<TrainingPack, TrainingPack, QAfterFilterCondition> statusBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1747,7 +1770,7 @@ extension TrainingPackQueryProperty
     });
   }
 
-  QueryBuilder<TrainingPack, String, QQueryOperations> statusProperty() {
+  QueryBuilder<TrainingPack, String?, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
     });
