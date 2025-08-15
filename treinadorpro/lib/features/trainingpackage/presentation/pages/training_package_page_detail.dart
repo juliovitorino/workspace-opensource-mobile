@@ -126,12 +126,7 @@ class _TrainingPackagePageDetailState extends ConsumerState<TrainingPackagePageD
                 children: [
                   SizedBox(height: 12),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<ChangeStatusTrainingPackageCubit>().changeStatus(
-                        widget.packTrainingEntity.externalId,
-                        'K',
-                      );
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.delete_forever),
                     label: Text('EXCLUIR PERMANENTEMENTE'),
                     style: ElevatedButton.styleFrom(

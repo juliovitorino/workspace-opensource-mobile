@@ -32,6 +32,10 @@ String getFormattedDate(String locale) {
   return DateFormat.yMMMMEEEEd(locale).format(now);
 }
 
+String getDateFormatted(DateTime dt, String locale) {
+  return DateFormat.yMMMMEEEEd(locale).format(dt);
+}
+
 String getDayOfWeekName(String locale, DateTime dt) {
   DateTime now = DateTime.now();
   return DateFormat.EEEE(locale).format(dt);
@@ -80,3 +84,6 @@ DateTime getEndOfMonth(DateTime date) {
   );
 }
 
+DateTime addDaysToDate(DateTime startDate, int days) {
+  return startDate.add(Duration(days: days));
+}
