@@ -9,6 +9,7 @@ import 'package:treinadorpro/core/data/models/external_id_response_model.dart';
 import 'package:treinadorpro/core/data/models/response.dart';
 import 'package:treinadorpro/core/data/models/student_payment_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_data_sheet_plan_model.dart';
+import 'package:treinadorpro/core/data/requests/contract_schedule_modifier_request_model.dart';
 import 'package:treinadorpro/core/data/requests/receive_student_payment_request_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
@@ -296,6 +297,37 @@ class ContractDatasource implements IContractDatasource {
   Future<ApiGenericResponse<bool>> receiveStudentPayment(String studentPaymentExternalId, ReceiveStudentPaymentRequestModel request) async {
     final String url = "${config
         .apiBackendUrl}/v1/api/business/contract/student/payment/$studentPaymentExternalId/reveive";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey
+    };
+
+    final jsonResponse = await apiClient.put(url, headers: headers, body: jsonEncode(request.toJson()));
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final bool objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+        Response(response['msgcode'], response['mensagem']),
+        objectResponse
+    );
+  }
+
+  @override
+  Future<ApiGenericResponse<bool>> changeSchedule(String contractExternalId, ContractScheduleModifierRequestModel request)  async {
+    final String url = "${config
+        .apiBackendUrl}/v1/api/business/contract/$contractExternalId/changeSchedule";
 
     final String? token = await _tokenStorage.get();
 

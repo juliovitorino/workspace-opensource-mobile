@@ -8,6 +8,7 @@ import '../../data/models/external_id_response_model.dart';
 import '../../data/models/student_payment_response_model.dart';
 import '../../data/models/student_payments_transaction_response_model.dart';
 import '../../data/models/user_data_sheet_plan_model.dart';
+import '../../data/requests/contract_schedule_modifier_request_model.dart';
 
 abstract class IContractRespository extends Repository<ExternalIdResponseModel, int>{
   Future<String> save(CreateNewStudentContractRequest request);
@@ -19,4 +20,6 @@ abstract class IContractRespository extends Repository<ExternalIdResponseModel, 
   Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request);
   Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId);
   Future<ApiGenericResponse<bool>> receiveStudentPayment(String studentPaymentExternalId, ReceiveStudentPaymentRequestModel request);
+  Future<ApiGenericResponse<bool>> changeSchedule(String contractExternalId, ContractScheduleModifierRequestModel request);
+
 }
