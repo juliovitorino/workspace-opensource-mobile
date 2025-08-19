@@ -5,20 +5,21 @@ import 'package:treinadorpro/core/domain/repositories/icontract_repository.dart'
 import 'package:treinadorpro/core/states/handler_state.dart';
 
 import '../../../../core/data/models/exception_api_model.dart';
+import '../../../../core/data/requests/contract_schedule_modifier_request_model.dart';
 import '../../../../core/network/api_exception.dart';
 
 class ContractScheduleEditPageCubit extends Cubit<HandlerState>{
   final IContractRespository _repository;
   ContractScheduleEditPageCubit(this._repository) : super(HandlerState());
 
-  Future<void> editContractSchedule() async {
+  Future<void> changeSchedule(String contractExternalId, ContractScheduleModifierRequestModel request) async {
     emit(state.sendToListener(isLoading: true, errorMessage: null));
 
-    // print(JsonEncoder.withIndent('   ').convert(request.toJson()));
+    print(JsonEncoder.withIndent('   ').convert(request.toJson()));
 
     try {
-      // final externalId = await _repository.bookingTrainingSession(request);
-      emit(state.sendToListener(isLoading: false));
+      final response = await _repository.changeSchedule(contractExternalId, request);
+      emit(state.sendToListener(isLoading: false, objectResponse: response));
     } catch (e) {
       if (e is ApiException) {
         try {

@@ -9,6 +9,7 @@ import '../../../../config/app_config.dart';
 import '../../../../core/data/models/contract_response_model.dart';
 import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/training_time_model.dart';
+import '../../../../core/data/requests/contract_schedule_modifier_request_model.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
@@ -69,8 +70,8 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
     TrainingTimeModel('23:00'),
   ];
 
-
   bool _isShowAvailableTime = false;
+  bool _isCustomScheduleStarted = false;
   String _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
 
   @override
@@ -81,13 +82,10 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
 
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
+      print('$_contractToken loaded from contract_schedule_edit_page');
       ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
 
-      ref
-          .read(findTrainerAvailableTimeViewModelProvider.notifier)
-          .findTrainerAvailableTime();
-
-
+      ref.read(findTrainerAvailableTimeViewModelProvider.notifier).findTrainerAvailableTime();
     }); //END Future.microtask
   }
 
@@ -171,7 +169,6 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
                 ),
               ),
               SizedBox(width: 8, height: 10),
-
             ],
           ),
           onTap: () {},
@@ -180,13 +177,10 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
     );
   }
 
-
   Widget _buildFormArea(BuildContext context, HandlerState state, AppConfig config) {
     final contractState = ref.watch(findContractViewModelProvider);
 
-    final trainerAvailableTimeState = ref.watch(
-      findTrainerAvailableTimeViewModelProvider,
-    );
+    final trainerAvailableTimeState = ref.watch(findTrainerAvailableTimeViewModelProvider);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: ConstrainedBox(
@@ -205,7 +199,11 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
             SizedBox(height: 16),
             contractState.when(
               data: (data) {
-                _setDayOfWeekController(data.objectResponse);
+                print('contract schedule => ${data.objectResponse.externalId}');
+                if(!_isCustomScheduleStarted){
+                  _setDayOfWeekController(data.objectResponse);
+                  _isCustomScheduleStarted = true;
+                }
                 return _buildCustomSchedule();
               },
               error: (e, _) => Text('Error: $e'),
@@ -219,18 +217,17 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
             ElevatedButton.icon(
               onPressed: () => setState(() {
                 _isShowAvailableTime = !_isShowAvailableTime;
-                if(_isShowAvailableTime){
+                if (_isShowAvailableTime) {
                   _labelButtonAvailableTime = 'Esconder agenda de horários';
                 } else {
                   _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
                 }
-
               }),
               icon: Icon(Icons.schedule),
               label: Text(_labelButtonAvailableTime),
             ),
 
-            if(_isShowAvailableTime)
+            if (_isShowAvailableTime)
               trainerAvailableTimeState.when(
                 data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
                 error: (e, _) => Center(child: Text('Error: $e')),
@@ -240,7 +237,21 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
             // action button
             SizedBox(height: 16),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                context.read<ContractScheduleEditPageCubit>().changeSchedule(
+                  _contractToken,
+                  ContractScheduleModifierRequestModel(
+                    contractExternalId: _contractToken,
+                    monday: getTrainingTime(_mondayController),
+                    tuesday: getTrainingTime(_tuesdayController),
+                    wednesday: getTrainingTime(_wednesdayController),
+                    thursday: getTrainingTime(_thursdayController),
+                    friday: getTrainingTime(_fridayController),
+                    saturday: getTrainingTime(_saturdayController),
+                    sunday: getTrainingTime(_sundayController)
+                  ),
+                );
+              },
               icon: Icon(Icons.schedule),
               label: Text('SALVAR HORÁRIOS'),
               style: ElevatedButton.styleFrom(
@@ -249,54 +260,58 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
                 minimumSize: Size.fromHeight(50),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 
-  void _setDayOfWeekController(ContractResponseModel contract ) {
+  String? getTrainingTime(TrainingTimeModel trainingTimeModel){
+    return trainingTimeModel.trainingTime == '- x -' ? null : trainingTimeModel.trainingTime;
+  }
 
+  void _setDayOfWeekController(ContractResponseModel contract) {
+    print('_setDayOfWeekController => contract ${contract.externalId}');
     _mondayController = _trainingTimeModel.firstWhere(
-          (element) => contract.monday != null && element.trainingTime == contract.monday!,
+      (element) => contract.monday != null && element.trainingTime == contract.monday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _tuesdayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.tuesday != null && element.trainingTime == contract.tuesday!,
+      (element) => contract.tuesday != null && element.trainingTime == contract.tuesday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _wednesdayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.wednesday != null && element.trainingTime == contract.wednesday!,
+      (element) => contract.wednesday != null && element.trainingTime == contract.wednesday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _thursdayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.thursday != null && element.trainingTime == contract.thursday!,
+      (element) => contract.thursday != null && element.trainingTime == contract.thursday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _fridayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.friday != null && element.trainingTime == contract.friday!,
+      (element) => contract.friday != null && element.trainingTime == contract.friday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _saturdayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.saturday != null && element.trainingTime == contract.saturday!,
+      (element) => contract.saturday != null && element.trainingTime == contract.saturday!,
       orElse: () => _trainingTimeModel.first,
     );
 
     _sundayController = _trainingTimeModel.firstWhere(
-          (element) =>  contract.sunday != null && element.trainingTime == contract.sunday!,
+      (element) => contract.sunday != null && element.trainingTime == contract.sunday!,
       orElse: () => _trainingTimeModel.first,
     );
   }
+
   Future<void> _processFormListenerFromCubitStateChanged(
-      BuildContext context,
-      HandlerState state,
-      ) async {
+    BuildContext context,
+    HandlerState state,
+  ) async {
     if (state.errorMessage != null) {
       final ExceptionApiModel exceptionApiModel = state.objectResponse as ExceptionApiModel;
 
@@ -320,7 +335,9 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
       child: Scaffold(
         appBar: AppBar(
           title: Text('ALTERAR HORÁRIO'),
-          actions: [ProWidgetInfoAlertDialog(title: 'page', text: 'contract_schedule_edit_page.dart')],
+          actions: [
+            ProWidgetInfoAlertDialog(title: 'page', text: 'contract_schedule_edit_page.dart'),
+          ],
         ),
         body: BlocConsumer<ContractScheduleEditPageCubit, HandlerState>(
           builder: (context, state) => _buildFormArea(context, state, config),

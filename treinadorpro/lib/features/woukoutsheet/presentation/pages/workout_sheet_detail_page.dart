@@ -37,6 +37,7 @@ import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
+import '../../../activestudents/presentation/pages/contract_schedule_edit_page.dart';
 import '../blocs/build_workout_sheet_cubit.dart';
 import '../widgets/workout_group_card.dart';
 import 'booking_view_page.dart';
@@ -207,7 +208,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           ),
 
           // latest workout session
-          SizedBox(height: 16),
+          SizedBox(width: 8, height: 16,),
           Wrap(
             children: [
               trainingSessionState.when(
@@ -241,11 +242,29 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   ],
                 ),
               ),
-              SizedBox(width: 8),ElevatedButton.icon(
+              SizedBox(width: 8, height: 40,),
+              ElevatedButton.icon(
                 onPressed: () => Navigator.popAndPushNamed(context, AppRoutes.bookingViewPage),
                 icon: Icon(Icons.calendar_month),
                 label: Text('Agenda de Treinos'),
               ),
+
+              // edit training schedule
+              SizedBox(width: 8, height: 40,),
+              ElevatedButton.icon(
+                onPressed: () async
+                {
+                  await _contractTokenStorage.save(_contractToken);
+                  print('active_contracts_page => token $_contractToken saved');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ContractScheduleEditPage()),
+                  );
+                },
+                icon: Icon(Icons.edit_calendar),
+                label: Text('Modificar Horário de Treino'),
+              ),
+
             ],
           ),
 

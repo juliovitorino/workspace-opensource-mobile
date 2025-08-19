@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/config/app_config.dart';
@@ -10,12 +9,10 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_data_sheet_pl
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
-import 'package:treinadorpro/core/utils/string_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/pages/booking_view_page.dart';
 
 import '../../../../core/utils/global.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
@@ -71,6 +68,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ProWidgetInfoRow(label: 'Contrato', value: contract.externalId),
             ProWidgetInfoRow(label: 'Objetivo', value: contract.description),
             ProWidgetInfoRow(
               label: 'Valor combinado',
@@ -133,19 +131,6 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                       _userDataSheetPlanStorageService.clear(contract.externalId),
                   icon: Icon(Icons.delete_forever),
                   label: Text('Apagar Rascunho Treino'),
-                ),
-
-                // edit training schedule
-                SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ContractScheduleEditPage(),
-                    ),
-                  ),
-                  icon: Icon(Icons.edit_calendar),
-                  label: Text('Modificar Horário de Treino'),
                 ),
 
                 // edit training schedule

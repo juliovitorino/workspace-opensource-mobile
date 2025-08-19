@@ -20,7 +20,10 @@ class ContractTokenStorageService implements StorageService<String>{
   @override
   Future<void> save(String token)  async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(KEY, token);
+    final result = await prefs.setString(KEY, token);
+    if (!result) {
+      throw Exception("Token save failed");
+    }
   }
 
 }
