@@ -68,7 +68,7 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProWidgetInfoRow(label: 'Contrato', value: contract.externalId),
+            // ProWidgetInfoRow(label: 'Contrato', value: contract.externalId),
             ProWidgetInfoRow(label: 'Objetivo', value: contract.description),
             ProWidgetInfoRow(
               label: 'Valor combinado',
