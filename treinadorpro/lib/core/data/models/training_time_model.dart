@@ -11,4 +11,14 @@ class TrainingTimeModel implements IName{
     return trainingTime;
   }
 
+  @override
+  String toString() => trainingTime;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is TrainingTimeModel && runtimeType == other.runtimeType && trainingTime == other.trainingTime;
+
+  @override
+  int get hashCode => trainingTime.hashCode;
 }

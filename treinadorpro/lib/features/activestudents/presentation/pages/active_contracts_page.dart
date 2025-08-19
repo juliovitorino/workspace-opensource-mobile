@@ -21,6 +21,7 @@ import '../../../../core/utils/global.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../woukoutsheet/presentation/pages/build_workout_sheet_page.dart';
 import '../../../woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
+import 'contract_schedule_edit_page.dart';
 
 class ActiveContractsPage extends ConsumerStatefulWidget {
   const ActiveContractsPage({super.key});
@@ -93,8 +94,10 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
             buildDays(contract),
             SizedBox(width: 8, height: 10),
 
+            // action buttons
             Wrap(
               children: [
+                // training data sheet
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
                   onPressed: () {
@@ -107,9 +110,10 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                     );
                   },
                   icon: Icon(Icons.assignment),
-                  label: Text('Ver Ficha'),
+                  label: Text('Ver Ficha de Treino'),
                 ),
 
+                // build training data sheet
                 SizedBox(width: 8, height: 40),
                 ElevatedButton.icon(
                   onPressed: () async {
@@ -131,6 +135,26 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
                   label: Text('Apagar Rascunho Treino'),
                 ),
 
+                // edit training schedule
+                SizedBox(width: 8, height: 40),
+                ElevatedButton.icon(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ContractScheduleEditPage(),
+                    ),
+                  ),
+                  icon: Icon(Icons.edit_calendar),
+                  label: Text('Modificar Horário de Treino'),
+                ),
+
+                // edit training schedule
+                SizedBox(width: 8, height: 40),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.attach_money),
+                  label: Text('Financeiro'),
+                ),
               ],
             ),
           ],
