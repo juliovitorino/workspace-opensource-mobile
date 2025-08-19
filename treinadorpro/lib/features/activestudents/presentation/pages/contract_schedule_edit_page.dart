@@ -12,6 +12,7 @@ import '../../../../core/data/models/training_time_model.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
+import '../../../../core/provider/user_provider.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/utils/alert.dart';
 import '../../../../core/utils/date_utils.dart';
@@ -21,6 +22,7 @@ import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_row.dart';
 import '../../../../core/widgets/pro_widget_section_title.dart';
 import '../../../../core/widgets/pro_widget_tag.dart';
+import '../../../dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import '../blocs/contract_schedule_edit_page_cubit.dart';
 
 class ContractScheduleEditPage extends ConsumerStatefulWidget {
@@ -67,6 +69,10 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
     TrainingTimeModel('23:00'),
   ];
 
+
+  bool _isShowAvailableTime = false;
+  String _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
+
   @override
   void initState() {
     super.initState();
@@ -76,6 +82,11 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
     Future.microtask(() async {
       _contractToken = (await _contractTokenStorage.get())!;
       ref.read(findContractViewModelProvider.notifier).findContract(_contractToken);
+
+      ref
+          .read(findTrainerAvailableTimeViewModelProvider.notifier)
+          .findTrainerAvailableTime();
+
 
     }); //END Future.microtask
   }
@@ -173,11 +184,15 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
   Widget _buildFormArea(BuildContext context, HandlerState state, AppConfig config) {
     final contractState = ref.watch(findContractViewModelProvider);
 
+    final trainerAvailableTimeState = ref.watch(
+      findTrainerAvailableTimeViewModelProvider,
+    );
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // contract card
             contractState.when(
@@ -187,6 +202,7 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
             ),
 
             // contract schedule
+            SizedBox(height: 16),
             contractState.when(
               data: (data) {
                 _setDayOfWeekController(data.objectResponse);
@@ -195,6 +211,31 @@ class _ContractScheduleEditPageState extends ConsumerState<ContractScheduleEditP
               error: (e, _) => Text('Error: $e'),
               loading: () => CircularProgressIndicator(),
             ),
+
+            //-------------------------------
+            // available time data sheet
+            //-------------------------------
+            SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => setState(() {
+                _isShowAvailableTime = !_isShowAvailableTime;
+                if(_isShowAvailableTime){
+                  _labelButtonAvailableTime = 'Esconder agenda de horários';
+                } else {
+                  _labelButtonAvailableTime = 'Mostrar agenda de horários disponíveis';
+                }
+
+              }),
+              icon: Icon(Icons.schedule),
+              label: Text(_labelButtonAvailableTime),
+            ),
+
+            if(_isShowAvailableTime)
+              trainerAvailableTimeState.when(
+                data: (data) => ProWidgetFreeAvailableTime(data.objectResponse),
+                error: (e, _) => Center(child: Text('Error: $e')),
+                loading: () => Center(child: CircularProgressIndicator()),
+              ),
 
             // action button
             SizedBox(height: 16),

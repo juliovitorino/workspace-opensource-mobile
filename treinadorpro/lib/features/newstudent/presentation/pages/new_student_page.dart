@@ -683,7 +683,6 @@ class _NewStudentPageState extends ConsumerState<NewStudentPage> {
             // available time data sheet
             //-------------------------------
             SizedBox(height: 16),
-
             ElevatedButton.icon(
               onPressed: () => setState(() {
                 _isShowAvailableTime = !_isShowAvailableTime;
