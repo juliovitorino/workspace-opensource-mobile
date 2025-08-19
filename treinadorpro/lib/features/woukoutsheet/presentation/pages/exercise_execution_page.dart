@@ -81,10 +81,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ProWidgetAlertCloseDialog(
-        title: title,
-        onClose: onClose,
-      ),
+      builder: (_) => ProWidgetAlertCloseDialog(title: title, onClose: onClose),
     );
   }
 
@@ -93,6 +90,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     DateTime finishedAt,
     int setNumber,
     String? reps,
+    double weights
   ) {
     if (_userWorkoutPlanModelInstance!.userExecutionSetList == null) {
       _userWorkoutPlanModelInstance!.userExecutionSetList = [];
@@ -102,7 +100,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
         startedAt: _startedAt,
         finishedAt: finishedAt,
         setNumber: setNumber,
-        weight: 999,
+        weight: weights,
         reps: int.tryParse(reps!) ?? 0,
       ),
     );
@@ -116,12 +114,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
           color: Colors.grey[100],
           padding: const EdgeInsets.all(16),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RestTimer()
-            ],
-          ),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [RestTimer()]),
         ),
         Expanded(
           child: ListView.builder(
@@ -196,6 +189,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                                       DateTime.now(),
                                       index + 1,
                                       set.reps ?? _userWorkoutPlanModelInstance!.qtyReps!,
+                                      set.weight,
                                     );
                                     stopTimer(set);
                                   }
@@ -245,15 +239,19 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   }
 
   void _buildControllers() {
-    _weightControllers = List.generate(
-      _userWorkoutPlanModelInstance!.qtySeries!,
-      (_) => TextEditingController(),
-    );
+    if (_weightControllers.isEmpty) {
+      _weightControllers = List.generate(
+        _userWorkoutPlanModelInstance!.qtySeries!,
+        (_) => TextEditingController(),
+      );
+    }
 
-    _repsControllers = List.generate(
-      _userWorkoutPlanModelInstance!.qtySeries!,
-      (_) => TextEditingController(),
-    );
+    if (_repsControllers.isEmpty) {
+      _repsControllers = List.generate(
+        _userWorkoutPlanModelInstance!.qtySeries!,
+        (_) => TextEditingController(),
+      );
+    }
   }
 
   void _updateUserExecutionSetListIntoUserTrainingSession() {
@@ -295,7 +293,11 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
           onPressed: () {
             final allDone = sets.every((s) => s.completed);
             if (!allDone) {
-              _showAlertCloseDialog(context, 'Todas as séries devem ser concluídas', () => Navigator.of(context).pop());
+              _showAlertCloseDialog(
+                context,
+                'Todas as séries devem ser concluídas',
+                () => Navigator.of(context).pop(),
+              );
               return;
             }
 
@@ -303,7 +305,10 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             _userWorkoutPlanStorageService.clear(_contractToken);
             _userTrainingSessionStorage.save(_userTrainingSessionModel!, _contractToken);
 
-            _showAlertCloseDialog(context, 'Exercício finalizado!', () { Navigator.of(context).pop(); Navigator.of(context).pop(true);});
+            _showAlertCloseDialog(context, 'Exercício finalizado!', () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
+            });
           },
         ),
       ),
