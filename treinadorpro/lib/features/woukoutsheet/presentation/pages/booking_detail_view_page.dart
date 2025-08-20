@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
@@ -9,9 +8,9 @@ import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -53,6 +52,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
   late bool trainingHasStarted;
 
   bool _hideButtonFinishTrainingSession = false;
+  TextEditingController _newBookingDate = TextEditingController();
 
   @override
   void initState() {
@@ -81,7 +81,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
+        ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDate(trainingDate)),
         ProWidgetInfoRow(
           label: 'Pacote',
           value: userTrainingSessionModelInstance.contract.trainingPack.description,
@@ -144,7 +144,88 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
           ),
         ),
 
-        SizedBox(height: 8),
+        // move booking action button
+        SizedBox(height: 10),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: Icon(Icons.move_up),
+          label: Text('MOVER TREINO PARA OUTRA DATA'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueAccent,
+            foregroundColor: Colors.white,
+            minimumSize: Size.fromHeight(50),
+          ),
+        ),
+
+        SizedBox(height: 20,),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            border: Border.all(
+              color: Colors.blue,
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child:
+          Column(
+            children: [
+
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  Text(getDateTimeToDate(trainingDate)),
+                  SizedBox(width: 20,),
+                  Icon(Icons.arrow_forward, size: 32,),
+                  SizedBox(width: 20,),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _newBookingDate,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'YYYY-MM-DD',
+                        suffixIcon: Icon(Icons.calendar_today),
+                      ),
+                      onTap: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            _newBookingDate.text =
+                            '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                          });
+                        }
+                      },
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.save),
+                  label: Text('APLICAR'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size.fromHeight(50),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+        ),
+
+        // exercise list
+        SizedBox(height: 40),
+        ProWidgetSectionTitle(title: 'Lista de Exercícios'),
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),

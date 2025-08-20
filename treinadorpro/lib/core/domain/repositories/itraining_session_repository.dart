@@ -22,4 +22,10 @@ abstract class ITrainingSessionRepository extends Repository<UserTrainingSession
     String contractExternalId,
     String trainingSessionExternalId,
   );
+
+  Future<ApiGenericResponse<bool>> changeBooking(
+      String contractExternalId,
+      String trainingSessionExternalId,
+      DateTime newBookingDate,
+      );
 }

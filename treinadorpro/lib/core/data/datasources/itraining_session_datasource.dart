@@ -18,7 +18,13 @@ abstract class ITrainingSessionDatasource extends IRemoteDatasource<UserTraining
   );
 
   Future<ApiGenericResponse<bool>> deleteTrainingSession(
-      String contractExternalId,
-      String trainingSessionExternalId,
-      );
+    String contractExternalId,
+    String trainingSessionExternalId,
+  );
+
+  Future<ApiGenericResponse<bool>> changeBooking(
+    String contractExternalId,
+    String trainingSessionExternalId,
+    DateTime newBookingDate,
+  );
 }

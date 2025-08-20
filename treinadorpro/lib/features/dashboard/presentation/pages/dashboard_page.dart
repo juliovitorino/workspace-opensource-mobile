@@ -196,6 +196,18 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               loading: () => Center(child: CircularProgressIndicator()),
             ),
 
+            // account statement
+            ProWidgetStatusDashboardItem(
+              icon: Icons.monetization_on,
+              title: 'Extrato',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
+                );
+              }, trailing: '...',
+            )   ,
+
             SizedBox(height: 24),
 
             //action buttons
