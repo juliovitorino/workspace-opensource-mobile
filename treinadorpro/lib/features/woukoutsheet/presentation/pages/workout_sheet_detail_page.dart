@@ -288,7 +288,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           SizedBox(height: 16),
           ProWidgetPin(
             pinMessage:
-                'Selecione abaixo os exercícios na ordem que você deseja treinar com seu aluno',
+                'Selecione abaixo os exercícios na ordem que você deseja treinar com seu aluno agora ou agendar para um data posterior.',
           ),
 
           // sync pending
