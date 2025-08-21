@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
+import 'package:treinadorpro/core/domain/repositories/itraining_session_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/last_training_session_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_training_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
@@ -35,6 +36,7 @@ import '../../../../core/infrastructure/localstorage/user_training_session_stora
 import '../../../../core/provider/app_config_provider.dart';
 import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/states/handler_state.dart';
+import '../../../../core/utils/global.dart';
 import '../../../../core/widgets/pro_widget_alert_dialog.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 import '../../../activestudents/presentation/pages/contract_schedule_edit_page.dart';
@@ -103,6 +105,10 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
       ref
           .read(findMostRecentTrainingSessionViewModelProvider.notifier)
           .findMostRecentTrainingSession(_contractToken);
+
+      ref
+          .read(findMostRecentBookingTrainingSessionViewModelProvider.notifier)
+          .findMostRecentBookingTrainingSession(_contractToken);
     }); //END Future.microtask
   }
 
@@ -182,7 +188,9 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
         // Now... we have data and we can call method
         _lastTrainingSessionInstance = snapshot.data!;
         _isPendingSync = true;
-        return _lastTrainingSessionInstance?.progressStatus == 'BOOKING' ? SizedBox.shrink() : _buildLastTrainingSessionPanel(_lastTrainingSessionInstance);
+        return _lastTrainingSessionInstance?.progressStatus == 'BOOKING'
+            ? SizedBox.shrink()
+            : _buildLastTrainingSessionPanel(_lastTrainingSessionInstance);
       }
     }
   }
@@ -191,6 +199,9 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
     final userDataSheetState = ref.watch(findUserWorkoutDataSheetPlanViewModelProvider);
     final contractState = ref.watch(findContractViewModelProvider);
     final trainingSessionState = ref.watch(findMostRecentTrainingSessionViewModelProvider);
+    final trainingSessionBookingState = ref.watch(
+      findMostRecentBookingTrainingSessionViewModelProvider,
+    );
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -208,7 +219,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           ),
 
           // latest workout session
-          SizedBox(width: 8, height: 16,),
+          SizedBox(width: 8, height: 16),
           Wrap(
             children: [
               trainingSessionState.when(
@@ -242,7 +253,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   ],
                 ),
               ),
-              SizedBox(width: 8, height: 40,),
+              SizedBox(width: 8, height: 40),
               ElevatedButton.icon(
                 onPressed: () => Navigator.popAndPushNamed(context, AppRoutes.bookingViewPage),
                 icon: Icon(Icons.calendar_month),
@@ -250,10 +261,9 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
               ),
 
               // edit training schedule
-              SizedBox(width: 8, height: 40,),
+              SizedBox(width: 8, height: 40),
               ElevatedButton.icon(
-                onPressed: () async
-                {
+                onPressed: () async {
                   await _contractTokenStorage.save(_contractToken);
                   print('active_contracts_page => token $_contractToken saved');
                   Navigator.push(
@@ -264,8 +274,14 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                 icon: Icon(Icons.edit_calendar),
                 label: Text('Modificar Horário de Treino'),
               ),
-
             ],
+          ),
+
+          // booked session
+          trainingSessionBookingState.when(
+            data: (data) => _buildBookingDateAlert(data.objectResponse),
+            error: (e, _) => SizedBox.shrink(),
+            loading: () => ProWidgetCustomLoadingIndicator(),
           ),
 
           // pin message
@@ -501,6 +517,43 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
           listener: (context, state) => _processFormListenerFromCubitStateChanged(context, state),
         ),
       ),
+    );
+  }
+
+  Widget _buildBookingDateAlert(UserTrainingSessionModel trainingSession) {
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.green[300],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.green.shade800, width: 2),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Temos treino de ${getWorkgroups(trainingSession)} agendado para hoje",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () async {
+                  trainingSession.progressStatus = 'STARTED';
+                  trainingSession.startedAt = DateTime.now();
+                  trainingSession.bookingExternalId = trainingSession.externalId;
+                  await _userTrainingSessionStorage.save(trainingSession, _contractToken);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+                },
+                child: Text("Vamos Treinar?"),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -11,6 +11,10 @@ abstract class ITrainingSessionDatasource extends IRemoteDatasource<UserTraining
     String contractExternalId,
   );
 
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentBookingTrainingSession(
+    String contractExternalId,
+  );
+
   Future<ApiGenericResponse<bool>> bookingTrainingSession(BookingModelRequest request);
 
   Future<ApiGenericResponse<List<UserTrainingSessionModel>>> findTrainingSessionCalendar(

@@ -5,6 +5,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 
 import '../data/models/contract_response_model.dart';
 import '../data/models/modality_model.dart';
+import '../data/models/user_training_session_model.dart';
 import '../widgets/pro_widget_info_row.dart';
 import '../widgets/pro_widget_section_title.dart';
 
@@ -55,4 +56,8 @@ Widget getStatus(String? status){
     'I': () => ProWidgetTag(text: decodeStatus(status), borderColor: Colors.red, backgroundColor: Colors.white),
   };
   return mapStatus[status]?.call() ?? ProWidgetTag(text: 'NOT FOUND', borderColor: Colors.red, backgroundColor: Colors.red);
+}
+
+String? getWorkgroups(UserTrainingSessionModel trainingSession){
+  return trainingSession.userWorkoutPlanList?.map((e) => e.workGroup.namePt).toSet().join(',');
 }

@@ -150,31 +150,6 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
             Navigator.push(context, MaterialPageRoute(builder: (_) => LastTrainingSummaryPage()));
           }
           if (trainingSession.progressStatus == 'BOOKING') {
-            if (getDateTimeToDate(DateTime.now()) == getDateTimeToDate(trainingSession.booking!)) {
-              showAlertDialog(
-                context,
-                'Vamos Treinar Agora?',
-                () async {
-                  Navigator.of(context).pop();
-                  trainingSession.progressStatus = 'STARTED';
-                  trainingSession.startedAt = DateTime.now();
-                  trainingSession.bookingExternalId = trainingSession.externalId;
-                  await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage())).then((
-                    onValue,
-                  ) {
-                    setState(() async {
-                      trainingSession.progressStatus = 'BOOKING';
-                      _initData();
-                    });
-                  });
-                },
-                () {
-                  Navigator.of(context).pop();
-                },
-              );
-            } else {
-              // trainingSession.userWorkoutPlanList?.forEach((e) => e.trainingStatus = 'DONE');
               await _userTrainingSessionStorage.save(trainingSession, _contractToken);
               Navigator.push(
                 context,
@@ -185,7 +160,6 @@ class _BookingViewPageState extends ConsumerState<BookingViewPage> {
                 _initData();
                 setState(() {});
               });
-            }
           }
         }
       },
