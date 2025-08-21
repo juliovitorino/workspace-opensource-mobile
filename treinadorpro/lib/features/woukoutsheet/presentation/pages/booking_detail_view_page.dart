@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:treinadorpro/core/constants/app_routes.dart';
 import 'package:treinadorpro/core/data/models/user_workout_plan_model.dart';
+import 'package:treinadorpro/core/domain/repositories/itraining_session_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/key_storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
-import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -34,7 +35,7 @@ class BookingDetailViewPage extends ConsumerStatefulWidget {
 }
 
 class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
-  late final IContractRespository _contractRepository;
+  late final ITrainingSessionRepository _trainingSessionRepository;
   late final AppConfig config;
   late String _contractToken;
   late Future<UserTrainingSessionModel?> _userTrainingSessionModelFuture;
@@ -53,6 +54,8 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
   late bool trainingHasStarted;
 
   bool _hideButtonFinishTrainingSession = false;
+  bool _isShowChangeBookingArea = false;
+  TextEditingController _newBookingDate = TextEditingController();
 
   @override
   void initState() {
@@ -60,7 +63,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
     config = ref.read(appConfigProvider);
 
     // vai ser usado futuramente
-    _contractRepository = ref.read(contractRepositoryProvider);
+    _trainingSessionRepository = ref.read(trainingSessionRepositoryProvider);
 
     _initData();
   }
@@ -76,12 +79,16 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
     });
   }
 
-  Widget _buildExercisesListView(List<UserWorkoutPlanModel>? trainingList, DateTime trainingDate) {
+  Widget _buildExercisesListView(
+    BuildContext context,
+    List<UserWorkoutPlanModel>? trainingList,
+    DateTime trainingDate,
+  ) {
     _updateProgressIndicator(trainingList!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDT(trainingDate)),
+        ProWidgetInfoRow(label: 'Data do Treino', value: getDateTimeToDate(trainingDate)),
         ProWidgetInfoRow(
           label: 'Pacote',
           value: userTrainingSessionModelInstance.contract.trainingPack.description,
@@ -92,7 +99,9 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
         ),
         ProWidgetInfoRow(
           label: 'Programa',
-          value: userTrainingSessionModelInstance.userWorkoutPlanList?[0].customProgram ?? userTrainingSessionModelInstance.userWorkoutPlanList![0].program!.namePt,
+          value:
+              userTrainingSessionModelInstance.userWorkoutPlanList?[0].customProgram ??
+              userTrainingSessionModelInstance.userWorkoutPlanList![0].program!.namePt,
         ),
         ProWidgetInfoRow(
           label: 'Status Treino',
@@ -122,7 +131,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
               'TEM CERTEZA DE EXCLUIR ESTA AGENDA DE TREINO RESERVADA?',
               () {
                 setState(() {
-                 ref
+                  ref
                       .read(deleteTrainingSessionViewModelProvider.notifier)
                       .deleteTerainingSession(
                         _contractToken,
@@ -144,7 +153,97 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
           ),
         ),
 
-        SizedBox(height: 8),
+        // move booking action button
+        SizedBox(height: 10),
+        ElevatedButton.icon(
+          onPressed: () => setState(() {
+            _isShowChangeBookingArea = !_isShowChangeBookingArea;
+          }),
+          icon: Icon(Icons.move_up),
+          label: Text('MOVER TREINO PARA OUTRA DATA'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueAccent,
+            foregroundColor: Colors.white,
+            minimumSize: Size.fromHeight(50),
+          ),
+        ),
+
+        if (_isShowChangeBookingArea)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  border: Border.all(color: Colors.blue, width: 2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Text(getDateTimeToDate(userTrainingSessionModelInstance.booking!)),
+                        SizedBox(width: 20),
+                        Icon(Icons.arrow_forward, size: 32),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _newBookingDate,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: 'YYYY-MM-DD',
+                              suffixIcon: Icon(Icons.calendar_today),
+                            ),
+                            onTap: () async {
+                              final pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  _newBookingDate.text =
+                                      '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // call backend
+                          context.read<BookingTrainingSessionCubit>().changeBooking(
+                            userTrainingSessionModelInstance.contract.externalId,
+                            userTrainingSessionModelInstance.externalId!,
+                            DateTime.parse(_newBookingDate.text),
+                          );
+                        },
+                        icon: Icon(Icons.save),
+                        label: Text('APLICAR'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          minimumSize: Size.fromHeight(50),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+        // exercise list
+        SizedBox(height: 40),
+        ProWidgetSectionTitle(title: 'Lista de Exercícios'),
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -219,7 +318,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
       userTrainingSessionModelInstance = snapshot.data!;
 
       final userWorkoutPlanList = snapshot.data!.userWorkoutPlanList;
-      return _buildExercisesListView(userWorkoutPlanList, snapshot.data!.startedAt!);
+      return _buildExercisesListView(context, userWorkoutPlanList, snapshot.data!.booking!);
     }
   }
 
@@ -271,7 +370,8 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
     } else if (!state.isLoading && state.errorMessage == null) {
       await showDialog(
         context: context,
-        builder: (_) => AlertDialog(title: Text('Sucesso'), content: Text("Plano Salvo")),
+        builder: (_) =>
+            AlertDialog(title: Text('Sucesso'), content: Text("Operação Executada Com Sucesso")),
       );
 
       // Navigator.popAndPushNamed(context, AppRoutes.workoutSheetPage);
@@ -298,7 +398,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TrainingPageCubit(_contractRepository),
+      create: (_) => BookingTrainingSessionCubit(_trainingSessionRepository),
       child: Scaffold(
         appBar: AppBar(
           title: Text('TREINO AGENDADO'),
@@ -311,7 +411,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
               ProWidgetInfoAlertDialog(title: 'page', text: 'booking_detail_view_page.dart'),
           ],
         ),
-        body: BlocConsumer<TrainingPageCubit, HandlerState>(
+        body: BlocConsumer<BookingTrainingSessionCubit, HandlerState>(
           builder: (context, state) => _buildForm(context, state, config),
           listener: (context, state) => _processFormListenerFromCubitStateChanged(context, state),
         ),

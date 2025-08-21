@@ -8,8 +8,9 @@ import 'package:treinadorpro/core/states/handler_state.dart';
 import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/network/api_exception.dart';
 
-class BookingTrainingSessionCubit extends Cubit<HandlerState>{
+class BookingTrainingSessionCubit extends Cubit<HandlerState> {
   final ITrainingSessionRepository _repository;
+
   BookingTrainingSessionCubit(this._repository) : super(HandlerState());
 
   Future<void> bookingTrainingSession(BookingModelRequest request) async {
@@ -32,24 +33,65 @@ class BookingTrainingSessionCubit extends Cubit<HandlerState>{
             'msgcode': e.body['msgcode'] ?? '',
           });
 
-          emit(state.sendToListener(
+          emit(
+            state.sendToListener(
               isLoading: false,
               errorMessage: exception.message,
-              objectResponse: exception
-          ));
+              objectResponse: exception,
+            ),
+          );
         } catch (_) {
-          emit(state.sendToListener(
-            isLoading: false,
-            errorMessage: 'Error processing API response',
-          ));
+          emit(
+            state.sendToListener(isLoading: false, errorMessage: 'Error processing API response'),
+          );
         }
       } else {
-        emit(state.sendToListener(
-          isLoading: false,
-          errorMessage: 'Unexpected error: ${e.toString()}',
-        ));
+        emit(
+          state.sendToListener(isLoading: false, errorMessage: 'Unexpected error: ${e.toString()}'),
+        );
       }
     }
   }
 
+  Future<void> changeBooking(
+    String contractExternalId,
+    String trainingSessionExternalId,
+    DateTime newBookingDate
+  ) async {
+    emit(state.sendToListener(isLoading: true, errorMessage: null));
+
+    // print(jsonEncode(request.toJson()));
+    // print(JsonEncoder.withIndent('   ').convert(request.toJson()));
+
+    try {
+      final externalId = await _repository.changeBooking(contractExternalId, trainingSessionExternalId, newBookingDate);
+      emit(state.sendToListener(isLoading: false, objectResponse: externalId));
+    } catch (e) {
+      if (e is ApiException) {
+        try {
+          final exception = ExceptionApiModel.fromJson({
+            'statusCode': e.statusCode,
+            'message': e.body['message'] ?? 'Unknown error',
+            'msgcode': e.body['msgcode'] ?? '',
+          });
+
+          emit(
+            state.sendToListener(
+              isLoading: false,
+              errorMessage: exception.message,
+              objectResponse: exception,
+            ),
+          );
+        } catch (_) {
+          emit(
+            state.sendToListener(isLoading: false, errorMessage: 'Error processing API response'),
+          );
+        }
+      } else {
+        emit(
+          state.sendToListener(isLoading: false, errorMessage: 'Unexpected error: ${e.toString()}'),
+        );
+      }
+    }
+  }
 }

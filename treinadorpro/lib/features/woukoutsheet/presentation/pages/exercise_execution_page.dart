@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_alert_close_dialog.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/rest_timer.dart';
 
@@ -48,6 +49,8 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   String exerciseName = '...';
   List<TextEditingController> _weightControllers = [];
   List<TextEditingController> _repsControllers = [];
+  String weightReserved = '0';
+  String repsReserved = '12';
 
   @override
   void initState() {
@@ -90,7 +93,7 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     DateTime finishedAt,
     int setNumber,
     String? reps,
-    double weights
+    double weights,
   ) {
     if (_userWorkoutPlanModelInstance!.userExecutionSetList == null) {
       _userWorkoutPlanModelInstance!.userExecutionSetList = [];
@@ -114,7 +117,14 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
           color: Colors.grey[100],
           padding: const EdgeInsets.all(16),
           width: double.infinity,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [RestTimer()]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RestTimer(),
+              ProWidgetInfoRow(label: 'Ultima carga no último exercício', value: '10 Kg'),
+              ProWidgetInfoRow(label: 'Qtde Reps no último exercício', value: '12'),
+            ],
+          ),
         ),
         Expanded(
           child: ListView.builder(
@@ -134,9 +144,24 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _weightControllers[index].text = weightReserved;
+                                _repsControllers[index].text = repsReserved;
+                              });
+                            },
+                            icon: Icon(Icons.arrow_circle_down),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -192,6 +217,8 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                                       set.weight,
                                     );
                                     stopTimer(set);
+                                    weightReserved = _weightControllers[index].text;
+                                    repsReserved = _repsControllers[index].text;
                                   }
                                 : null,
                           ),

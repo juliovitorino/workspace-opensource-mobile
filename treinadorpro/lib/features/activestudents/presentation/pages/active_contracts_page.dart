@@ -97,48 +97,81 @@ class _ActiveContractsPageState extends ConsumerState<ActiveContractsPage> {
               children: [
                 // training data sheet
                 SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    _contractTokenStorage.save(contract.externalId);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => WorkoutSheetDetailPage(),
-                      ), //WorkoutSheetPage()
-                    );
-                  },
-                  icon: Icon(Icons.assignment),
-                  label: Text('Ver Ficha de Treino'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black54, // cor da borda
+                      width: 2, // espessura da borda
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      _contractTokenStorage.save(contract.externalId);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => WorkoutSheetDetailPage(),
+                        ), //WorkoutSheetPage()
+                      );
+                    },
+                    icon: Icon(Icons.assignment, color: Colors.black54),
+                  ),
                 ),
 
                 // build training data sheet
                 SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    _contractTokenStorage.save(contract.externalId);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage()),
-                    );
-                  },
-                  icon: Icon(Icons.fitness_center),
-                  label: Text('Montar Treino'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black54, // cor da borda
+                      width: 2, // espessura da borda
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      _contractTokenStorage.save(contract.externalId);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => BuildWorkoutSheetPage()),
+                      );
+                    },
+                    icon: Icon(Icons.fitness_center, color: Colors.black54),
+                  ),
                 ),
 
+                // delete draft workout datasheet
                 SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () async =>
-                      _userDataSheetPlanStorageService.clear(contract.externalId),
-                  icon: Icon(Icons.delete_forever),
-                  label: Text('Apagar Rascunho Treino'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black54, // cor da borda
+                      width: 2, // espessura da borda
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () async =>
+                        _userDataSheetPlanStorageService.clear(contract.externalId),
+                    icon: Icon(Icons.assignment_late, color: Colors.black54),
+                  ),
                 ),
 
-                // edit training schedule
+                // Bills
                 SizedBox(width: 8, height: 40),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.attach_money),
-                  label: Text('Financeiro'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black54, // cor da borda
+                      width: 2, // espessura da borda
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.attach_money, color: Colors.black54),
+                  ),
                 ),
               ],
             ),
