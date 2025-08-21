@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/contract_response_model.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_empty_state.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_detail_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/workout_sheet_page.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
@@ -20,11 +21,9 @@ class TodayWorkoutPage extends ConsumerStatefulWidget {
 }
 
 class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
-
   late final AppConfig config;
 
-  final StorageService<String> _contractTokenStorage =
-  ContractTokenStorageService();
+  final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
 
   @override
   void initState() {
@@ -33,14 +32,11 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
     config = ref.read(appConfigProvider);
 
     Future.microtask(() async {
-      ref
-          .read(findAllContractTodayWorkoutViewModelProvider.notifier)
-          .findAllActiveContracts();
+      ref.read(findAllContractTodayWorkoutViewModelProvider.notifier).findAllActiveContracts();
     });
   }
 
-
-  Widget _buildCard(ContractResponseModel contract){
+  Widget _buildCard(ContractResponseModel contract) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -53,10 +49,7 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
               children: [
                 Text(
                   '${getCorrectTime(contract)} - ${contract.studentUser.name}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 // Icon(
                 //   workout.confirmed
@@ -67,9 +60,7 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
               ],
             ),
             SizedBox(height: 6),
-            Text(
-              '${contract.description} • ${contract.trainingPack.description}',
-            ),
+            Text('${contract.description} • ${contract.trainingPack.description}'),
             Text('📍 SMV360'),
             SizedBox(height: 10),
             Row(
@@ -79,7 +70,9 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
                     _contractTokenStorage.save(contract.externalId);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => WorkoutSheetDetailPage()), //WorkoutSheetPage()
+                      MaterialPageRoute(
+                        builder: (_) => WorkoutSheetDetailPage(),
+                      ), //WorkoutSheetPage()
                     );
                   },
                   icon: Icon(Icons.assignment),
@@ -105,20 +98,26 @@ class _TodayWorkoutPageState extends ConsumerState<TodayWorkoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final contractState = ref.watch(
-      findAllContractTodayWorkoutViewModelProvider,
-    );
+    final contractState = ref.watch(findAllContractTodayWorkoutViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Treinos de Hoje'),         actions: [
-        if(config.isDebugMode)
-          ProWidgetInfoAlertDialog(
-            title: "Page",
-            text: "today_workout_page.dart",
-          ),
-      ],),
+      appBar: AppBar(
+        title: Text('Treinos de Hoje'),
+        actions: [
+          if (config.isDebugMode)
+            ProWidgetInfoAlertDialog(title: "Page", text: "today_workout_page.dart"),
+        ],
+      ),
       body: contractState.when(
-        data: (data) => _buildListView(data.objectResponse),
+        data: (data) {
+          final List<ContractResponseModel> contractList = data.objectResponse;
+          return contractList.isEmpty
+              ? ProWidgetEmptyState(
+                  icon: Icons.fitness_center,
+                  message: "Nenhum treino disponível para hoje!",
+                )
+              : _buildListView(data.objectResponse);
+        },
         error: (e, _) => Center(child: Text('error: $e')),
         loading: () => Center(child: CircularProgressIndicator()),
       ),

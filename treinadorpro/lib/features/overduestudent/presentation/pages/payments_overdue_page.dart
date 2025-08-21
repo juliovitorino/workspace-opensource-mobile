@@ -7,6 +7,7 @@ import 'package:treinadorpro/core/data/models/student_payment_response_model.dar
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/contract_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_empty_state.dart';
 import 'package:treinadorpro/features/registerpayment/presentation/pages/register_payment_page.dart';
 
 import '../../../../core/infrastructure/localstorage/bill_storage_service.dart';
@@ -18,15 +19,12 @@ class PaymentsOverduePage extends ConsumerStatefulWidget {
   const PaymentsOverduePage({super.key});
 
   @override
-  ConsumerState<PaymentsOverduePage> createState() =>
-      _PaymentsOverduePageState();
+  ConsumerState<PaymentsOverduePage> createState() => _PaymentsOverduePageState();
 }
 
 class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
-
   late AppConfig config;
   final StorageService<StudentPaymentResponseModel> _billStorage = BillStorageService();
-
 
   @override
   void initState() {
@@ -87,9 +85,7 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
                   onPressed: () {},
                   icon: Icon(Icons.chat),
                   label: Text('WhatsApp'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 ),
                 SizedBox(width: 8, height: 40),
                 OutlinedButton.icon(
@@ -98,12 +94,14 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => RegisterPaymentPage()),
-                    ).then((onValue) => setState(() async {
-                      await ref
-                          .read(findAllStudentOverduePaymentViewModelProvider.notifier)
-                          .findAllStudentOverduePayment();
-print('1');
-                    }));
+                    ).then(
+                      (onValue) => setState(() async {
+                        await ref
+                            .read(findAllStudentOverduePaymentViewModelProvider.notifier)
+                            .findAllStudentOverduePayment();
+                        print('1');
+                      }),
+                    );
                   },
                   icon: Icon(Icons.check_circle_outline),
                   label: Text('Registrar Pagamento'),
@@ -131,7 +129,11 @@ print('1');
               Text('Total sem receber:', style: TextStyle(fontSize: 16)),
               Text(
                 'BRL \$ ${total.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent[700]),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent[700],
+                ),
               ),
             ],
           ),
@@ -151,23 +153,23 @@ print('1');
 
   @override
   Widget build(BuildContext context) {
-    final _studentPaymentState = ref.watch(
-      findAllStudentOverduePaymentViewModelProvider,
-    );
+    final _studentPaymentState = ref.watch(findAllStudentOverduePaymentViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Pagamentos em Atraso'),
         actions: [
-          if(config.isDebugMode)
-            ProWidgetInfoAlertDialog(
-              title: 'page',
-              text: 'payments_overdue_page.dart',
-            ),
+          if (config.isDebugMode)
+            ProWidgetInfoAlertDialog(title: 'page', text: 'payments_overdue_page.dart'),
         ],
       ),
       body: _studentPaymentState.when(
-        data: (data) => _buildListView(data.objectResponse),
+        data: (data) {
+          final List<StudentPaymentResponseModel> studentPaymentList = data.objectResponse;
+          return studentPaymentList.isEmpty
+              ? ProWidgetEmptyState()
+              : _buildListView(data.objectResponse);
+        },
         error: (e, _) => Center(child: Text('error: $e')),
         loading: () => Center(child: CircularProgressIndicator()),
       ),
