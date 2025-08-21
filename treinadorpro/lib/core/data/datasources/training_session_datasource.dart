@@ -205,7 +205,7 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
     DateTime newBookingDate,
   ) async {
     final String url =
-        "${config.apiBackendUrl}v1/api/business/training/session/booking/$contractExternalId/$trainingSessionExternalId/move/${getFormattedDate(newBookingDate.toString())}";
+        "${config.apiBackendUrl}/v1/api/business/training/session/booking/$contractExternalId/$trainingSessionExternalId/move/${getDateTimeToDate(newBookingDate)}";
 
     final String? token = await _tokenStorage.get();
 
