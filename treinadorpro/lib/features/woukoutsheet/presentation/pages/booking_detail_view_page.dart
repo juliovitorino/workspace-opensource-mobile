@@ -11,6 +11,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
@@ -208,7 +209,9 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<BookingTrainingSessionCubit>()
+                  },
                   icon: Icon(Icons.save),
                   label: Text('APLICAR'),
                   style: ElevatedButton.styleFrom(
