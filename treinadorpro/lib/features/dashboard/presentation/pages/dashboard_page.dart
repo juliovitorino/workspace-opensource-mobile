@@ -6,6 +6,7 @@ import 'package:treinadorpro/core/provider/dashboard_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/utils/string_utils.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
@@ -123,7 +124,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 },
               ),
               error: (e, _) => Center(child: Text('error: $e')),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => ProWidgetStatusDashboardItem(
+                icon: Icons.fitness_center,
+                title: 'Treinos de hoje',
+                trailing: '...',
+                onTap: () {},
+              ),
             ),
 
             //training packs
@@ -140,7 +146,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 },
               ),
               error: (e, _) => Center(child: Text('error: $e')),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => ProWidgetStatusDashboardItem(
+                icon: Icons.edit_note,
+                title: 'Pacotes de Treino',
+                trailing: '...',
+                onTap: () {},
+              ),
             ),
 
             // overdue payments
@@ -158,7 +169,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 },
               ),
               error: (e, _) => Center(child: Text('error: $e')),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () =>  ProWidgetStatusDashboardItem(
+                icon: Icons.attach_money,
+                title: 'Pagamentos em atraso',
+                trailing: '...',
+                onTap: () {},
+              ),
             ),
 
             // active students
@@ -175,7 +191,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 },
               ),
               error: (e, _) => Text('error: $e'),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => ProWidgetStatusDashboardItem(
+                icon: Icons.group,
+                title: 'Alunos ativos',
+                trailing: '...',
+                onTap: () {},
+              ),
             ),
 
             // revenue monthly
@@ -193,7 +214,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     },
                   ),
               error: (e,_) => Text('error: $e'),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () =>  ProWidgetStatusDashboardItem(
+                icon: Icons.bar_chart,
+                title: 'Faturamento Neste Mês',
+                trailing: '...',
+                onTap: () {},
+              ),
             ),
 
             // account statement
