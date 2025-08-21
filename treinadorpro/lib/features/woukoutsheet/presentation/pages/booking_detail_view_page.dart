@@ -241,6 +241,21 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
             ],
           ),
 
+        // duplicate booking
+
+        // move booking action button
+        SizedBox(height: 10),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: Icon(Icons.copy),
+          label: Text('DUPLICAR TREINO PARA OUTRAS DATAS'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueAccent,
+            foregroundColor: Colors.white,
+            minimumSize: Size.fromHeight(50),
+          ),
+        ),
+
         // exercise list
         SizedBox(height: 40),
         ProWidgetSectionTitle(title: 'Lista de Exercícios'),
