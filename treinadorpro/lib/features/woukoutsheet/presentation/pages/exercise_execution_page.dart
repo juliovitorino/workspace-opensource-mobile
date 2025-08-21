@@ -48,6 +48,8 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   String exerciseName = '...';
   List<TextEditingController> _weightControllers = [];
   List<TextEditingController> _repsControllers = [];
+  String weightReserved = '0';
+  String repsReserved = '12';
 
   @override
   void initState() {
@@ -134,9 +136,21 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Série ${index + 1} - ${userWorkoutPlanModel.qtyReps} reps",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          IconButton(onPressed: (){
+                            setState(() {
+                              _weightControllers[index].text = weightReserved;
+                              _repsControllers[index].text = repsReserved;
+                            });
+                          }, icon: Icon(Icons.arrow_circle_down))
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -192,6 +206,8 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                                       set.weight,
                                     );
                                     stopTimer(set);
+                                    weightReserved = _weightControllers[index].text;
+                                    repsReserved = _repsControllers[index].text;
                                   }
                                 : null,
                           ),
