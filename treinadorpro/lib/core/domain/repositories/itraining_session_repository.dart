@@ -12,6 +12,10 @@ abstract class ITrainingSessionRepository extends Repository<UserTrainingSession
     String contractExternalId,
   );
 
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentBookingTrainingSession(
+    String contractExternalId,
+  );
+
   Future<ApiGenericResponse<bool>> bookingTrainingSession(BookingModelRequest request);
 
   Future<ApiGenericResponse<List<UserTrainingSessionModel>>> findTrainingSessionCalendar(
@@ -24,8 +28,8 @@ abstract class ITrainingSessionRepository extends Repository<UserTrainingSession
   );
 
   Future<ApiGenericResponse<bool>> changeBooking(
-      String contractExternalId,
-      String trainingSessionExternalId,
-      DateTime newBookingDate,
-      );
+    String contractExternalId,
+    String trainingSessionExternalId,
+    DateTime newBookingDate,
+  );
 }
