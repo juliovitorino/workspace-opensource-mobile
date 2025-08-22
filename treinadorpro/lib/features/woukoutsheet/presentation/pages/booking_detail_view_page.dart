@@ -8,8 +8,8 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
+import 'package:treinadorpro/core/utils/global.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_section_title.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_training_session_cubit.dart';
@@ -17,15 +17,12 @@ import 'package:treinadorpro/features/woukoutsheet/presentation/blocs/booking_tr
 import '../../../../config/app_config.dart';
 import '../../../../core/data/models/exception_api_model.dart';
 import '../../../../core/data/models/user_training_session_model.dart';
-import '../../../../core/domain/repositories/icontract_repository.dart';
 import '../../../../core/infrastructure/localstorage/contract_token_storage_service.dart';
 import '../../../../core/infrastructure/localstorage/storage_service.dart';
 import '../../../../core/infrastructure/localstorage/user_training_session_storage_service.dart';
 import '../../../../core/provider/app_config_provider.dart';
-import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/utils/alert.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
-import '../blocs/training_page_cubit.dart';
 
 class BookingDetailViewPage extends ConsumerStatefulWidget {
   const BookingDetailViewPage({super.key});
@@ -103,6 +100,7 @@ class _BookingDetailViewPageState extends ConsumerState<BookingDetailViewPage> {
               userTrainingSessionModelInstance.userWorkoutPlanList?[0].customProgram ??
               userTrainingSessionModelInstance.userWorkoutPlanList![0].program!.namePt,
         ),
+        ProWidgetInfoRow(label: 'Grupos', value: getWorkgroups(userTrainingSessionModelInstance)!),
         ProWidgetInfoRow(
           label: 'Status Treino',
           value: '...',

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.dart';
 import 'package:treinadorpro/core/data/datasources/training_session_datasource.dart';
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
+import 'package:treinadorpro/core/data/models/find_last_load_exercise_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 import 'package:treinadorpro/core/domain/repositories/itraining_session_repository.dart';
 import 'package:treinadorpro/core/domain/repositories/training_session_repository.dart';
@@ -9,6 +10,7 @@ import 'package:treinadorpro/core/domain/repositories/training_session_repositor
 import '../viewmodel/booking_training_session_view_model.dart';
 import '../viewmodel/delete_training_session_view_model.dart';
 import '../viewmodel/find_all_training_session_calendar_view_model.dart';
+import '../viewmodel/find_last_load_exercise_view_model.dart';
 import '../viewmodel/find_most_recent_booking_training_session_view_model.dart';
 import '../viewmodel/find_most_recent_training_session_view_model.dart';
 import '../viewmodel/save_training_session_view_model.dart';
@@ -83,10 +85,18 @@ final findAllTrainingSessionCalendarViewModelProvider =
     });
 
 final deleteTrainingSessionViewModelProvider =
-    StateNotifierProvider<DeleteTrainingSessionViewModel, AsyncValue<ApiGenericResponse<bool>>>(
-      (ref) {
+    StateNotifierProvider<DeleteTrainingSessionViewModel, AsyncValue<ApiGenericResponse<bool>>>((
+      ref,
+    ) {
+      final repository = ref.read(trainingSessionRepositoryProvider);
+      return DeleteTrainingSessionViewModel(repository);
+    });
 
-        final repository = ref.read(trainingSessionRepositoryProvider);
-        return DeleteTrainingSessionViewModel(repository);
-      },
-    );
+final findLastLoadExerciseViewModelProvider =
+    StateNotifierProvider<
+      FindLastLoadExerciseViewModel,
+      AsyncValue<ApiGenericResponse<FindLastLoadExerciseResponseModel>>
+    >((ref) {
+      final repository = ref.read(trainingSessionRepositoryProvider);
+      return FindLastLoadExerciseViewModel(repository);
+    });

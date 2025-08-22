@@ -4,6 +4,8 @@ import 'package:treinadorpro/core/domain/repositories/repository.dart';
 
 import '../../data/models/booking_model_request.dart';
 import '../../data/models/find_all_training_session_calendar_request_model.dart';
+import '../../data/models/find_last_load_exercise_request_model.dart';
+import '../../data/models/find_last_load_exercise_response_model.dart';
 
 abstract class ITrainingSessionRepository extends Repository<UserTrainingSessionModel, int> {
   Future<ApiGenericResponse<bool>> save(UserTrainingSessionModel request);
@@ -32,4 +34,8 @@ abstract class ITrainingSessionRepository extends Repository<UserTrainingSession
     String trainingSessionExternalId,
     DateTime newBookingDate,
   );
+
+  Future<ApiGenericResponse<FindLastLoadExerciseResponseModel>> findLastLoadExercise(
+      FindLastLoadExerciseRequestModel request,
+      );
 }
