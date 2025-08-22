@@ -59,5 +59,5 @@ Widget getStatus(String? status){
 }
 
 String? getWorkgroups(UserTrainingSessionModel trainingSession){
-  return trainingSession.userWorkoutPlanList?.map((e) => e.workGroup.namePt).toSet().join(',');
+  return trainingSession.userWorkoutPlanList?.map((e) => e.workGroup.namePt).toSet().join(', ');
 }

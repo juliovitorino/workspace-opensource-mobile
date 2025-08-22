@@ -2,8 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:treinadorpro/core/data/models/find_last_load_exercise_request_model.dart';
+import 'package:treinadorpro/core/data/models/find_last_load_exercise_response_model.dart';
 import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
+import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_alert_close_dialog.dart';
+import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/rest_timer.dart';
@@ -49,8 +53,10 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   String exerciseName = '...';
   List<TextEditingController> _weightControllers = [];
   List<TextEditingController> _repsControllers = [];
+  String setNumberReserved = '0';
   String weightReserved = '0';
   String repsReserved = '12';
+  bool _isLastLoadStarted = false;
 
   @override
   void initState() {
@@ -69,6 +75,16 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     _userTrainingSessionModel = await _userTrainingSessionStorage.get(_contractToken);
 
     _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(_contractToken);
+
+    ref
+        .read(findLastLoadExerciseViewModelProvider.notifier)
+        .findLastLoadExercise(
+          FindLastLoadExerciseRequestModel(
+            contractExternalId: _contractToken,
+            exerciseExternalId: _userWorkoutPlanModelInstance?.exercise?.externalId,
+            customExercise: _userWorkoutPlanModelInstance?.customExercise,
+          ),
+        );
 
     sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
     exerciseName =
@@ -110,7 +126,18 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     print('_userWorkoutPlanModelInstance => ${jsonEncode(_userWorkoutPlanModelInstance)}');
   }
 
+  Widget _buildExerciseLastLoad(int? setNumber, int? weight, int? reps) {
+    return Column(
+      children: [
+        ProWidgetInfoRow(label: 'Ultima série', value: '$setNumber'),
+        ProWidgetInfoRow(label: 'Ultima carga no último exercício', value: '$weight Kg'),
+        ProWidgetInfoRow(label: 'Qtde Reps no último exercício', value: '$reps'),
+      ],
+    );
+  }
+
   Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
+    final findLastLoadExerciseState = ref.watch(findLastLoadExerciseViewModelProvider);
     return Column(
       children: [
         Container(
@@ -121,8 +148,36 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RestTimer(),
-              ProWidgetInfoRow(label: 'Ultima carga no último exercício', value: '10 Kg'),
-              ProWidgetInfoRow(label: 'Qtde Reps no último exercício', value: '12'),
+              findLastLoadExerciseState.when(
+                data: (data) {
+                  if (!_isLastLoadStarted) {
+                    _isLastLoadStarted = true;
+                    final findLastLoad = data.objectResponse;
+                    setNumberReserved = findLastLoad.setNumber.toString();
+                    repsReserved = findLastLoad.reps.toString();
+                    weightReserved = findLastLoad.weight.toString();
+
+                    return _buildExerciseLastLoad(
+                      findLastLoad.setNumber,
+                      findLastLoad.weight,
+                      findLastLoad.reps,
+                    );
+                  } else {
+                    return _buildExerciseLastLoad(
+                      int.tryParse(setNumberReserved),
+                      int.tryParse(weightReserved),
+                      int.tryParse(repsReserved),
+                    );
+                  }
+                },
+                error: (e, _) => Text('Error: $e'),
+                loading: () => ProWidgetCustomLoadingIndicator(),
+              ),
+
+              // ProWidgetInfoRow(
+              //   label: 'id',
+              //   value: userWorkoutPlanModel.exercise?.externalId ?? 'não tem',
+              // ),
             ],
           ),
         ),

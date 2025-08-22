@@ -8,11 +8,9 @@ import 'package:treinadorpro/core/infrastructure/localstorage/user_workout_plan_
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
 import 'package:treinadorpro/core/states/handler_state.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
+import 'package:treinadorpro/core/utils/global.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_pin.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
-import 'package:treinadorpro/core/widgets/pro_widget_warning_message.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
@@ -93,6 +91,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
         ProWidgetInfoRow(
           label: 'Modalidade',
           value: userTrainingSessionModelInstance.contract.trainingPack.modality!.namePt,
+        ),
+        ProWidgetInfoRow(
+          label: 'Grupos',
+          value: getWorkgroups(userTrainingSessionModelInstance)!,
         ),
         ProWidgetInfoRow(
           label: 'Status Treino',

@@ -5,6 +5,8 @@ import 'package:treinadorpro/core/data/datasources/itraining_session_datasource.
 import 'package:treinadorpro/core/data/models/api_generic_response.dart';
 import 'package:treinadorpro/core/data/models/booking_model_request.dart';
 import 'package:treinadorpro/core/data/models/find_all_training_session_calendar_request_model.dart';
+import 'package:treinadorpro/core/data/models/find_last_load_exercise_request_model.dart';
+import 'package:treinadorpro/core/data/models/find_last_load_exercise_response_model.dart';
 import 'package:treinadorpro/core/data/models/response.dart';
 import 'package:treinadorpro/core/data/models/user_training_session_model.dart';
 import 'package:treinadorpro/core/utils/date_utils.dart';
@@ -231,8 +233,9 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
   }
 
   @override
-  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentBookingTrainingSession(String contractExternalId
-      )  async {
+  Future<ApiGenericResponse<UserTrainingSessionModel>> findMostRecentBookingTrainingSession(
+    String contractExternalId,
+  ) async {
     final String url =
         "${config.apiBackendUrl}/v1/api/business/training/session/$contractExternalId/booking";
 
@@ -262,4 +265,39 @@ class TrainingSessionDatasource implements ITrainingSessionDatasource {
     );
   }
 
+  @override
+  Future<ApiGenericResponse<FindLastLoadExerciseResponseModel>> findLastLoadExercise(
+    FindLastLoadExerciseRequestModel request,
+  ) async {
+    final String url = "${config.apiBackendUrl}/v1/api/business/training/session/lastload";
+
+    final String? token = await _tokenStorage.get();
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-API-KEY': config.apiKey,
+    };
+
+    final jsonResponse = await apiClient.post(
+      url,
+      headers: headers,
+      body: jsonEncode(request.toJson()),
+    );
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    final response = jsonResponse['response'];
+    final Map<String, dynamic> objectResponse = jsonResponse['objectResponse'];
+
+    return ApiGenericResponse(
+      Response(response['msgcode'], response['mensagem']),
+      FindLastLoadExerciseResponseModel.fromJson(objectResponse),
+    );
+  }
 }
