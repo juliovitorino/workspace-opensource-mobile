@@ -12,6 +12,7 @@ import 'package:treinadorpro/core/utils/global.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_tag.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/pages/exercise_execution_page.dart';
+import 'package:treinadorpro/features/woukoutsheet/presentation/pages/vertical_video_player.dart';
 import 'package:treinadorpro/features/woukoutsheet/presentation/widgets/exercise_progress_card.dart';
 
 import '../../../../config/app_config.dart';
@@ -225,6 +226,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         icon: Icon(Icons.delete),
                       )
                     : SizedBox.shrink(),
+                if(training.exercise != null && training.exercise!.videoUrlPt!.isNotEmpty)
+                  IconButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => VerticalVideoPlayer(url: training.exercise!.videoUrlPt!)));
+                  }, icon: Icon(Icons.video_call))
               ],
             ),
             ListTile(
