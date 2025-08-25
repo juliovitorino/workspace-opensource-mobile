@@ -43,6 +43,8 @@ dependencies:
   uuid: ^4.0.1
   shared_preferences: ^2.2.2
   audioplayers: ^5.2.1
+  youtube_player_iframe: ^5.1.2
+  webview_flutter: ^4.7.0
 
   flutter_localizations:
     sdk: flutter
