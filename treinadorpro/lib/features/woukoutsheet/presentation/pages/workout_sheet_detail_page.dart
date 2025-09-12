@@ -152,9 +152,32 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
   }
 
   Widget _buildLastTrainingSessionPanel(UserTrainingSessionModel? trainingSession) {
-    if (trainingSession == null || trainingSession.finishedAt == null) return SizedBox.shrink();
-    if (trainingSession.progressStatus == 'FINISHED' && trainingSession.syncStatus == 'SUCCESS')
+    if (trainingSession == null) return SizedBox.shrink();
+    if (trainingSession.progressStatus == 'FINISHED' && trainingSession.syncStatus == 'SUCCESS') {
       return SizedBox.shrink();
+    }
+
+    // workout has been stopped abnormally
+    if(trainingSession.progressStatus == 'STARTED' && ['PENDING', 'NOT_STARTED'].contains(trainingSession.syncStatus)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 16),
+          ProWidgetWarningMessage(
+            pinMessage:
+            'Existe um treino em andamento em ${getDateTimeToDate(trainingSession.startedAt!)} que não foi concluído',
+            actionButtonLabel: 'CONTINUAR TREINO',
+            onWarningPressed: () {
+              _userTrainingSessionStorage.save(trainingSession, _contractToken);
+              Navigator.popAndPushNamed(context, AppRoutes.trainingPage);
+            },
+            actionButtonIcon: Icon(Icons.fitness_center),
+          ),
+        ],
+      );
+    }
+
+    // training is pending to sync
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
