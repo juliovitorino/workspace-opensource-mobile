@@ -158,7 +158,7 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
     }
 
     // workout has been stopped abnormally
-    if(trainingSession.progressStatus == 'STARTED' && trainingSession.syncStatus == 'PENDING') {
+    if(trainingSession.progressStatus == 'STARTED' && ['PENDING', 'NOT_STARTED'].contains(trainingSession.syncStatus)) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
