@@ -305,6 +305,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
       if (userTrainingSessionModelInstance.progressStatus != 'FINISHED') {
         userTrainingSessionModelInstance.syncStatus = 'PENDING';
+        _userTrainingSessionStorage.save(userTrainingSessionModelInstance, _contractToken);
         trainingHasStarted = true;
       }
 
