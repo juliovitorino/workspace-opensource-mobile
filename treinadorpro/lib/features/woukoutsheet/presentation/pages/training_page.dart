@@ -260,7 +260,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                                 _userWorkoutPlanStorageService.save(training, _contractToken);
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (_) => ExerciseExecutionPage()),
+                                  MaterialPageRoute(builder: (_) => ExerciseExecutionPage(training.externalId!)),
                                 ).then((result) {
                                   if (result) {
                                     setState(() {

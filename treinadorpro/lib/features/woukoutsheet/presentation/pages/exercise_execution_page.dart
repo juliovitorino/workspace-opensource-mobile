@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:treinadorpro/core/data/models/find_last_load_exercise_request_model.dart';
 import 'package:treinadorpro/core/data/models/find_last_load_exercise_response_model.dart';
+import 'package:treinadorpro/core/data/models/last_execution_set_model.dart';
 import 'package:treinadorpro/core/data/models/user_execution_set_model.dart';
+import 'package:treinadorpro/core/infrastructure/localstorage/last_execution_set_storage_service.dart';
 import 'package:treinadorpro/core/provider/training_session_provider.dart';
+import 'package:treinadorpro/core/utils/date_utils.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_alert_close_dialog.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.dart';
 import 'package:treinadorpro/core/widgets/pro_widget_info_row.dart';
@@ -26,7 +29,9 @@ import '../../../../core/provider/contract_provider.dart';
 import '../../../../core/widgets/pro_widget_info_alert_dialog.dart';
 
 class ExerciseExecutionPage extends ConsumerStatefulWidget {
-  const ExerciseExecutionPage({super.key});
+  final String exerciseExternalId;
+
+  const ExerciseExecutionPage(this.exerciseExternalId, {super.key});
 
   @override
   ConsumerState<ExerciseExecutionPage> createState() => _ExerciseExecutionPageState();
@@ -38,14 +43,22 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   late final IContractRespository _contractRepository;
   late UserTrainingSessionModel? _userTrainingSessionModel;
   late Future<UserWorkoutPlanModel?> _userWorkoutPlanModelFuture;
+  late Future<LastExecutionSetModel?> _lastExecutionSetModelFuture;
   late UserWorkoutPlanModel? _userWorkoutPlanModelInstance;
+  late LastExecutionSetModel _lastExecutionSetModelInstance;
   late List<SetData> sets;
   late DateTime _startedAt;
+  late String exerciseExternalId;
+  late DateTime startSet;
+  late DateTime endSet;
 
   final StorageService<String> _contractTokenStorage = ContractTokenStorageService();
 
   final KeyStorageService<UserTrainingSessionModel> _userTrainingSessionStorage =
       UserTrainingSessionStorageService();
+
+  final KeyStorageService<LastExecutionSetModel> _lastExecutionSetModelStorage =
+      LastExecutionSetStorageService();
 
   final KeyStorageService<UserWorkoutPlanModel> _userWorkoutPlanStorageService =
       UserWorkoutPlanStorageService();
@@ -56,7 +69,8 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
   String setNumberReserved = '0';
   String weightReserved = '0';
   String repsReserved = '12';
-  bool _isLastLoadStarted = false;
+  String elapsedTimeReserved = '--';
+  bool executionSetStarted = false;
 
   @override
   void initState() {
@@ -71,20 +85,15 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
 
   void _initData() async {
     print('ExerciseExecutionPage => _initData');
+    exerciseExternalId = widget.exerciseExternalId;
     _contractToken = (await _contractTokenStorage.get())!;
     _userTrainingSessionModel = await _userTrainingSessionStorage.get(_contractToken);
 
     _userWorkoutPlanModelInstance = await _userWorkoutPlanStorageService.get(_contractToken);
 
-    ref
-        .read(findLastLoadExerciseViewModelProvider.notifier)
-        .findLastLoadExercise(
-          FindLastLoadExerciseRequestModel(
-            contractExternalId: _contractToken,
-            exerciseExternalId: _userWorkoutPlanModelInstance?.exercise?.externalId,
-            customExercise: _userWorkoutPlanModelInstance?.customExercise,
-          ),
-        );
+    _lastExecutionSetModelFuture = _lastExecutionSetModelStorage.get(
+      _contractToken + exerciseExternalId,
+    );
 
     sets = List.generate(_userWorkoutPlanModelInstance!.qtySeries!, (_) => SetData());
     exerciseName =
@@ -126,18 +135,58 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
     print('_userWorkoutPlanModelInstance => ${jsonEncode(_userWorkoutPlanModelInstance)}');
   }
 
-  Widget _buildExerciseLastLoad(int? setNumber, int? weight, int? reps) {
+  Widget _buildExerciseLastLoad(int? setNumber, int? weight, int? reps, String? elapseTime) {
+    setNumberReserved = setNumber.toString();
+    weightReserved = weight.toString();
+    repsReserved = reps.toString();
+    elapsedTimeReserved = elapseTime!;
     return Column(
       children: [
         ProWidgetInfoRow(label: 'Ultima série', value: '$setNumber'),
         ProWidgetInfoRow(label: 'Ultima carga no último exercício', value: '$weight Kg'),
         ProWidgetInfoRow(label: 'Qtde Reps no último exercício', value: '$reps'),
+        ProWidgetInfoRow(label: 'Tempo Gasto no último exercício', value: elapseTime),
       ],
     );
   }
 
+  Widget _buildLastExecutionSet(
+    BuildContext context,
+    AsyncSnapshot<LastExecutionSetModel?> snapshot,
+  ) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Erro: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data == null) {
+      return _buildExerciseLastLoad(
+        int.tryParse(setNumberReserved),
+        int.tryParse(weightReserved),
+        int.tryParse(repsReserved),
+        elapsedTimeReserved,
+      );
+    } else {
+      // Now... we have data and we can call method
+      _lastExecutionSetModelInstance = snapshot.data!;
+
+      return executionSetStarted
+          ? _buildExerciseLastLoad(
+              int.tryParse(setNumberReserved),
+              int.tryParse(weightReserved),
+              int.tryParse(repsReserved),
+              elapsedTimeReserved,
+            )
+          : _buildExerciseLastLoad(
+              _lastExecutionSetModelInstance.set,
+              _lastExecutionSetModelInstance.weight,
+              _lastExecutionSetModelInstance.reps,
+              _lastExecutionSetModelInstance.elapseTime,
+            );
+    }
+  }
+
   Widget _buildExercisesListView(UserWorkoutPlanModel userWorkoutPlanModel) {
-    final findLastLoadExerciseState = ref.watch(findLastLoadExerciseViewModelProvider);
+    // final findLastLoadExerciseState = ref.watch(findLastLoadExerciseViewModelProvider);
     return Column(
       children: [
         Container(
@@ -148,36 +197,11 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RestTimer(),
-              findLastLoadExerciseState.when(
-                data: (data) {
-                  if (!_isLastLoadStarted) {
-                    _isLastLoadStarted = true;
-                    final findLastLoad = data.objectResponse;
-                    setNumberReserved = findLastLoad.setNumber.toString();
-                    repsReserved = findLastLoad.reps.toString();
-                    weightReserved = findLastLoad.weight.toString();
-
-                    return _buildExerciseLastLoad(
-                      findLastLoad.setNumber,
-                      findLastLoad.weight,
-                      findLastLoad.reps,
-                    );
-                  } else {
-                    return _buildExerciseLastLoad(
-                      int.tryParse(setNumberReserved),
-                      int.tryParse(weightReserved),
-                      int.tryParse(repsReserved),
-                    );
-                  }
-                },
-                error: (e, _) => Text('Error: $e'),
-                loading: () => ProWidgetCustomLoadingIndicator(),
+              FutureBuilder<LastExecutionSetModel?>(
+                future: _lastExecutionSetModelFuture,
+                builder: (BuildContext context, AsyncSnapshot<LastExecutionSetModel?> snapshot) =>
+                    _buildLastExecutionSet(context, snapshot),
               ),
-
-              // ProWidgetInfoRow(
-              //   label: 'id',
-              //   value: userWorkoutPlanModel.exercise?.externalId ?? 'não tem',
-              // ),
             ],
           ),
         ),
@@ -255,7 +279,9 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                                 ? null
                                 : () {
                                     startTimer(set);
+                                    executionSetStarted = true;
                                     _startedAt = DateTime.now();
+                                    startSet = DateTime.now();
                                   },
                           ),
                           const SizedBox(width: 12),
@@ -264,6 +290,18 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                             label: const Text("Finalizar Série"),
                             onPressed: set.isRunning
                                 ? () {
+                                    // executionSetStarted = false;
+                                    endSet = DateTime.now();
+                                    _lastExecutionSetModelStorage.save(
+                                      LastExecutionSetModel(
+                                        set: index + 1,
+                                        weight: int.tryParse(_weightControllers[index].text)!,
+                                        reps: int.tryParse(_repsControllers[index].text)!,
+                                        elapseTime: dateDifference(startSet, endSet),
+                                      ),
+                                      _contractToken + exerciseExternalId,
+                                    );
+
                                     _addExecutionSetToUserWorkoutPlanModelInstance(
                                       set.weight,
                                       DateTime.now(),
@@ -272,8 +310,13 @@ class _ExerciseExecutionPageState extends ConsumerState<ExerciseExecutionPage> {
                                       set.weight,
                                     );
                                     stopTimer(set);
-                                    weightReserved = _weightControllers[index].text;
-                                    repsReserved = _repsControllers[index].text;
+
+                                    setState(() {
+                                      setNumberReserved = (index + 1).toString();
+                                      weightReserved = _weightControllers[index].text;
+                                      repsReserved = _repsControllers[index].text;
+                                      elapsedTimeReserved = dateDifference(startSet, endSet);
+                                    });
                                   }
                                 : null,
                           ),

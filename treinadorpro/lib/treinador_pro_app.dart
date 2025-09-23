@@ -76,7 +76,6 @@ class _TreinadorProAppState extends ConsumerState<TreinadorProApp> {
         AppRoutes.workoutSheetPage: (context) => WorkoutSheetPage(),
         AppRoutes.workoutSheetDetailPage: (context) => WorkoutSheetDetailPage(),
         AppRoutes.trainingPage: (context) => TrainingPage(),
-        AppRoutes.exerciseExecutionPage: (context) => ExerciseExecutionPage(),
         AppRoutes.syncPage: (context) => SyncPage(),
         AppRoutes.trainingSummaryPage: (context) => TrainingSummaryPage(),
         AppRoutes.bookingViewPage: (context) => BookingViewPage(),
