@@ -568,8 +568,14 @@ class _WorkoutSheetDetailPageState extends ConsumerState<WorkoutSheetDetailPage>
                   trainingSession.progressStatus = 'STARTED';
                   trainingSession.startedAt = DateTime.now();
                   trainingSession.bookingExternalId = trainingSession.externalId;
-                  await _userTrainingSessionStorage.save(trainingSession, _contractToken);
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+                  UserTrainingSessionModel? utsmCheck = await _userTrainingSessionStorage.get(_contractToken);
+                  if(utsmCheck != null && utsmCheck.progressStatus == 'STARTED' && utsmCheck.syncStatus == 'PENDING'){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+
+                  } else {
+                    await _userTrainingSessionStorage.save(trainingSession, _contractToken);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => TrainingPage()));
+                  }
                 },
                 child: Text("Vamos Treinar?"),
               ),
