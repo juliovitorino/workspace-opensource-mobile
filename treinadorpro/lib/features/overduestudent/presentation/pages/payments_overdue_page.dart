@@ -115,7 +115,15 @@ class _PaymentsOverduePageState extends ConsumerState<PaymentsOverduePage> {
   }
 
   Widget _buildListView(List<StudentPaymentResponseModel> data) {
-    double total = data.fold(0.0, (sum, item) => sum + item.amount);
+    double totalDebts = data.fold(0.0, (sum, item) => sum + item.amount);
+    final totalPayments = data.fold<double>(
+      0.0,
+          (sum, paymentItem) => sum +
+          (paymentItem.studentPaymentsTransactions ?? [])
+              .map((transaction) => transaction.receivedAmount ?? 0.0) // cria um stream de double
+              .fold(0.0, (sumTransaction, value) => sumTransaction + value),
+    );
+    double total = totalDebts - totalPayments;
 
     return Column(
       children: [
