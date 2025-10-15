@@ -203,8 +203,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             _dashboardState.when(
               data: (data) =>
                   ProWidgetStatusDashboardItem(
-                    icon: Icons.bar_chart,
-                    title: 'Faturamento Neste Mês',
+                    icon: Icons.monetization_on,
+                    title: 'Pagtos Recebibos no Mês',
                     trailing: 'BRL ${data.objectResponse.totalAmountReceivedMonth}',
                     onTap: () {
                       Navigator.push(
@@ -221,6 +221,18 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 onTap: () {},
               ),
             ),
+
+            // future revenues
+            ProWidgetStatusDashboardItem(
+              icon: Icons.money,
+              title: 'Recebimentos Futuros',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
+                );
+              }, trailing: '...',
+            )   ,
 
             // account statement
             ProWidgetStatusDashboardItem(

@@ -29,5 +29,5 @@ final dashboardRepositoryProvider = Provider<IDashboardRepository>((ref){
 // view model provider
 final dashboardStatusViewModelProvider = StateNotifierProvider<DashboardStatusViewModel, AsyncValue<ApiGenericResponse<DashboardModel>>>((ref){
   final repository = ref.read(dashboardRepositoryProvider);
-  return new DashboardStatusViewModel(repository);
+  return DashboardStatusViewModel(repository);
 });
