@@ -49,6 +49,11 @@ class ContractRepository implements IContractRespository{
   }
 
   @override
+  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentFutureRevenue() async {
+    return await datasource.findAllStudentFutureRevenue();
+  }
+
+  @override
   Future<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>> findAllStudentReceivedPayment() async {
     return await datasource.findAllStudentReceivedPayment();
   }

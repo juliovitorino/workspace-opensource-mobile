@@ -10,6 +10,7 @@ import 'package:treinadorpro/core/widgets/pro_widget_custom_loading_indicator.da
 import 'package:treinadorpro/features/activestudents/presentation/pages/active_contracts_page.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_free_available_time.dart';
 import 'package:treinadorpro/features/dashboard/presentation/widgets/pro_widget_status_dashboard_item.dart';
+import 'package:treinadorpro/features/futurerevenues/presentation/pages/future_revenue_page.dart';
 import 'package:treinadorpro/features/newstudent/presentation/pages/new_student_page.dart';
 import 'package:treinadorpro/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:treinadorpro/features/paymenthistory/presentation/pages/payment_history_page.dart';
@@ -222,29 +223,28 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ),
             ),
 
-            // future revenues
-            ProWidgetStatusDashboardItem(
-              icon: Icons.money,
-              title: 'Recebimentos Futuros',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
-                );
-              }, trailing: '...',
-            )   ,
-
-            // account statement
-            ProWidgetStatusDashboardItem(
-              icon: Icons.monetization_on,
-              title: 'Extrato',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
-                );
-              }, trailing: '...',
-            )   ,
+            // future revenue monthly
+            _dashboardState.when(
+              data: (data) =>
+                  ProWidgetStatusDashboardItem(
+                    icon: Icons.money,
+                    title: 'Recebimento Futuro',
+                    trailing: 'BRL ${data.objectResponse.totalFutureRevenueAmount}',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => FutureRevenuePage()),
+                      );
+                    },
+                  ),
+              error: (e,_) => Text('error: $e'),
+              loading: () =>  ProWidgetStatusDashboardItem(
+                icon: Icons.bar_chart,
+                title: 'Recebimento Futuro',
+                trailing: '...',
+                onTap: () {},
+              ),
+            ),
 
             SizedBox(height: 24),
 

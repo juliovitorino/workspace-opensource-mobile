@@ -11,10 +11,11 @@ class DashboardModel {
   final int totalTrainingPack;
   final int totalTodayWorkout;
   final double totalAmountReceivedMonth;
+  final double totalFutureRevenueAmount;
 
   DashboardModel(this.activeStudentContract, this.overdueAmountContracts,
       this.totalAmountReceivedMonth, this.totalTodayWorkout,
-      this.totalTrainingPack);
+      this.totalTrainingPack, this.totalFutureRevenueAmount);
 
 
   factory DashboardModel.fromJson(Map<String, dynamic> json) =>
