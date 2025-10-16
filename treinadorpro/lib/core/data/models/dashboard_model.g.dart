@@ -13,6 +13,7 @@ DashboardModel _$DashboardModelFromJson(Map<String, dynamic> json) =>
       (json['totalAmountReceivedMonth'] as num).toDouble(),
       (json['totalTodayWorkout'] as num).toInt(),
       (json['totalTrainingPack'] as num).toInt(),
+      (json['totalFutureRevenueAmount'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$DashboardModelToJson(DashboardModel instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$DashboardModelToJson(DashboardModel instance) =>
       'totalTrainingPack': instance.totalTrainingPack,
       'totalTodayWorkout': instance.totalTodayWorkout,
       'totalAmountReceivedMonth': instance.totalAmountReceivedMonth,
+      'totalFutureRevenueAmount': instance.totalFutureRevenueAmount,
     };

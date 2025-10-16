@@ -222,17 +222,28 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ),
             ),
 
-            // future revenues
-            ProWidgetStatusDashboardItem(
-              icon: Icons.money,
-              title: 'Recebimentos Futuros',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
-                );
-              }, trailing: '...',
-            )   ,
+            // future revenue monthly
+            _dashboardState.when(
+              data: (data) =>
+                  ProWidgetStatusDashboardItem(
+                    icon: Icons.money,
+                    title: 'Recebimento Futuro',
+                    trailing: 'BRL ${data.objectResponse.totalFutureRevenueAmount}',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => PaymentHistoryPage()),
+                      );
+                    },
+                  ),
+              error: (e,_) => Text('error: $e'),
+              loading: () =>  ProWidgetStatusDashboardItem(
+                icon: Icons.bar_chart,
+                title: 'Recebimento Futuro',
+                trailing: '...',
+                onTap: () {},
+              ),
+            ),
 
             // account statement
             ProWidgetStatusDashboardItem(
