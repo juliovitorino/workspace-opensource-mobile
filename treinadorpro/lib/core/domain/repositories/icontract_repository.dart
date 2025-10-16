@@ -16,6 +16,7 @@ abstract class IContractRespository extends Repository<ExternalIdResponseModel, 
   Future<ApiGenericResponse<List<ContractResponseModel>>> findAllContractTodayWorkout();
   Future<ApiGenericResponse<ContractResponseModel>> findContract(String externalId);
   Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentOverduePayment();
+  Future<ApiGenericResponse<List<StudentPaymentResponseModel>>> findAllStudentFutureRevenue();
   Future<ApiGenericResponse<List<StudentPaymentsTransactionResponseModel>>> findAllStudentReceivedPayment();
   Future<ApiGenericResponse<bool>> saveUserDataSheetPlan(UserDataSheetPlanModel request);
   Future<ApiGenericResponse<UserDataSheetPlanModel>> findUserWorkoutDataSheetPlan(String contractExternalId);

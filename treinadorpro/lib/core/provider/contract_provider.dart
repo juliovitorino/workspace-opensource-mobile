@@ -14,6 +14,7 @@ import 'package:treinadorpro/core/viewmodel/new_student_view_model.dart';
 import '../data/models/student_payments_transaction_response_model.dart';
 import '../viewmodel/find_all_active_contracts_view_model.dart';
 import '../viewmodel/find_all_contract_today_workout_view_model.dart';
+import '../viewmodel/find_all_student_future_revenue_view_model.dart';
 import '../viewmodel/find_all_student_received_payment_view_model.dart';
 import '../viewmodel/find_user_workout_data_sheet_plan_view_model.dart';
 import '../viewmodel/register_student_payment_view_model.dart';
@@ -70,6 +71,15 @@ final findAllStudentOverduePaymentViewModelProvider =
       return FindAllStudentOverduePaymentViewModel(repository);
     });
 
+final findAllStudentFutureRevenueViewModelProvider =
+    StateNotifierProvider<
+      FindAllStudentFutureRevenueViewModel,
+      AsyncValue<ApiGenericResponse<List<StudentPaymentResponseModel>>>
+    >((ref) {
+      final repository = ref.read(contractRepositoryProvider);
+      return FindAllStudentFutureRevenueViewModel(repository);
+    });
+
 final findAllStudentReceivedPaymentViewModelProvider =
     StateNotifierProvider<
       FindAllStudentReceivedPaymentViewModel,
@@ -98,10 +108,9 @@ final findUserWorkoutDataSheetPlanViewModelProvider =
     });
 
 final registerStudentPaymentViewModelProvider =
-    StateNotifierProvider<RegisterStudentPaymentViewModel, AsyncValue<ApiGenericResponse<bool>>>(
-      (ref) {
-
-        final repository = ref.read(contractRepositoryProvider);
-        return RegisterStudentPaymentViewModel(repository);
-      },
-    );
+    StateNotifierProvider<RegisterStudentPaymentViewModel, AsyncValue<ApiGenericResponse<bool>>>((
+      ref,
+    ) {
+      final repository = ref.read(contractRepositoryProvider);
+      return RegisterStudentPaymentViewModel(repository);
+    });
