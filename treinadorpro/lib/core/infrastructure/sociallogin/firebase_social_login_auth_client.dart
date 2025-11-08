@@ -22,6 +22,9 @@ class FirebaseSocialLoginAuthClient implements ISocialLoginAuthClient {
   @override
   Future<CredentialModel> signInWithGoogle() async {
     try {
+      // //forçar a abertura da janela de contas google
+      await _googleSignIn.signOut();
+
       // 1) Usuário escolhe a conta Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
