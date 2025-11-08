@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1029067098489",
+    "project_id": "gymble-8727e",
+    "storage_bucket": "gymble-8727e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029067098489:android:3f7c16afae51f2696187a8",
+        "android_client_info": {
+          "package_name": "br.com.jcv.gymble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029067098489-mcs9697evctv0t0vvkgfukk02li86o6h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.jcv.gymble",
+            "certificate_hash": "475f8b623cad378495e0fccde37bba99e72e32bb"
+          }
+        },
+        {
+          "client_id": "1029067098489-eb84risefitaqh5fdki5sjj0g52i4r85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy_hTH_8q2vvEiRXrT3Xa0Op1PW9v3Arc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029067098489-c3d6ue0lj16sqkj4r72sa48bn4ockhb3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1029067098489-u750mlme496jtnbakt6ft3qs9pvfnvjo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.treinadorpro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

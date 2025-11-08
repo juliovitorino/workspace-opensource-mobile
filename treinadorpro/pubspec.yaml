@@ -45,6 +45,12 @@ dependencies:
   audioplayers: ^5.2.1
   youtube_player_iframe: ^5.1.2
   webview_flutter: ^4.7.0
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+
+  # Google Sign-In (mobile)
+  google_sign_in: ^6.2.1
 
   flutter_localizations:
     sdk: flutter
