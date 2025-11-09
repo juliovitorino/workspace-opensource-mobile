@@ -87,7 +87,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     final ISocialLoginAuthClient authClient = FirebaseSocialLoginAuthClient();
 
     try {
@@ -98,7 +98,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       // Ex: enviar idToken/accessToken ao seu backend se precisar.
       print('Google OK. idToken: ${credential.idToken}');
       print('Google OK. accessToken: ${credential.accessToken}');
+
       // chama o backend para autenticar o jwt idToken
+      context.read<LoginStateCubit>().processLoginGoogle(credential.idToken!);
 
     } on AuthCanceledException {
       // Usuário cancelou o fluxo
@@ -130,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             state.isLoading
                 ? const CircularProgressIndicator()
                 : _buildLoginButton(context),
-            ProWidgetRoundedButton(text: "Entrar com Google", onPressed: () async => await signInWithGoogle()),
+            ProWidgetRoundedButton(text: "Entrar com Google", onPressed: () async => await signInWithGoogle(context)),
 
             ProWidgetSocialButtonRow(),
           ],

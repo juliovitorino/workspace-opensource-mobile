@@ -144,6 +144,32 @@ class UserRemoteDatasource implements IUserRemoteDataSource {
   }
 
   @override
+  Future<String> loginGoogle(String idToken) async {
+    final String url =
+        "${config.apiBackendUrl}/v1/api/business/public/user/login/google";
+
+    if (config.isDebugMode) {
+      print('$module :: call url = $url');
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'X-API-KEY': config.apiKey,
+      'Authorization': 'Bearer $idToken'
+    };
+
+    final jsonResponse = await apiClient.post(
+      url,
+      headers: headers,
+    );
+    if (config.isDebugMode) {
+      print("$module :: jsonResponse = $jsonResponse");
+    }
+
+    return jsonResponse['objectResponse'];
+  }
+
+  @override
   Future<UserModel> getLoggedUser() async {
     final String url =
         '${config.apiBackendUrl}/v1/api/business/user/trainer/logged';

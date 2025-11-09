@@ -47,4 +47,39 @@ class LoginStateCubit extends Cubit<HandlerState> {
     }
   }
 
+  Future<void> processLoginGoogle(String idToken) async {
+    emit(state.sendToListener(isLoading: true, errorMessage: null));
+
+    try{
+      final String token = await _repository.loginGoogle(idToken);
+      emit(state.sendToListener(isLoading: false, objectResponse: token)); // Sucesso
+    } catch (e) {
+      if (e is ApiException) {
+        try {
+          final exception = ExceptionApiModel.fromJson({
+            'statusCode': e.statusCode,
+            'message': e.body['message'] ?? 'Unknown error',
+            'msgcode': e.body['msgcode'] ?? '',
+          });
+
+          emit(state.sendToListener(
+              isLoading: false,
+              errorMessage: exception.message,
+              objectResponse: exception
+          ));
+        } catch (_) {
+          emit(state.sendToListener(
+            isLoading: false,
+            errorMessage: 'Error processing API response',
+          ));
+        }
+      } else {
+        emit(state.sendToListener(
+          isLoading: false,
+          errorMessage: 'Unexpected error: ${e.toString()}',
+        ));
+      }
+    }
+  }
+
 }
