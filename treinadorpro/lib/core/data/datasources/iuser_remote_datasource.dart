@@ -11,6 +11,7 @@ abstract class IUserRemoteDataSource extends IRemoteDatasource<UserModel, int>{
   Future<RegisterResponse> register(RegisterRequest request);
   Future<bool> validateCode(String trainerExternalId, String code);
   Future<String> login(LoginRequest loginRequest);
+  Future<String> loginGoogle(String idToken);
   Future<UserModel> getLoggedUser();
   Future<ApiGenericResponse<TrainerAvailableTimeResponseModel>> findTrainerAvailableTime();
 }

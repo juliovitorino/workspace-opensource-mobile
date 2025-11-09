@@ -42,6 +42,11 @@ class UserRepository implements IUserRepository {
   }
 
   @override
+  Future<String> loginGoogle(String idToken) async {
+    return await _userRemoteDatasource.loginGoogle(idToken);
+  }
+
+  @override
   Future<UserModel> getLoggedUser() async {
     return await _userRemoteDatasource.getLoggedUser();
   }

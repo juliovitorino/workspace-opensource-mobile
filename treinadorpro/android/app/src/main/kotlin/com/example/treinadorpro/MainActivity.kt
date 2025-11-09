@@ -1,4 +1,4 @@
-package com.example.treinadorpro
+package br.com.jcv.gymble
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -5,12 +5,17 @@ import 'package:treinadorpro/core/data/models/exception_api_model.dart';
 import 'package:treinadorpro/core/domain/repositories/iuser_repository.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/storage_service.dart';
 import 'package:treinadorpro/core/infrastructure/localstorage/token_storage_service.dart';
+import 'package:treinadorpro/core/infrastructure/sociallogin/credential_model.dart';
+import 'package:treinadorpro/core/infrastructure/sociallogin/firebase_social_login_auth_client.dart';
+import 'package:treinadorpro/core/infrastructure/sociallogin/isocial_login_auth_client.dart';
 import 'package:treinadorpro/core/provider/app_config_provider.dart';
 import 'package:treinadorpro/core/provider/user_provider.dart';
 import 'package:treinadorpro/features/login/presentation/blocs/login_state_cubit.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/infrastructure/sociallogin/auth_canceled_exception.dart';
+import '../../../../core/infrastructure/sociallogin/auth_failed_exception.dart';
 import '../../../../core/states/handler_state.dart';
 import '../../../../core/widgets/pro_widget_brand_image.dart';
 import '../../../../core/widgets/pro_widget_rounded_button.dart';
@@ -82,6 +87,32 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
+  Future<void> signInWithGoogle(BuildContext context) async {
+    final ISocialLoginAuthClient authClient = FirebaseSocialLoginAuthClient();
+
+    try {
+      final CredentialModel credential = await authClient.signInWithGoogle();
+
+      // Aqui você já tem o usuário logado no Firebase (FirebaseAuth.instance.currentUser)
+      // e os tokens do Google no seu modelo "creds".
+      // Ex: enviar idToken/accessToken ao seu backend se precisar.
+      print('Google OK. idToken: ${credential.idToken}');
+      print('Google OK. accessToken: ${credential.accessToken}');
+
+      // chama o backend para autenticar o jwt idToken
+      context.read<LoginStateCubit>().processLoginGoogle(credential.idToken!);
+
+    } on AuthCanceledException {
+      // Usuário cancelou o fluxo
+      print('Login cancelado pelo usuário');
+    } on AuthFailedException catch (e) {
+      print('Falha no login: $e');
+    } catch (e) {
+      print('Erro inesperado: $e');
+    }
+  }
+
+
   Widget _buildFormArea(HandlerState state, BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
@@ -101,6 +132,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             state.isLoading
                 ? const CircularProgressIndicator()
                 : _buildLoginButton(context),
+            ProWidgetRoundedButton(text: "Entrar com Google", onPressed: () async => await signInWithGoogle(context)),
+
             ProWidgetSocialButtonRow(),
           ],
         ),
